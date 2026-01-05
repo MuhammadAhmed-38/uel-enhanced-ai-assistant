@@ -30,6 +30,10 @@ import json
 import sqlite3
 from datetime import datetime
 
+
+from compatibility_bridge import *
+
+
 # Add project root to Python path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
@@ -45,6 +49,8 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+
 
 def check_enhanced_dependencies():
     """Check enhanced system dependencies with profile support"""
@@ -963,9 +969,6 @@ def main():
         try:
             print(f"🔬 Initializing research evaluation with {num_profiles} test profiles...")
           
-            # Import required modules
-            from unified_uel_ai_system import UELAISystem
-            from unified_uel_ui import generate_test_profiles
         
             # Initialize AI system
             ai_system = UELAISystem()
@@ -1021,8 +1024,8 @@ def main():
         try:
             print(f"⚖️ Running baseline comparison with {num_profiles} profiles...")
         
-            from unified_uel_ai_system import UELAISystem
-            from unified_uel_ui import generate_test_profiles
+           
+            
         
             ai_system = UELAISystem()
             test_profiles = generate_test_profiles(num_profiles)
@@ -1053,7 +1056,7 @@ def main():
         try:
             print("📊 Exporting research data...")
         
-            from unified_uel_ai_system import UELAISystem
+            
         
             ai_system = UELAISystem()
         

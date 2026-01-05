@@ -25,6 +25,704 @@ import asyncio
 import aiohttp
 import re
 
+from interview_preparation import EnhancedInterviewSystem
+
+
+
+# === INTEGRATED COURSE RECOMMENDER (from standalone_recommendation_test.py) ===
+# The standalone CourseRecommendationApp is integrated below and wrapped so the UI can use it
+# with the existing profile data, without re-entering details.
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from typing import Dict, List
+import numpy as np
+import os
+import pandas as pd
+import re
+import warnings
+
+class CourseRecommendationApp:
+    def __init__(self, csv_path: str):
+        """Initialize the recommendation application"""
+        self.csv_path = csv_path
+        self.courses_df = None
+        self.tfidf_vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
+        self.course_vectors = None
+        
+        # Field keyword mappings for better matching
+        self.field_keywords = {
+            'machine learning': ['ai', 'artificial intelligence', 'data science', 'computer science', 'ml', 'deep learning', 'neural networks'],
+            'artificial intelligence': ['ai', 'artificial intelligence', 'machine learning', 'computer science', 'robotics', 'automation'],
+            'data science': ['data', 'analytics', 'statistics', 'big data', 'machine learning', 'python', 'r programming'],
+            'computer science': ['programming', 'software', 'algorithms', 'computing', 'technology', 'it', 'coding'],
+            'business': ['management', 'finance', 'marketing', 'economics', 'entrepreneurship', 'strategy', 'mba'],
+            'engineering': ['mechanical', 'electrical', 'civil', 'chemical', 'aerospace', 'engineering'],
+            'technology': ['it', 'software', 'hardware', 'tech', 'digital', 'innovation'],
+            'finance': ['banking', 'investment', 'accounting', 'economics', 'financial', 'money'],
+            'healthcare': ['medical', 'nursing', 'health', 'medicine', 'clinical', 'hospital'],
+            'education': ['teaching', 'learning', 'pedagogy', 'curriculum', 'school', 'academic']
+        }
+        
+        self.load_courses()
+    
+    def load_courses(self):
+        """Load courses from CSV file"""
+        try:
+            if not os.path.exists(self.csv_path):
+                print(f"❌ Error: Could not find courses.csv at {self.csv_path}")
+                print("Please make sure the file exists at the specified location.")
+                return False
+            
+            print(f"📚 Loading courses from {self.csv_path}...")
+            self.courses_df = pd.read_csv(self.csv_path)
+            
+            if self.courses_df.empty:
+                print("❌ Error: The courses.csv file is empty!")
+                return False
+            
+            print(f"✅ Successfully loaded {len(self.courses_df)} courses!")
+            print(f"📊 Columns available: {list(self.courses_df.columns)}")
+            
+            # Prepare course texts for vectorization
+            self._prepare_course_vectors()
+            return True
+            
+        except Exception as e:
+            print(f"❌ Error loading courses: {e}")
+            return False
+    
+    def _prepare_course_vectors(self):
+        """Prepare TF-IDF vectors for courses"""
+        try:
+            course_texts = []
+            
+            for _, row in self.courses_df.iterrows():
+                # Combine relevant text fields
+                text_parts = []
+                
+                # Add course name
+                if 'course_name' in row and pd.notna(row['course_name']):
+                    text_parts.append(str(row['course_name']))
+                
+                # Add description
+                if 'description' in row and pd.notna(row['description']):
+                    text_parts.append(str(row['description']))
+                
+                # Add keywords
+                if 'keywords' in row and pd.notna(row['keywords']):
+                    text_parts.append(str(row['keywords']))
+                
+                # Add department
+                if 'department' in row and pd.notna(row['department']):
+                    text_parts.append(str(row['department']))
+                
+                # Add level
+                if 'level' in row and pd.notna(row['level']):
+                    text_parts.append(str(row['level']))
+                
+                # Add career prospects
+                if 'career_prospects' in row and pd.notna(row['career_prospects']):
+                    text_parts.append(str(row['career_prospects']))
+                
+                # Add modules
+                if 'modules' in row and pd.notna(row['modules']):
+                    text_parts.append(str(row['modules']))
+                
+                course_text = ' '.join(text_parts)
+                course_texts.append(course_text)
+            
+            # Create TF-IDF vectors
+            if course_texts:
+                self.course_vectors = self.tfidf_vectorizer.fit_transform(course_texts)
+                print("✅ Course vectors prepared successfully!")
+            else:
+                print("⚠️ Warning: No course text data found for vectorization")
+                
+        except Exception as e:
+            print(f"❌ Error preparing course vectors: {e}")
+    
+    def collect_user_info(self) -> Dict:
+        """Collect user information through an interactive form"""
+        print("\n" + "="*60)
+        print("🎓 COURSE RECOMMENDATION SYSTEM")
+        print("="*60)
+        print("Please fill out the following information to get personalized course recommendations:")
+        print()
+        
+        user_profile = {}
+        
+        # Basic Information
+        print("📝 BASIC INFORMATION")
+        print("-" * 30)
+        user_profile['name'] = input("Your Name: ").strip()
+        
+        # Field of Interest
+        print("\n🎯 FIELD OF INTEREST")
+        print("-" * 30)
+        print("Examples: Machine Learning, Business Management, Computer Science, Data Science, etc.")
+        user_profile['field_of_interest'] = input("Primary Field of Interest: ").strip()
+        
+        # Academic Level
+        print("\n🎓 ACADEMIC LEVEL")
+        print("-" * 30)
+        print("Options: 1) High School  2) Bachelor's  3) Master's  4) PhD  5) Other")
+        choice = input("Select your current academic level (1-5): ").strip()
+        
+        level_map = {
+            '1': 'high school',
+            '2': 'bachelor\'s',
+            '3': 'master\'s', 
+            '4': 'phd',
+            '5': 'other'
+        }
+        user_profile['academic_level'] = level_map.get(choice, 'bachelor\'s')
+        
+        # Preferred Study Level
+        print("\n📚 PREFERRED STUDY LEVEL")
+        print("-" * 30)
+        print("Options: 1) Undergraduate  2) Postgraduate  3) PhD  4) Any")
+        choice = input("What level would you like to study? (1-4): ").strip()
+        
+        study_map = {
+            '1': 'undergraduate',
+            '2': 'postgraduate',
+            '3': 'phd',
+            '4': 'any'
+        }
+        user_profile['preferred_study_level'] = study_map.get(choice, 'any')
+        
+        # GPA
+        print("\n📊 ACADEMIC PERFORMANCE")
+        print("-" * 30)
+        while True:
+            try:
+                gpa_input = input("Your GPA (0.0-4.0, or press Enter to skip): ").strip()
+                if gpa_input == "":
+                    user_profile['gpa'] = 3.0  # Default
+                    break
+                gpa = float(gpa_input)
+                if 0.0 <= gpa <= 4.0:
+                    user_profile['gpa'] = gpa
+                    break
+                else:
+                    print("Please enter a GPA between 0.0 and 4.0")
+            except ValueError:
+                print("Please enter a valid number")
+        
+        # IELTS Score
+        while True:
+            try:
+                ielts_input = input("Your IELTS Score (0.0-9.0, or press Enter to skip): ").strip()
+                if ielts_input == "":
+                    user_profile['ielts_score'] = 6.5  # Default
+                    break
+                ielts = float(ielts_input)
+                if 0.0 <= ielts <= 9.0:
+                    user_profile['ielts_score'] = ielts
+                    break
+                else:
+                    print("Please enter an IELTS score between 0.0 and 9.0")
+            except ValueError:
+                print("Please enter a valid number")
+        
+        # Career Goals
+        print("\n🚀 CAREER GOALS")
+        print("-" * 30)
+        user_profile['career_goals'] = input("Describe your career goals (optional): ").strip()
+        
+        # Interests
+        print("\n💡 INTERESTS & SKILLS")
+        print("-" * 30)
+        interests_input = input("List your interests (comma-separated, optional): ").strip()
+        user_profile['interests'] = [i.strip() for i in interests_input.split(',') if i.strip()] if interests_input else []
+        
+        skills_input = input("List your professional skills (comma-separated, optional): ").strip()
+        user_profile['professional_skills'] = [s.strip() for s in skills_input.split(',') if s.strip()] if skills_input else []
+        
+        # Budget
+        print("\n💰 BUDGET PREFERENCES")
+        print("-" * 30)
+        while True:
+            try:
+                budget_input = input("Maximum budget for tuition (£, or press Enter for no limit): ").strip()
+                if budget_input == "":
+                    user_profile['budget_max'] = 100000  # No limit
+                    break
+                budget = float(budget_input.replace('£', '').replace(',', ''))
+                user_profile['budget_max'] = budget
+                break
+            except ValueError:
+                print("Please enter a valid budget amount")
+        
+        # Work Experience
+        print("\n💼 WORK EXPERIENCE")
+        print("-" * 30)
+        while True:
+            try:
+                exp_input = input("Years of work experience (or press Enter for 0): ").strip()
+                if exp_input == "":
+                    user_profile['work_experience_years'] = 0
+                    break
+                exp = int(exp_input)
+                if exp >= 0:
+                    user_profile['work_experience_years'] = exp
+                    break
+                else:
+                    print("Please enter a non-negative number")
+            except ValueError:
+                print("Please enter a valid number")
+        
+        print("\n✅ Profile completed successfully!")
+        return user_profile
+    
+    def get_recommendations(self, user_profile: Dict, num_recommendations: int = 10) -> List[Dict]:
+        """Generate course recommendations based on user profile"""
+        if self.courses_df is None or self.courses_df.empty:
+            return []
+        
+        print(f"\n🔍 Generating recommendations for {user_profile.get('name', 'you')}...")
+        
+        try:
+            # Method 1: Content-based recommendations using TF-IDF
+            content_recs = self._content_based_recommendations(user_profile)
+            
+            # Method 2: Keyword-based recommendations
+            keyword_recs = self._keyword_based_recommendations(user_profile)
+            
+            # Combine and deduplicate recommendations
+            all_recommendations = content_recs + keyword_recs
+            
+            # Remove duplicates and combine scores
+            unique_recs = self._combine_recommendations(all_recommendations)
+            
+            # Apply filters and scoring
+            final_recs = []
+            for rec in unique_recs[:num_recommendations * 2]:  # Get more for filtering
+                enhanced_rec = self._enhance_recommendation(rec, user_profile)
+                if enhanced_rec:
+                    final_recs.append(enhanced_rec)
+            
+            # Sort by final score and return top N
+            final_recs.sort(key=lambda x: x['score'], reverse=True)
+            return final_recs[:num_recommendations]
+            
+        except Exception as e:
+            print(f"❌ Error generating recommendations: {e}")
+            return self._fallback_recommendations(user_profile, num_recommendations)
+    
+    def _content_based_recommendations(self, user_profile: Dict) -> List[Dict]:
+        """Generate recommendations using content-based filtering"""
+        if self.course_vectors is None:
+            return []
+        
+        try:
+            # Create user query from profile
+            user_text = self._create_user_text(user_profile)
+            
+            if not user_text:
+                return []
+            
+            # Transform user text to vector
+            user_vector = self.tfidf_vectorizer.transform([user_text])
+            
+            # Calculate similarities
+            similarities = cosine_similarity(user_vector, self.course_vectors)[0]
+            
+            recommendations = []
+            for idx, similarity in enumerate(similarities):
+                if idx < len(self.courses_df):
+                    course = self.courses_df.iloc[idx]
+                    recommendations.append({
+                        'course_index': idx,
+                        'course_data': course.to_dict(),
+                        'score': float(similarity),
+                        'method': 'content_based'
+                    })
+            
+            return sorted(recommendations, key=lambda x: x['score'], reverse=True)[:20]
+            
+        except Exception as e:
+            print(f"⚠️ Content-based recommendation error: {e}")
+            return []
+    
+    def _keyword_based_recommendations(self, user_profile: Dict) -> List[Dict]:
+        """Generate recommendations using keyword matching"""
+        try:
+            user_field = user_profile.get('field_of_interest', '').lower()
+            user_interests = [i.lower() for i in user_profile.get('interests', [])]
+            user_skills = [s.lower() for s in user_profile.get('professional_skills', [])]
+            
+            # Get relevant keywords
+            relevant_keywords = []
+            for field, keywords in self.field_keywords.items():
+                if field in user_field or any(keyword in user_field for keyword in keywords):
+                    relevant_keywords.extend(keywords)
+            
+            relevant_keywords.extend(user_interests)
+            relevant_keywords.extend(user_skills)
+            relevant_keywords = list(set(relevant_keywords))
+            
+            recommendations = []
+            
+            for idx, course in self.courses_df.iterrows():
+                score = 0.0
+                matches = []
+                
+                # Create course text for matching
+                course_text = self._get_course_text(course).lower()
+                course_name = str(course.get('course_name', '')).lower()
+                
+                # Check keyword matches
+                for keyword in relevant_keywords:
+                    if keyword and keyword in course_text:
+                        if keyword in course_name:
+                            score += 0.3
+                            matches.append(f"'{keyword}' in title")
+                        else:
+                            score += 0.1
+                            matches.append(f"'{keyword}' in content")
+                
+                # Field match
+                if user_field and user_field in course_text:
+                    score += 0.4
+                    matches.append(f"Field match: {user_field}")
+                
+                if score > 0.05:
+                    recommendations.append({
+                        'course_index': idx,
+                        'course_data': course.to_dict(),
+                        'score': min(score, 1.0),
+                        'method': 'keyword_based',
+                        'matches': matches
+                    })
+            
+            return sorted(recommendations, key=lambda x: x['score'], reverse=True)[:20]
+            
+        except Exception as e:
+            print(f"⚠️ Keyword-based recommendation error: {e}")
+            return []
+    
+    def _create_user_text(self, user_profile: Dict) -> str:
+        """Create text representation of user profile"""
+        text_parts = []
+        
+        if user_profile.get('field_of_interest'):
+            text_parts.append(user_profile['field_of_interest'])
+        
+        if user_profile.get('career_goals'):
+            text_parts.append(user_profile['career_goals'])
+        
+        text_parts.extend(user_profile.get('interests', []))
+        text_parts.extend(user_profile.get('professional_skills', []))
+        
+        if user_profile.get('academic_level'):
+            text_parts.append(user_profile['academic_level'])
+        
+        return ' '.join(filter(None, text_parts))
+    
+    def _get_course_text(self, course) -> str:
+        """Get text representation of a course"""
+        text_parts = []
+        
+        fields = ['course_name', 'description', 'keywords', 'department', 'level', 'career_prospects', 'modules']
+        
+        for field in fields:
+            if field in course and pd.notna(course[field]):
+                text_parts.append(str(course[field]))
+        
+        return ' '.join(text_parts)
+    
+    def _combine_recommendations(self, recommendations: List[Dict]) -> List[Dict]:
+        """Combine recommendations from different methods"""
+        course_map = {}
+        
+        for rec in recommendations:
+            course_idx = rec['course_index']
+            
+            if course_idx in course_map:
+                # Average the scores
+                existing = course_map[course_idx]
+                existing_score = existing['score']
+                new_score = rec['score']
+                combined_score = (existing_score + new_score) / 2
+                existing['score'] = combined_score
+                existing['method'] = f"{existing['method']}, {rec['method']}"
+            else:
+                course_map[course_idx] = rec.copy()
+        
+        return list(course_map.values())
+    
+    def _enhance_recommendation(self, rec: Dict, user_profile: Dict) -> Dict:
+        """Enhance recommendation with additional scoring and information"""
+        try:
+            course_data = rec['course_data']
+            score = rec['score']
+            reasons = []
+            
+            # Academic level matching
+            user_level = user_profile.get('preferred_study_level', '').lower()
+            course_level = str(course_data.get('level', '')).lower()
+            
+            if user_level != 'any' and user_level and course_level:
+                if user_level in course_level:
+                    score += 0.2
+                    reasons.append(f"Matches preferred study level: {user_level}")
+                else:
+                    score *= 0.7
+                    reasons.append(f"Different study level: {course_level}")
+            
+            # GPA requirement check
+            user_gpa = user_profile.get('gpa', 0.0)
+            min_gpa = course_data.get('min_gpa', 0.0)
+            
+            if isinstance(min_gpa, (int, float)) and min_gpa > 0:
+                if user_gpa >= min_gpa:
+                    score += 0.1
+                    reasons.append(f"Meets GPA requirement ({min_gpa})")
+                else:
+                    score *= 0.8
+                    reasons.append(f"Below GPA requirement ({min_gpa})")
+            
+            # IELTS requirement check
+            user_ielts = user_profile.get('ielts_score', 0.0)
+            min_ielts = course_data.get('min_ielts', 0.0)
+            
+            if isinstance(min_ielts, (int, float)) and min_ielts > 0:
+                if user_ielts >= min_ielts:
+                    score += 0.1
+                    reasons.append(f"Meets IELTS requirement ({min_ielts})")
+                else:
+                    score *= 0.8
+                    reasons.append(f"Below IELTS requirement ({min_ielts})")
+            
+            # Budget check
+            budget_max = user_profile.get('budget_max', float('inf'))
+            course_fees = course_data.get('fees_international', 0)
+            
+            if isinstance(course_fees, (int, float)) and course_fees > 0:
+                if course_fees <= budget_max:
+                    score += 0.05
+                    reasons.append(f"Within budget (£{course_fees:,.0f})")
+                else:
+                    score *= 0.6
+                    reasons.append(f"Above budget (£{course_fees:,.0f})")
+            
+            # Determine match quality
+            if score >= 0.7:
+                match_quality = "Excellent Match"
+            elif score >= 0.5:
+                match_quality = "Good Match"
+            elif score >= 0.3:
+                match_quality = "Fair Match"
+            else:
+                match_quality = "Possible Match"
+            
+            # Add method-specific reasons
+            if 'matches' in rec:
+                reasons.extend(rec['matches'][:2])
+            elif rec.get('method') == 'content_based':
+                reasons.append(f"Content similarity: {score:.2f}")
+            
+            return {
+                'course_name': course_data.get('course_name', 'Unknown Course'),
+                'department': course_data.get('department', 'General Studies'),
+                'level': course_data.get('level', 'undergraduate'),
+                'description': course_data.get('description', 'No description available'),
+                'fees': f"£{course_data.get('fees_international', 0):,.0f}" if course_data.get('fees_international') else "Not specified",
+                'duration': course_data.get('duration', 'Not specified'),
+                'min_gpa': course_data.get('min_gpa', 'Not specified'),
+                'min_ielts': course_data.get('min_ielts', 'Not specified'),
+                'career_prospects': course_data.get('career_prospects', 'Various opportunities'),
+                'score': min(score, 1.0),
+                'match_quality': match_quality,
+                'reasons': reasons[:3],  # Limit to top 3 reasons
+                'method': rec.get('method', 'combined')
+            }
+            
+        except Exception as e:
+            print(f"⚠️ Error enhancing recommendation: {e}")
+            return None
+    
+    def _fallback_recommendations(self, user_profile: Dict, num_recommendations: int) -> List[Dict]:
+        """Provide fallback recommendations when other methods fail"""
+        try:
+            if self.courses_df.empty:
+                return []
+            
+            # Get random sample of courses
+            sample_size = min(num_recommendations, len(self.courses_df))
+            sample_courses = self.courses_df.sample(n=sample_size)
+            
+            recommendations = []
+            for _, course in sample_courses.iterrows():
+                recommendations.append({
+                    'course_name': course.get('course_name', 'Unknown Course'),
+                    'department': course.get('department', 'General Studies'),
+                    'level': course.get('level', 'undergraduate'),
+                    'description': course.get('description', 'No description available'),
+                    'fees': f"£{course.get('fees_international', 0):,.0f}" if course.get('fees_international') else "Not specified",
+                    'duration': course.get('duration', 'Not specified'),
+                    'min_gpa': course.get('min_gpa', 'Not specified'),
+                    'min_ielts': course.get('min_ielts', 'Not specified'),
+                    'career_prospects': course.get('career_prospects', 'Various opportunities'),
+                    'score': np.random.uniform(0.3, 0.7),
+                    'match_quality': 'Possible Match',
+                    'reasons': ['General recommendation', 'May align with your interests'],
+                    'method': 'fallback'
+                })
+            
+            return recommendations
+            
+        except Exception as e:
+            print(f"❌ Fallback recommendation error: {e}")
+            return []
+    
+    def display_recommendations(self, recommendations: List[Dict], user_profile: Dict):
+        """Display recommendations in a formatted way"""
+        if not recommendations:
+            print("\n❌ No recommendations found. Please try adjusting your criteria.")
+            return
+        
+        print(f"\n🎯 TOP COURSE RECOMMENDATIONS FOR {user_profile.get('name', 'YOU').upper()}")
+        print("=" * 80)
+        
+        for i, rec in enumerate(recommendations, 1):
+            print(f"\n{i}. {rec['course_name']}")
+            print("-" * (len(rec['course_name']) + 3))
+            print(f"🏛️  Department: {rec['department']}")
+            print(f"🎓 Level: {rec['level'].title()}")
+            print(f"💰 Fees: {rec['fees']}")
+            print(f"⏱️  Duration: {rec['duration']}")
+            print(f"📊 Match Quality: {rec['match_quality']} ({rec['score']:.2f})")
+            
+            if rec.get('min_gpa') and rec['min_gpa'] != 'Not specified':
+                print(f"📈 Min GPA: {rec['min_gpa']}")
+            
+            if rec.get('min_ielts') and rec['min_ielts'] != 'Not specified':
+                print(f"🗣️  Min IELTS: {rec['min_ielts']}")
+            
+            print(f"📝 Description: {rec['description'][:150]}{'...' if len(rec['description']) > 150 else ''}")
+            
+            if rec.get('reasons'):
+                print(f"✅ Why recommended: {', '.join(rec['reasons'])}")
+            
+            print(f"🚀 Career Prospects: {rec['career_prospects'][:100]}{'...' if len(rec['career_prospects']) > 100 else ''}")
+            
+            if i < len(recommendations):
+                print()
+    
+    def save_results(self, user_profile: Dict, recommendations: List[Dict], filename: str = None):
+        """Save recommendations to a file"""
+        if not filename:
+            name = user_profile.get('name', 'user').replace(' ', '_')
+            filename = f"course_recommendations_{name}.txt"
+        
+        try:
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(f"COURSE RECOMMENDATIONS FOR {user_profile.get('name', 'USER').upper()}\n")
+                f.write("=" * 60 + "\n\n")
+                
+                f.write("USER PROFILE:\n")
+                f.write("-" * 20 + "\n")
+                for key, value in user_profile.items():
+                    if key != 'name':
+                        f.write(f"{key.replace('_', ' ').title()}: {value}\n")
+                f.write("\n")
+                
+                f.write("RECOMMENDATIONS:\n")
+                f.write("-" * 20 + "\n\n")
+                
+                for i, rec in enumerate(recommendations, 1):
+                    f.write(f"{i}. {rec['course_name']}\n")
+                    f.write(f"   Department: {rec['department']}\n")
+                    f.write(f"   Level: {rec['level']}\n")
+                    f.write(f"   Fees: {rec['fees']}\n")
+                    f.write(f"   Duration: {rec['duration']}\n")
+                    f.write(f"   Match Score: {rec['score']:.2f} ({rec['match_quality']})\n")
+                    f.write(f"   Description: {rec['description']}\n")
+                    if rec.get('reasons'):
+                        f.write(f"   Reasons: {', '.join(rec['reasons'])}\n")
+                    f.write("\n")
+            
+            print(f"✅ Results saved to {filename}")
+            
+        except Exception as e:
+            print(f"❌ Error saving results: {e}")
+    
+    def run(self):
+        """Run the complete recommendation application"""
+        print("🎓 Welcome to the Course Recommendation System!")
+        
+        # Load courses
+        if not self.load_courses():
+            print("❌ Cannot proceed without course data. Please check your CSV file.")
+            return
+        
+        # Collect user information
+        user_profile = self.collect_user_info()
+        
+        # Generate recommendations
+        recommendations = self.get_recommendations(user_profile)
+        
+        # Display results
+        self.display_recommendations(recommendations, user_profile)
+        
+        # Ask if user wants to save results
+        print("\n" + "="*60)
+        save_choice = input("Would you like to save these recommendations to a file? (y/n): ").lower().strip()
+        
+        if save_choice in ['y', 'yes']:
+            self.save_results(user_profile, recommendations)
+        
+        print("\n🎉 Thank you for using the Course Recommendation System!")
+        print("Good luck with your studies! 📚")
+
+
+def main():
+    """Main function to run the application"""
+    # Path to your courses CSV file
+    csv_path = '/Users/muhammadahmed/Downloads/UEL Master Courses/Dissertation CN7000/uel-enhanced-ai-assistant/data/courses.csv'
+    
+    # Create and run the application
+    app = CourseRecommendationApp(csv_path)
+    app.run()
+
+
+
+class IntegratedCourseRecommender:
+    """Wrapper that uses CourseRecommendationApp but reads profile data directly."""
+    def __init__(self, csv_path: str):
+        self.csv_path = csv_path
+        self.app = CourseRecommendationApp(csv_path=self.csv_path)
+
+    def recommend_courses(self, user_profile: dict, preferences: dict = None, top_k: int = 10):
+        # Merge preferences into a copy of the profile dict (simple overlay)
+        profile = dict(user_profile or {})
+        if preferences:
+            # Map common preference controls into expected profile keys
+            # e.g., preferred_level -> academic_level, study_mode -> preferred_study_mode, etc.
+            if preferences.get('preferred_level') and preferences['preferred_level'] != 'Any':
+                profile['academic_level'] = preferences['preferred_level']
+            if preferences.get('study_mode') and preferences['study_mode'] != 'Any':
+                profile['preferred_study_mode'] = preferences['study_mode']
+            if preferences.get('budget') and preferences['budget'] != 'Any':
+                profile['budget_range'] = preferences['budget']
+            if preferences.get('duration') and preferences['duration'] != 'Any':
+                profile['preferred_course_duration'] = preferences['duration']
+            # Optional: allow narrowing by field
+            if preferences.get('field_filter') and preferences['field_filter'] != 'Any':
+                profile['field_of_interest'] = preferences['field_filter']
+
+        # The standalone recommender expects keys such as:
+        # field_of_interest, career_goals, interests (list), professional_skills (list),
+        # academic_level, ielts_score, gpa, preferred_study_mode, budget_range
+        # The existing UserProfile.to_dict() already contains these keys in the unified system.
+
+        # Generate recommendations
+        recs = self.app.get_recommendations(profile, num_recommendations=top_k)
+        return recs
+
 
 
 # Configure logging first
@@ -98,6 +796,9 @@ except ImportError:
 # ENHANCED PROFILE MANAGEMENT SYSTEM
 # =============================================================================
 
+# Define the local folder path for profile data
+PROFILE_DATA_DIR = "/Users/muhammadahmed/Downloads/uel-enhanced-ai-assistant/Profile Data"
+
 @dataclass
 class UserProfile:
     """Enhanced user profile with comprehensive data"""
@@ -106,6 +807,7 @@ class UserProfile:
     first_name: str
     last_name: str
     email: str = ""
+    password_hash: str = "" # Added for password storage
     phone: str = ""
     date_of_birth: str = ""
     
@@ -145,6 +847,7 @@ class UserProfile:
     previous_applications: List[str] = field(default_factory=list)
     rejected_courses: List[str] = field(default_factory=list)
     preferred_courses: List[str] = field(default_factory=list)
+    preferred_modules: List[str] = field(default_factory=list) # Added for modules
     
     # System Data
     created_date: str = field(default_factory=lambda: datetime.now().isoformat())
@@ -164,6 +867,7 @@ class UserProfile:
             'first_name': self.first_name,
             'last_name': self.last_name,
             'email': self.email,
+            'password_hash': self.password_hash, # Include password hash
             'phone': self.phone,
             'date_of_birth': self.date_of_birth,
             'country': self.country,
@@ -191,6 +895,7 @@ class UserProfile:
             'previous_applications': self.previous_applications,
             'rejected_courses': self.rejected_courses,
             'preferred_courses': self.preferred_courses,
+            'preferred_modules': self.preferred_modules, # Include modules
             'created_date': self.created_date,
             'updated_date': self.updated_date,
             'last_active': self.last_active,
@@ -245,37 +950,80 @@ class UserProfile:
 class ProfileManager:
     """Enhanced profile management with persistence and validation"""
     
-    def __init__(self, db_manager=None):
-        self.db_manager = db_manager
+    def __init__(self, db_manager=None, profile_data_dir: str = PROFILE_DATA_DIR):
+        self.db_manager = db_manager # This will eventually be removed if local files are primary
         self.current_profile: Optional[UserProfile] = None
         self.profile_cache: Dict[str, UserProfile] = {}
         self.logger = get_logger(f"{__name__}.ProfileManager")
-    
-    def create_profile(self, profile_data: Dict) -> UserProfile:
-        """Create new user profile with validation"""
+        self.profile_data_dir = Path(profile_data_dir)
+        self._ensure_profile_data_dir_exists()
+
+    def _ensure_profile_data_dir_exists(self):
+        """Ensure the local directory for profiles exists."""
         try:
-            # Generate unique ID if not provided
-            if 'id' not in profile_data:
-                profile_data['id'] = self._generate_profile_id()
-            
+            self.profile_data_dir.mkdir(parents=True, exist_ok=True)
+            self.logger.info(f"Ensured profile data directory exists: {self.profile_data_dir}")
+        except Exception as e:
+            self.logger.error(f"Failed to create profile data directory {self.profile_data_dir}: {e}")
+            # Fallback to current directory if specified path is problematic
+            self.profile_data_dir = Path("./Profile Data")
+            self.profile_data_dir.mkdir(parents=True, exist_ok=True)
+            self.logger.warning(f"Fallback to current directory for profile data: {self.profile_data_dir}")
+
+
+    def _hash_password(self, password: str) -> str:
+        """Hash a password using SHA256 for secure storage."""
+        return hashlib.sha256(password.encode()).hexdigest()
+
+    def _verify_password(self, password: str, stored_hash: str) -> bool:
+        """Verify a password against a stored hash."""
+        return self._hash_password(password) == stored_hash
+
+    def _get_profile_filepath(self, email: str) -> Path:
+        """Generate a consistent file path for a given email."""
+        # Use a hashed version of the email to create a filename, avoiding special characters
+        hashed_email = hashlib.md5(email.lower().encode()).hexdigest()
+        return self.profile_data_dir / f"{hashed_email}.json"
+
+    def create_profile(self, profile_data: Dict, password: str) -> UserProfile:
+        """
+        Create new user profile, save it locally, and ensure unique email.
+        Includes password hashing.
+        """
+        try:
             # Validate required fields
-            required_fields = ['first_name', 'last_name', 'field_of_interest']
+            required_fields = ['first_name', 'last_name', 'email', 'field_of_interest']
             for field in required_fields:
                 if not profile_data.get(field):
                     raise ValueError(f"Required field missing: {field}")
             
+            email = profile_data.get('email').lower()
+            if not email:
+                raise ValueError("Email is required for profile creation.")
+
+            # Check if a profile with this email already exists
+            if self.get_profile_by_email(email):
+                raise ValueError(f"A profile with email '{email}' already exists. Please log in.")
+
+            # Generate unique ID if not provided
+            if 'id' not in profile_data:
+                profile_data['id'] = self._generate_profile_id()
+            
+            # Hash the password and store it
+            profile_data['password_hash'] = self._hash_password(password)
+
             # Create profile
             profile = UserProfile(**profile_data)
             profile.calculate_completion()
             
-            # Save to database
+            # Save to local file
             self.save_profile(profile)
             
             # Set as current profile
             self.current_profile = profile
             self.profile_cache[profile.id] = profile
             
-            self.logger.info(f"Created profile for {profile.first_name} {profile.last_name}")
+            self.logger.info(f"Created profile for {profile.first_name} {profile.last_name} with email {profile.email}")
             return profile
             
         except Exception as e:
@@ -283,7 +1031,7 @@ class ProfileManager:
             raise
     
     def update_profile(self, profile_id: str, updates: Dict) -> UserProfile:
-        """Update existing profile"""
+        """Update existing profile and save changes locally."""
         try:
             profile = self.get_profile(profile_id)
             if not profile:
@@ -308,31 +1056,83 @@ class ProfileManager:
             raise
     
     def get_profile(self, profile_id: str) -> Optional[UserProfile]:
-        """Get profile by ID"""
+        """Get profile by ID (from cache or local file)."""
         try:
             # Check cache first
             if profile_id in self.profile_cache:
                 return self.profile_cache[profile_id]
             
-            # Load from database
-            if self.db_manager:
-                profile_data = self._load_profile_from_db(profile_id)
-                if profile_data:
-                    profile = UserProfile.from_dict(profile_data)
-                    self.profile_cache[profile_id] = profile
-                    return profile
+            # Iterate through profiles in the directory to find by ID
+            for profile_file in self.profile_data_dir.glob("*.json"):
+                try:
+                    with open(profile_file, 'r') as f:
+                        data = json.load(f)
+                    if data.get('id') == profile_id:
+                        profile = UserProfile.from_dict(data)
+                        self.profile_cache[profile_id] = profile
+                        return profile
+                except json.JSONDecodeError:
+                    self.logger.warning(f"Skipping malformed JSON file: {profile_file}")
+                except Exception as e:
+                    self.logger.error(f"Error reading profile file {profile_file}: {e}")
             
             return None
             
         except Exception as e:
             self.logger.error(f"Error getting profile: {e}")
             return None
-    
+
+    def get_profile_by_email(self, email: str) -> Optional[UserProfile]:
+        """Get profile by email (from cache or local file)."""
+        try:
+            # Check cache first (though less likely to be cached by email directly)
+            for profile_id, profile in self.profile_cache.items():
+                if profile.email.lower() == email.lower():
+                    return profile
+            
+            # Check local file system
+            profile_file = self._get_profile_filepath(email)
+            if profile_file.exists():
+                try:
+                    with open(profile_file, 'r') as f:
+                        data = json.load(f)
+                    if data.get('email', '').lower() == email.lower():
+                        profile = UserProfile.from_dict(data)
+                        self.profile_cache[profile.id] = profile # Cache it by ID
+                        return profile
+                except json.JSONDecodeError:
+                    self.logger.warning(f"Skipping malformed JSON file for email {email}: {profile_file}")
+                except Exception as e:
+                    self.logger.error(f"Error reading profile file for email {email}: {e}")
+            
+            return None
+        except Exception as e:
+            self.logger.error(f"Error getting profile by email {email}: {e}")
+            return None
+
+    def login_profile(self, email: str, password: str) -> Optional[UserProfile]:
+        """
+        Authenticate user and load their profile.
+        Returns the UserProfile object on success, None otherwise.
+        """
+        try:
+            profile = self.get_profile_by_email(email)
+            if profile and self._verify_password(password, profile.password_hash):
+                self.set_current_profile(profile)
+                self.logger.info(f"User {email} logged in successfully.")
+                return profile
+            else:
+                self.logger.warning(f"Login failed for email: {email}. Invalid credentials.")
+                return None
+        except Exception as e:
+            self.logger.error(f"Login error for email {email}: {e}")
+            return None
+
     def set_current_profile(self, profile: UserProfile):
         """Set the current active profile"""
         self.current_profile = profile
         profile.update_activity()
-        self.save_profile(profile)
+        self.save_profile(profile) # Ensure the last_active is saved
         
         # Store in session state for Streamlit
         if 'st' in globals():
@@ -344,16 +1144,18 @@ class ProfileManager:
         return self.current_profile
     
     def save_profile(self, profile: UserProfile):
-        """Save profile to database"""
+        """Save profile to local file."""
         try:
-            if self.db_manager:
-                self._save_profile_to_db(profile)
+            profile_file = self._get_profile_filepath(profile.email)
+            with open(profile_file, 'w') as f:
+                json.dump(profile.to_dict(), f, indent=4)
+            self.logger.info(f"Profile saved locally: {profile_file}")
             
             # Update cache
             self.profile_cache[profile.id] = profile
             
         except Exception as e:
-            self.logger.error(f"Error saving profile: {e}")
+            self.logger.error(f"Error saving profile to local file {profile.email}: {e}")
     
     def _generate_profile_id(self) -> str:
         """Generate unique profile ID"""
@@ -361,58 +1163,11 @@ class ProfileManager:
         random_part = random.randint(1000, 9999)
         return f"UEL_{timestamp}_{random_part}"
     
-    def _load_profile_from_db(self, profile_id: str) -> Optional[Dict]:
-        """Load profile from database"""
-        try:
-            conn = self.db_manager.get_connection()
-            cursor = conn.cursor()
-            
-            cursor.execute("SELECT data FROM student_profiles WHERE id = ?", (profile_id,))
-            result = cursor.fetchone()
-            
-            if result:
-                return json.loads(result[0])
-            
-            return None
-            
-        except Exception as e:
-            self.logger.error(f"Error loading profile from DB: {e}")
-            return None
-    
-    def _save_profile_to_db(self, profile: UserProfile):
-        """Save profile to database"""
-        try:
-            conn = self.db_manager.get_connection()
-            cursor = conn.cursor()
-            
-            # Create table if not exists
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS student_profiles (
-                    id TEXT PRIMARY KEY,
-                    data TEXT NOT NULL,
-                    created_date TEXT,
-                    updated_date TEXT
-                )
-            """)
-            
-            # Save profile
-            profile_json = json.dumps(profile.to_dict())
-            cursor.execute("""
-                INSERT OR REPLACE INTO student_profiles 
-                (id, data, created_date, updated_date) 
-                VALUES (?, ?, ?, ?)
-            """, (
-                profile.id, 
-                profile_json, 
-                profile.created_date, 
-                profile.updated_date
-            ))
-            
-            conn.commit()
-            conn.close()
-            
-        except Exception as e:
-            self.logger.error(f"Error saving profile to DB: {e}")
+    # Removed _load_profile_from_db and _save_profile_to_db as local files are primary
+    # The existing DatabaseManager (sqlite3) will be left for other data types (courses, applications)
+    # but student_profiles will now be handled by local files.
+    # If the user wishes to migrate existing sqlite profiles, that would be a separate task.
+
 
 # =============================================================================
 # CONFIGURATION AND ENUMS
@@ -440,7 +1195,7 @@ class SystemConfig:
     """Main system configuration"""
     # Database
     database_path: str = "uel_ai_system.db"
-    data_directory: str = "/Users/muhammadahmed/Desktop/uel-enhanced-ai-assistant/data"
+    data_directory: str = '/Users/muhammadahmed/Downloads/UEL Master Courses/Dissertation CN7000/uel-enhanced-ai-assistant/data'
     
     # AI Models
     ollama_host: str = "http://localhost:11434"
@@ -480,7 +1235,7 @@ class ResearchConfig:
     """Research configuration for academic evaluation"""
     # Evaluation settings
     enable_ab_testing: bool = True
-    enable_statistical_testing: bool = True
+    enable_statistical_testing: bool = True # Corrected: explicitly bool and with a default value
     enable_explainable_ai: bool = True
     
     # Research parameters
@@ -644,7 +1399,7 @@ class DatabaseManager:
         conn = self.get_connection()
         cursor = conn.cursor()
         
-        # Students table
+        # Students table (this will primarily be for other data if local files manage profiles)
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS students (
             id TEXT PRIMARY KEY,
@@ -768,8 +1523,7 @@ class DataManager:
             'applications.csv': 'applications_df',
             'courses.csv': 'courses_df', 
             'faqs.csv': 'faqs_df',
-            'counseling_slots.csv': 'counseling_df',
-            'counseling.csv': 'counseling_df'  # Alternative name
+            'counseling_slots.csv': 'counseling_df'
         }
     
         for filename, df_name in csv_files.items():
@@ -826,35 +1580,51 @@ class DataManager:
     def _process_courses_data(self, df):
         """Process and standardize courses data"""
         try:
-            # Ensure required columns exist with fallbacks
-            required_columns = {
-                'course_name': 'Unknown Course',
-                'level': 'undergraduate',
-                'description': 'No description available',
-                'department': 'General Studies',
-                'duration': '1 year',
-                'fees_domestic': 9250,
-                'fees_international': 15000,
-                'min_gpa': 2.5,
-                'min_ielts': 6.0,
-                'trending_score': 5.0,
-                'keywords': '',
-                'career_prospects': 'Various career opportunities available'
+            # Define required columns and their default values/mapping
+            column_mappings = {
+                'course_name': ['course_name', 'name'],
+                'level': ['level', 'academic_level'],
+                'description': ['description', 'course_description'],
+                'department': ['department', 'school'],
+                'duration': ['duration', 'course_duration'],
+                'fees_domestic': ['fees_domestic', 'domestic_fees', 'uk_fees'],
+                'fees_international': ['fees_international', 'international_fees', 'overseas_fees'],
+                'min_gpa': ['min_gpa', 'gpa_requirement', 'gpa'],
+                'min_ielts': ['min_ielts', 'ielts_requirement', 'ielts'],
+                'trending_score': ['trending_score', 'popularity_score', 'trend'],
+                'keywords': ['keywords', 'tags', 'search_terms'],
+                'career_prospects': ['career_prospects', 'career_paths', 'job_opportunities'],
+                'modules': ['modules', 'course_modules', 'curriculum'] # Added for modules
             }
             
-            for col, default_val in required_columns.items():
-                if col not in df.columns:
-                    df[col] = default_val
-                    self.logger.info(f"Added default column '{col}' to courses data")
+            # Process each required column
+            for standard_col, possible_cols in column_mappings.items():
+                found_col = None
+                for p_col in possible_cols:
+                    if p_col in df.columns:
+                        found_col = p_col
+                        break
+                
+                if found_col:
+                    df[standard_col] = df[found_col].fillna('') # Fill NaN with empty string
+                    self.logger.info(f"Mapped '{found_col}' to '{standard_col}' in courses data")
                 else:
-                    # Fill missing values
-                    df[col] = df[col].fillna(default_val)
+                    # Set default values if column not found
+                    if standard_col in ['fees_domestic', 'fees_international', 'min_gpa', 'min_ielts', 'trending_score']:
+                        df[standard_col] = 0.0 # Numeric default
+                    elif standard_col == 'duration':
+                        df[standard_col] = '1 year'
+                    elif standard_col == 'level':
+                        df[standard_col] = 'undergraduate'
+                    else:
+                        df[standard_col] = '' # String default
+                    self.logger.warning(f"Column '{standard_col}' not found in courses.csv, added with default values.")
             
             # Ensure numeric columns are properly typed
             numeric_columns = ['fees_domestic', 'fees_international', 'min_gpa', 'min_ielts', 'trending_score']
             for col in numeric_columns:
                 if col in df.columns:
-                    df[col] = pd.to_numeric(df[col], errors='coerce').fillna(required_columns[col])
+                    df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0.0) # Coerce to numeric, fill NaN with 0.0
             
             self.courses_df = df
             self.logger.info(f"✅ Processed courses data - {len(df)} courses ready")
@@ -957,7 +1727,8 @@ class DataManager:
                 'min_ielts': 6.0,
                 'trending_score': 8.5,
                 'keywords': 'programming, software, algorithms, data structures',
-                'career_prospects': 'Software developer, systems analyst, data scientist'
+                'career_prospects': 'Software developer, systems analyst, data scientist',
+                'modules': 'Introduction to Programming, Data Structures, Algorithms, Web Development, Database Systems'
             },
             {
                 'course_name': 'Business Management BA',
@@ -971,7 +1742,8 @@ class DataManager:
                 'min_ielts': 6.0,
                 'trending_score': 7.0,
                 'keywords': 'business, management, leadership, strategy',
-                'career_prospects': 'Manager, consultant, entrepreneur'
+                'career_prospects': 'Manager, consultant, entrepreneur',
+                'modules': 'Principles of Management, Marketing Fundamentals, Financial Accounting, Business Law, Human Resource Management'
             },
             {
                 'course_name': 'Data Science MSc',
@@ -985,7 +1757,8 @@ class DataManager:
                 'min_ielts': 6.5,
                 'trending_score': 9.0,
                 'keywords': 'data science, machine learning, analytics, python',
-                'career_prospects': 'Data scientist, ML engineer, business analyst'
+                'career_prospects': 'Data scientist, ML engineer, business analyst',
+                'modules': 'Statistical Methods, Machine Learning, Big Data Technologies, Data Visualization, Deep Learning'
             }
         ])
         
@@ -1053,6 +1826,10 @@ class DataManager:
                 # Add level if available
                 if 'level' in course and pd.notna(course['level']):
                     text_parts.append(str(course['level']))
+
+                # Add modules if available
+                if 'modules' in course and pd.notna(course['modules']):
+                    text_parts.append(str(course['modules']))
                 
                 # Combine all text
                 search_text = ' '.join(text_parts)
@@ -1103,6 +1880,7 @@ class DataManager:
     def intelligent_search(self, query: str, top_k: int = 5) -> List[Dict]:
         """Intelligent search across all data"""
         if not SKLEARN_AVAILABLE or not self.combined_data or self.all_text_vectors is None:
+            self.logger.warning("Search not available: Scikit-learn, combined data, or text vectors are missing.")
             return []
         
         try:
@@ -1112,7 +1890,7 @@ class DataManager:
             
             results = []
             for idx in top_indices:
-                if similarities[idx] > 0.1:
+                if similarities[idx] > 0.1: # Only return results with a reasonable similarity score
                     result = self.combined_data[idx].copy()
                     result['similarity'] = similarities[idx]
                     results.append(result)
@@ -1171,6 +1949,7 @@ class DataManager:
                 'columns': list(self.courses_df.columns) if not self.courses_df.empty else []
             },
             'applications': {
+
                 'total': len(self.applications_df) if not self.applications_df.empty else 0,
                 'columns': list(self.applications_df.columns) if not self.applications_df.empty else []
             },
@@ -1413,8 +2192,7 @@ How can I help you today?"""
 Thank you for contacting **University of East London**. I'm here to help with information about:
 
 • 🎓 **Courses & Programs**
-• 📝 **Applications & Admissions** 
-• 💰 **Fees & Scholarships**
+• 📝 **Applications & Admissions** • 💰 **Fees & Scholarships**
 • 🏫 **Campus & Facilities**
 
 **Quick Contact:**
@@ -1567,30 +2345,48 @@ class DocumentVerificationAI:
             }
         }
     
-    def verify_document(self, document_data: Dict, document_type: str) -> Dict:
-        """Verify document using AI analysis"""
+    def verify_document(self, file_content, filename: str, document_type: str, user_data: Dict = None) -> Dict:
+        """Verify document using AI analysis with updated signature"""
         try:
+            # Convert file_content to document_data format if needed
+            if isinstance(file_content, bytes):
+                file_size = len(file_content)
+            else:
+                file_size = len(str(file_content))
+        
+            # Create document_data structure from the provided arguments
+            document_data = {
+                "file_name": filename,
+                "file_size": file_size,
+                "file_content": file_content,
+                "upload_timestamp": datetime.now().isoformat(),
+            }
+        
+            # Add user_data if provided
+            if user_data:
+                document_data.update(user_data)
+        
             # Simulate document verification process
             confidence_score = 0.85 + (hash(str(document_data)) % 100) / 1000
             confidence_score = min(max(confidence_score, 0.5), 1.0)
-            
+        
             # Get verification rules for this document type
             rules = self.verification_rules.get(document_type.lower(), {})
             required_fields = rules.get('required_fields', [])
-            
+        
             # Check for issues
             issues_found = []
             verified_fields = self._extract_verified_fields(document_data, document_type)
-            
+        
             # Check missing required fields
             for field in required_fields:
                 if field not in document_data or not document_data[field]:
                     issues_found.append(f"Missing required field: {field}")
                     confidence_score -= 0.1
-            
+        
             # Adjust confidence based on issues
             confidence_score = max(confidence_score, 0.3)
-            
+        
             # Determine verification status
             if confidence_score > 0.8 and not issues_found:
                 status = "verified"
@@ -1598,10 +2394,10 @@ class DocumentVerificationAI:
                 status = "needs_review"
             else:
                 status = "rejected"
-            
+        
             # Generate recommendations
             recommendations = self._generate_recommendations(document_type, issues_found, confidence_score)
-            
+        
             verification_result = {
                 "document_type": document_type,
                 "verification_status": status,
@@ -1612,12 +2408,12 @@ class DocumentVerificationAI:
                 "timestamp": datetime.now().isoformat(),
                 "document_id": self._generate_document_id()
             }
-            
+        
             # Store in history
             self.verification_history.append(verification_result)
-            
+        
             return verification_result
-            
+        
         except Exception as e:
             self.logger.error(f"Document verification error: {e}")
             return {
@@ -1849,1301 +2645,6 @@ class VoiceService:
         
         return clean_text
 
-
-
-
-# =============================================================================
-# INTERVIEW PREPARATION SYSTEM
-# =============================================================================
-
-class InterviewPreparationSystem:
-    """Enhanced interview preparation system with AI-powered mock interviews"""
-
-  
-    def submit_response(self, interview_id: str, response_text: str) -> Dict:
-        """Submit response to interview question"""  
-        try:
-            # Find interview session
-            interview = None
-            for session in self.mock_interviews:
-                if session.get('id') == interview_id:
-                    interview = session
-                    break
-        
-            if not interview:
-                return {"error": "Interview session not found"}
-        
-            current_q = interview.get('current_question', 0)
-            questions = interview.get('questions', [])
-         
-            if current_q >= len(questions):
-                return {"error": "Interview already completed"}
-        
-            question = questions[current_q]
-            analysis = self._analyze_response(question, response_text)
-        
-            response_entry = {
-                "question": question,
-                "response": response_text,
-                "timestamp": datetime.now().isoformat(),
-                "analysis": analysis,
-                "response_time_seconds": 60
-            }
-        
-            if 'responses' not in interview:
-                interview['responses'] = []
-         
-            interview['responses'].append(response_entry)
-            interview['current_question'] = current_q + 1
-        
-            return {"status": "success", "analysis": analysis}
-        
-        except Exception as e:
-            return {"error": str(e)}
-
-    def _get_empty_performance_report(self):
-        return {
-            "overall_score": 0,
-            "grade": "N/A", 
-            "communication_score": 0,
-            "strengths": [],
-            "areas_for_improvement": ["Complete interview to get feedback"]
-        }
-
-    def _assign_grade(self, score: float) -> str:
-        if score >= 90: return "A+ (Excellent)"
-        elif score >= 80: return "A (Very Good)" 
-        elif score >= 70: return "B (Good)"
-        elif score >= 60: return "C (Fair)"
-        else: return "D (Needs Improvement)"
-
-    
-    def __init__(self, data_manager=None, ollama_service=None, voice_service=None, profile_manager=None):
-        self.data_manager = data_manager
-        self.ollama_service = ollama_service
-        self.voice_service = voice_service
-        self.profile_manager = profile_manager
-        self.logger = get_logger(f"{__name__}.InterviewPreparationSystem")
-    
-        # Initialize missing attributes
-        self.mock_interviews = []
-        self.interview_history = []
-        self.performance_analytics = {}
-        self.interview_sessions = {}  # ADD this line
-
-    
-    
-    def _update_performance_report(self, session: Dict):
-        # This method will now aggregate the more detailed analysis scores
-        total_relevance = 0
-        total_coherence = 0
-        total_content = 0
-        num_responses = len(session['responses'])
-
-        if num_responses == 0:
-            session['performance_report'] = self._get_empty_performance_report()
-            return
-
-        for response_entry in session['responses']:
-            analysis = response_entry['analysis']
-            total_relevance += analysis.get('relevance_score', 0)
-            total_coherence += analysis.get('coherence_score', 0)
-            total_content += analysis.get('content_score', 0)
-
-        avg_relevance = (total_relevance / num_responses) * 100
-        avg_coherence = (total_coherence / num_responses) * 100
-        avg_content = (total_content / num_responses) * 100
- 
-        # Calculate overall score based on weighted average of new metrics
-        overall_score = (avg_relevance * 0.35 + avg_coherence * 0.35 + avg_content * 0.30)
-
-        grade = self._assign_grade(overall_score)
-
-        # Aggregate strengths and weaknesses from all responses
-        all_strengths = []
-        all_weaknesses = []
-        all_suggestions = []
-        for response_entry in session['responses']:
-            analysis = response_entry['analysis']
-            all_strengths.extend(analysis.get('strengths', []))
-            all_weaknesses.extend(analysis.get('weaknesses', []))
-            all_suggestions.append(analysis.get('suggestions_for_improvement', ''))
-
-        session['performance_report'] = {
-            "overall_score": overall_score,
-            "grade": grade,
-            "communication_score": avg_coherence, # Coherence contributes to communication
-            "relevance_score": avg_relevance,
-            "confidence_score": avg_content, # Content depth and clarity can indicate confidence
-            "strengths": list(set(all_strengths)), # Remove duplicates
-            "areas_for_improvement": list(set(all_weaknesses)),
-            "improvement_suggestions": list(set(filter(None, all_suggestions))), # Filter empty strings
-            "interview_summary": {
-                "questions_answered": num_responses,
-                "duration_minutes": (datetime.now() - datetime.fromisoformat(session['created_time'])).total_seconds() / 60,
-                "interview_type": session['interview_type']
-            }
-        }
-
-
-    
-    def _initialize_question_banks(self) -> Dict:
-        """Initialize comprehensive question banks for different scenarios"""
-        return {
-            'general': [
-                "Tell me about yourself and why you chose this field.",
-                "What are your greatest strengths and how do they relate to this program?",
-                "Where do you see yourself in 5 years after completing this course?",
-                "Why did you choose the University of East London specifically?",
-                "How do you handle stress and pressure in academic situations?",
-                "Describe a challenging project you've worked on and how you overcame obstacles.",
-                "What makes you a good fit for this program?",
-                "How do you stay motivated when facing difficult coursework?",
-                "What are your research interests and career goals?",
-                "How do you plan to contribute to our university community?"
-            ],
-            'computer_science': [
-                "Explain the difference between object-oriented and functional programming.",
-                "How would you approach debugging a complex software issue?",
-                "What programming languages are you most comfortable with and why?",
-                "Describe a software project you're proud of and the technologies you used.",
-                "How do you stay updated with the latest technology trends?",
-                "What interests you most about artificial intelligence and machine learning?",
-                "How would you explain a technical concept to a non-technical person?",
-                "What role do you think technology will play in solving global challenges?",
-                "Describe your experience with teamwork in software development projects.",
-                "What ethical considerations are important in software development?"
-            ],
-            'business': [
-                "How do you analyze market trends and make business decisions?",
-                "Describe a time when you had to lead a team through a challenging situation.",
-                "What business strategies do you think are most effective in today's market?",
-                "How do you handle conflicts in a professional environment?",
-                "What role does innovation play in business success?",
-                "How would you approach entering a new market with a product?",
-                "Describe your understanding of financial management principles.",
-                "What qualities make an effective business leader?",
-                "How do you stay informed about industry developments?",
-                "What ethical considerations are important in business operations?"
-            ],
-            'engineering': [
-                "Describe your approach to solving complex engineering problems.",
-                "How do you ensure quality and safety in engineering projects?",
-                "What role does sustainability play in modern engineering?",
-                "Explain a technical project you've worked on and the challenges you faced.",
-                "How do you stay current with engineering technology and methods?",
-                "Describe your experience with teamwork in engineering projects.",
-                "What interests you most about your chosen engineering specialization?",
-                "How do you approach testing and validation of engineering solutions?",
-                "What ethical responsibilities do engineers have to society?",
-                "How do you handle tight deadlines while maintaining quality standards?"
-            ],
-            'psychology': [
-                "What drew you to the field of psychology?",
-                "How do you maintain objectivity when dealing with sensitive cases?",
-                "Describe your understanding of ethical considerations in psychology.",
-                "How would you approach helping someone with mental health challenges?",
-                "What research methods in psychology interest you most?",
-                "How do you handle emotionally challenging situations?",
-                "What role does cultural sensitivity play in psychological practice?",
-                "Describe a time when you helped someone overcome a personal challenge.",
-                "How do you stay updated with psychological research and practices?",
-                "What areas of psychology do you want to specialize in and why?"
-            ],
-            'postgraduate': [
-                "What specific research questions are you interested in exploring?",
-                "How does your previous academic background prepare you for this program?",
-                "Describe your research methodology and analytical skills.",
-                "What contributions do you hope to make to your field of study?",
-                "How do you plan to balance coursework with research responsibilities?",
-                "What resources and support do you need to succeed in this program?",
-                "How do you handle constructive criticism of your work?",
-                "Describe your long-term career goals and how this program fits in.",
-                "What challenges do you anticipate in your graduate studies?",
-                "How do you plan to engage with the academic community?"
-            ],
-            'behavioral': [
-                "Describe a time when you had to work with someone you found difficult.",
-                "Tell me about a mistake you made and how you handled it.",
-                "Give an example of when you had to adapt to a significant change.",
-                "Describe a situation where you had to meet a tight deadline.",
-                "Tell me about a time when you disagreed with a supervisor or teacher.",
-                "Describe a goal you set and how you achieved it.",
-                "Give an example of when you had to persuade someone to your point of view.",
-                "Tell me about a time when you took initiative to solve a problem.",
-                "Describe a situation where you had to work under pressure.",
-                "Give an example of when you received feedback and how you used it."
-            ]
-        }
-    
-    def _initialize_interview_templates(self) -> Dict:
-        """Initialize interview templates for different scenarios"""
-        return {
-            'undergraduate_admission': {
-                'duration_minutes': 20,
-                'question_categories': ['general', 'behavioral'],
-                'question_count': 8,
-                'focus_areas': ['motivation', 'academic_preparation', 'future_goals'],
-                'evaluation_criteria': ['communication', 'enthusiasm', 'preparation', 'fit']
-            },
-            'postgraduate_admission': {
-                'duration_minutes': 30,
-                'question_categories': ['general', 'postgraduate', 'behavioral'],
-                'question_count': 10,
-                'focus_areas': ['research_interest', 'academic_background', 'career_goals'],
-                'evaluation_criteria': ['research_aptitude', 'communication', 'critical_thinking', 'fit']
-            },
-            'subject_specific': {
-                'duration_minutes': 25,
-                'question_categories': ['general', 'subject_specific', 'behavioral'],
-                'question_count': 9,
-                'focus_areas': ['subject_knowledge', 'practical_experience', 'passion'],
-                'evaluation_criteria': ['subject_understanding', 'enthusiasm', 'practical_skills', 'fit']
-            },
-            'scholarship_interview': {
-                'duration_minutes': 15,
-                'question_categories': ['general', 'behavioral'],
-                'question_count': 6,
-                'focus_areas': ['achievements', 'leadership', 'community_impact'],
-                'evaluation_criteria': ['achievement', 'leadership_potential', 'communication', 'impact']
-            }
-        }
-    
-    def create_personalized_interview(self, user_profile: Dict) -> Dict:
-        """Create personalized mock interview based on user profile"""
-        try:
-            # Determine interview type based on profile
-            academic_level = user_profile.get('academic_level', 'undergraduate').lower()
-            field_of_interest = user_profile.get('field_of_interest', '').lower()
-            
-            # Select appropriate template
-            if 'postgraduate' in academic_level or 'masters' in academic_level or 'phd' in academic_level:
-                template_key = 'postgraduate_admission'
-            else:
-                template_key = 'undergraduate_admission'
-            
-            template = self.interview_templates[template_key]
-            
-            # Select questions based on field of interest
-            selected_questions = []
-            question_categories = template['question_categories'].copy()
-            
-            # Add subject-specific questions if available
-            if any(subject in field_of_interest for subject in ['computer', 'technology', 'software']):
-                question_categories.append('computer_science')
-            elif any(subject in field_of_interest for subject in ['business', 'management', 'finance']):
-                question_categories.append('business')
-            elif any(subject in field_of_interest for subject in ['engineering']):
-                question_categories.append('engineering')
-            elif any(subject in field_of_interest for subject in ['psychology']):
-                question_categories.append('psychology')
-            
-            # Select questions from each category
-            questions_per_category = template['question_count'] // len(question_categories)
-            remainder = template['question_count'] % len(question_categories)
-            
-            for i, category in enumerate(question_categories):
-                if category in self.question_banks:
-                    count = questions_per_category + (1 if i < remainder else 0)
-                    category_questions = random.sample(
-                        self.question_banks[category], 
-                        min(count, len(self.question_banks[category]))
-                    )
-                    selected_questions.extend(category_questions)
-            
-            # Create interview session
-            interview_session = {
-                'id': f"interview_{int(time.time())}",
-                'user_profile_id': user_profile.get('id'),
-                'interview_type': template_key,
-                'template': template,
-                'questions': selected_questions,
-                'created_time': datetime.now().isoformat(),
-                'status': 'ready',
-                'current_question': 0,
-                'responses': [],
-                'start_time': None,
-                'end_time': None,
-                'performance_score': None
-            }
-            
-            self.mock_interviews.append(interview_session)
-            self.logger.info(f"Created personalized interview with {len(selected_questions)} questions")
-            
-            return interview_session
-            
-        except Exception as e:
-            self.logger.error(f"Error creating personalized interview: {e}")
-            return {'error': str(e)}
-    
-    def start_interview_session(self, interview_id: str) -> Dict:
-        """Start an interview session"""
-        try:
-            interview = self._get_interview_by_id(interview_id)
-            if not interview:
-                return {'error': 'Interview not found'}
-            
-            interview['status'] = 'in_progress'
-            interview['start_time'] = datetime.now().isoformat()
-            interview['current_question'] = 0
-            
-            return {
-                'status': 'started',
-                'interview_id': interview_id,
-                'total_questions': len(interview['questions']),
-                'estimated_duration': interview['template']['duration_minutes'],
-                'first_question': interview['questions'][0] if interview['questions'] else None
-            }
-            
-        except Exception as e:
-            self.logger.error(f"Error starting interview session: {e}")
-            return {'error': str(e)}
-    
-    def get_next_question(self, interview_id: str) -> Dict:
-        """Get the next question in the interview"""
-        try:
-            interview = self._get_interview_by_id(interview_id)
-            if not interview:
-                return {'error': 'Interview not found'}
-            
-            current_q = interview['current_question']
-            questions = interview['questions']
-            
-            if current_q >= len(questions):
-                return {'status': 'completed', 'message': 'Interview completed'}
-            
-            question = questions[current_q]
-            
-            return {
-                'question': question,
-                'question_number': current_q + 1,
-                'total_questions': len(questions),
-                'time_remaining': self._calculate_time_remaining(interview),
-                'tips': self._get_question_tips(question)
-            }
-            
-        except Exception as e:
-            self.logger.error(f"Error getting next question: {e}")
-            return {'error': str(e)}
-    
-    def submit_response(self, interview_id: str, response_text: str) -> Dict:
-        session = self.interview_sessions.get(interview_id)
-        if not session:
-            return {"error": "Interview session not found."}
-
-        current_question_data = session['questions'][session['current_question_index']]
-        question_text = current_question_data['question']
-
-        # --- NEW: Advanced Analysis Integration ---
-        analysis = self._analyze_response_advanced(question_text, response_text, session['profile_id'])
-        # --- END NEW ---
-
-        response_entry = {
-            "question": question_text,
-            "response": response_text,
-            "timestamp": datetime.now().isoformat(),
-            "analysis": analysis
-        }
-        session['responses'].append(response_entry)
-        session['current_question_index'] += 1
-
-        # Update performance report dynamically (or finalize at the end)
-        self._update_performance_report(session)
-
-        return {"status": "success", "analysis": analysis}
-
-
-
-
-    def _analyze_response_advanced(self, question: str, response: str, profile_id: str) -> Dict:
-        profile = self.profile_manager.get_profile(profile_id)
-        profile_context = profile.to_dict() if profile else {}
-
-        # 1. Relevance and Context Check using LLM
-        prompt_relevance = f"""
-        You are an expert university admissions interviewer.
-        Given the following interview question and a candidate's response, evaluate the response for its relevance and whether it directly answers the question.
-        Also, assess if the response is well-structured and coherent.
-
-        Interview Question: "{question}"
-        Candidate's Response: "{response}"
-
-        Provide a relevance score from 0.0 (completely irrelevant) to 1.0 (perfectly relevant).
-        Provide a coherence score from 0.0 (completely disjointed) to 1.0 (perfectly structured).
-        Identify any key points missed from the question or any irrelevant information included.
-        Suggest how the response could be more directly relevant or better structured.
-
-        Format your output as a JSON object with the following keys:
-        {{
-            "relevance_score": float,
-            "coherence_score": float,
-            "relevance_feedback": "string explaining relevance",
-            "coherence_feedback": "string explaining structure",
-            "missed_points": ["list of missed points"],
-            "irrelevant_info": ["list of irrelevant info"],
-            "suggestions_for_improvement": "string with actionable advice"
-        }}
-        """
-        llm_relevance_response = self.llm_client.generate_response(prompt_relevance, temperature=0.3, max_tokens=500)
-        try:
-            relevance_analysis = json.loads(llm_relevance_response)
-        except json.JSONDecodeError:
-            logger.error(f"Failed to parse LLM relevance response: {llm_relevance_response}")
-            relevance_analysis = {
-                "relevance_score": 0.5, "coherence_score": 0.5,
-                "relevance_feedback": "Could not get detailed relevance feedback.",
-                "coherence_feedback": "Could not get detailed coherence feedback.",
-                "missed_points": [], "irrelevant_info": [],
-                "suggestions_for_improvement": "Ensure your response directly addresses the question."
-            }
-
-        # 2. Content Quality and Depth using LLM (more detailed feedback)
-        prompt_content = f"""
-        You are an expert university admissions interviewer.
-        Given the following interview question and a candidate's response, evaluate the quality, depth, and insightfulness of the content.
-        Consider the candidate's academic level ({profile_context.get('academic_level', 'general')}) and field of interest ({profile_context.get('field_of_interest', 'general')}).
-        Assess the confidence, clarity, and use of examples.
-
-        Interview Question: "{question}"
-        Candidate's Response: "{response}"
-
-        Provide a content_score from 0.0 to 1.0.
-        Provide specific feedback on:
-        - Clarity and conciseness
-        - Depth of understanding
-        - Use of examples or personal experiences
-        - Confidence and articulation
-        - Any logical flaws or weak arguments
-
-        Format your output as a JSON object with the following keys:
-        {{
-            "content_score": float,
-            "content_feedback": "string with detailed feedback",
-            "strengths": ["list of strengths"],
-            "weaknesses": ["list of weaknesses"]
-        }}
-        """
-        llm_content_response = self.llm_client.generate_response(prompt_content, temperature=0.5, max_tokens=700)
-        try:
-            content_analysis = json.loads(llm_content_response)
-        except json.JSONDecodeError:
-            logger.error(f"Failed to parse LLM content response: {llm_content_response}")
-            content_analysis = {
-                "content_score": 0.5,
-                "content_feedback": "Could not get detailed content feedback.",
-                "strengths": [], "weaknesses": []
-            }
-
-        # 3. Sentiment Analysis (using TextBlob or a more advanced model if integrated)
-        sentiment_blob = TextBlob(response)
-        sentiment_score = sentiment_blob.sentiment.polarity # -1.0 (negative) to 1.0 (positive)
-        sentiment_label = "positive" if sentiment_score > 0.1 else "negative" if sentiment_score < -0.1 else "neutral"
-
-        # Combine all analysis results
-        combined_analysis = {
-            "word_count": len(response.split()),
-            "response_length": "appropriate", # This can be refined based on LLM feedback
-            "relevance_score": relevance_analysis.get("relevance_score", 0.0),
-            "coherence_score": relevance_analysis.get("coherence_score", 0.0),
-            "content_score": content_analysis.get("content_score", 0.0),
-            "overall_score_component": (relevance_analysis.get("relevance_score", 0.0) + relevance_analysis.get("coherence_score", 0.0) + content_analysis.get("content_score", 0.0)) / 3.0,
-            "sentiment": {"polarity": sentiment_score, "label": sentiment_label},
-            "ai_feedback": (
-                f"**Relevance & Coherence:** {relevance_analysis.get('relevance_feedback', '')} "
-                f"{relevance_analysis.get('coherence_feedback', '')}\n\n"
-                f"**Content & Depth:** {content_analysis.get('content_feedback', '')}\n\n"
-                f"**Suggestions:** {relevance_analysis.get('suggestions_for_improvement', '')}"
-            ),
-            "strengths": content_analysis.get("strengths", []),
-            "weaknesses": content_analysis.get("weaknesses", []),
-            "missed_points": relevance_analysis.get("missed_points", []),
-            "irrelevant_info": relevance_analysis.get("irrelevant_info", [])
-        }
-
-        # Refine response_length based on word count and question type (optional, could be LLM-driven)
-        if combined_analysis["word_count"] < 50:
-            combined_analysis["response_length"] = "too_short"
-        elif combined_analysis["word_count"] > 400:
-            combined_analysis["response_length"] = "too_long"
-
-        return combined_analysis
-
-
-    
-    def _complete_interview(self, interview_id: str) -> Dict:
-        """Complete interview and generate performance report"""
-        try:
-            interview = self._get_interview_by_id(interview_id)
-            interview['status'] = 'completed'
-            interview['end_time'] = datetime.now().isoformat()
-            
-            # Calculate performance metrics
-            performance_report = self._generate_performance_report(interview)
-            interview['performance_score'] = performance_report['overall_score']
-            
-            # Store in history
-            self.interview_history.append(interview)
-            
-            # Generate improvement suggestions
-            improvements = self._generate_improvement_suggestions(interview)
-            
-            return {
-                'status': 'completed',
-                'performance_report': performance_report,
-                'improvement_suggestions': improvements,
-                'interview_summary': self._generate_interview_summary(interview)
-            }
-            
-        except Exception as e:
-            self.logger.error(f"Error completing interview: {e}")
-            return {'error': str(e)}
-    
-    def _analyze_response(self, question: str, response: str) -> Dict:
-        """Analyze user response using AI and NLP"""
-        try:
-            analysis = {
-                'word_count': len(response.split()),
-                'response_length': 'appropriate' if 50 <= len(response.split()) <= 200 else 'too_short' if len(response.split()) < 50 else 'too_long',
-                'confidence_indicators': self._detect_confidence_indicators(response),
-                'key_points_covered': self._extract_key_points(response, question),
-                'sentiment': 'positive',  # Would use sentiment analysis here
-                'coherence_score': 0.8,  # Would calculate using NLP
-                'relevance_score': 0.85,  # Would calculate relevance to question
-                'suggestions': []
-            }
-            
-            # Add specific suggestions based on analysis
-            if analysis['word_count'] < 50:
-                analysis['suggestions'].append("Provide more detailed examples and explanations")
-            if analysis['word_count'] > 200:
-                analysis['suggestions'].append("Keep responses more concise and focused")
-            
-            # Use AI to get detailed feedback if available
-            if self.ollama_service and self.ollama_service.is_available():
-                ai_feedback = self._get_ai_feedback(question, response)
-                analysis['ai_feedback'] = ai_feedback
-            
-            return analysis
-            
-        except Exception as e:
-            self.logger.error(f"Error analyzing response: {e}")
-            return {'error': str(e), 'basic_analysis': True}
-    
-    def _get_ai_feedback(self, question: str, response: str) -> str:
-        """Get AI-powered feedback on interview response"""
-        try:
-            prompt = f"""
-            As an expert interview coach, analyze this interview response and provide constructive feedback.
-            
-            Question: {question}
-            
-            Response: {response}
-            
-            Please provide:
-            1. What the candidate did well
-            2. Areas for improvement
-            3. Specific suggestions for a stronger answer
-            4. Overall assessment (Excellent/Good/Fair/Needs Work)
-            
-            Keep feedback encouraging but constructive, focusing on actionable advice.
-            """
-            
-            system_prompt = """You are an experienced university admissions interview coach. 
-            Provide helpful, encouraging, and actionable feedback to help students improve their interview skills."""
-            
-            feedback = self.ollama_service.generate_response(prompt, system_prompt)
-            return feedback
-            
-        except Exception as e:
-            self.logger.error(f"Error getting AI feedback: {e}")
-            return "AI feedback not available. Focus on being specific, confident, and connecting your answer to your goals."
-    
-    def _detect_confidence_indicators(self, response: str) -> List[str]:
-        """Detect confidence indicators in response"""
-        confidence_words = ['confident', 'experienced', 'skilled', 'accomplished', 'successful', 'proud', 'achieved']
-        uncertainty_words = ['maybe', 'perhaps', 'i think', 'probably', 'not sure', 'might']
-        
-        indicators = []
-        response_lower = response.lower()
-        
-        confidence_count = sum(1 for word in confidence_words if word in response_lower)
-        uncertainty_count = sum(1 for word in uncertainty_words if word in response_lower)
-        
-        if confidence_count > uncertainty_count:
-            indicators.append("Shows confidence")
-        elif uncertainty_count > confidence_count:
-            indicators.append("Shows some uncertainty")
-        else:
-            indicators.append("Neutral confidence level")
-        
-        return indicators
-    
-    def _extract_key_points(self, response: str, question: str) -> List[str]:
-        """Extract key points from response"""
-        # Simple keyword extraction (would use more sophisticated NLP in production)
-        key_points = []
-        
-        if 'experience' in response.lower():
-            key_points.append("Mentions relevant experience")
-        if 'goal' in response.lower() or 'future' in response.lower():
-            key_points.append("Discusses future goals")
-        if 'passion' in response.lower() or 'interested' in response.lower():
-            key_points.append("Shows passion/interest")
-        if 'challenge' in response.lower() or 'problem' in response.lower():
-            key_points.append("Addresses challenges")
-        
-        return key_points
-    
-    def _generate_performance_report(self, interview: Dict) -> Dict:
-        """Generate comprehensive performance report"""
-        try:
-            responses = interview['responses']
-            if not responses:
-                return {'overall_score': 0, 'message': 'No responses to analyze'}
-            
-            # Calculate individual metrics
-            avg_response_time = np.mean([r.get('response_time_seconds', 60) for r in responses if r.get('response_time_seconds')])
-            avg_word_count = np.mean([r['analysis'].get('word_count', 0) for r in responses])
-            
-            # Score different aspects
-            communication_score = np.mean([r['analysis'].get('coherence_score', 0.7) for r in responses])
-            relevance_score = np.mean([r['analysis'].get('relevance_score', 0.7) for r in responses])
-            confidence_score = len([r for r in responses if 'Shows confidence' in r['analysis'].get('confidence_indicators', [])]) / len(responses)
-            
-            # Calculate overall score
-            overall_score = (communication_score * 0.4 + relevance_score * 0.4 + confidence_score * 0.2) * 100
-            
-            return {
-                'overall_score': round(overall_score, 1),
-                'communication_score': round(communication_score * 100, 1),
-                'relevance_score': round(relevance_score * 100, 1),
-                'confidence_score': round(confidence_score * 100, 1),
-                'avg_response_time': round(avg_response_time, 1),
-                'avg_word_count': round(avg_word_count, 1),
-                'total_responses': len(responses),
-                'grade': self._calculate_grade(overall_score),
-                'strengths': self._identify_strengths(responses),
-                'areas_for_improvement': self._identify_improvements(responses)
-            }
-            
-        except Exception as e:
-            self.logger.error(f"Error generating performance report: {e}")
-            return {'error': str(e)}
-    
-    def _calculate_grade(self, score: float) -> str:
-        """Calculate letter grade from score"""
-        if score >= 90:
-            return "A+ (Excellent)"
-        elif score >= 80:
-            return "A (Very Good)"
-        elif score >= 70:
-            return "B (Good)"
-        elif score >= 60:
-            return "C (Fair)"
-        else:
-            return "D (Needs Improvement)"
-    
-    def _identify_strengths(self, responses: List[Dict]) -> List[str]:
-        """Identify user's strengths from responses"""
-        strengths = []
-        
-        # Analyze patterns across responses
-        confidence_responses = sum(1 for r in responses if 'Shows confidence' in r['analysis'].get('confidence_indicators', []))
-        if confidence_responses > len(responses) * 0.6:
-            strengths.append("Demonstrates strong confidence and self-assurance")
-        
-        detailed_responses = sum(1 for r in responses if r['analysis'].get('word_count', 0) > 100)
-        if detailed_responses > len(responses) * 0.5:
-            strengths.append("Provides detailed and comprehensive answers")
-        
-        relevant_responses = sum(1 for r in responses if r['analysis'].get('relevance_score', 0) > 0.8)
-        if relevant_responses > len(responses) * 0.7:
-            strengths.append("Stays on topic and directly answers questions")
-        
-        if not strengths:
-            strengths.append("Shows willingness to engage in the interview process")
-        
-        return strengths
-    
-    def _identify_improvements(self, responses: List[Dict]) -> List[str]:
-        """Identify areas for improvement"""
-        improvements = []
-        
-        short_responses = sum(1 for r in responses if r['analysis'].get('word_count', 0) < 50)
-        if short_responses > len(responses) * 0.3:
-            improvements.append("Provide more detailed examples and explanations")
-        
-        low_confidence = sum(1 for r in responses if 'Shows some uncertainty' in r['analysis'].get('confidence_indicators', []))
-        if low_confidence > len(responses) * 0.3:
-            improvements.append("Speak with more confidence and certainty")
-        
-        if not improvements:
-            improvements.append("Continue practicing to build consistency across all responses")
-        
-        return improvements
-    
-    def _generate_improvement_suggestions(self, interview: Dict) -> List[str]:
-        """Generate personalized improvement suggestions"""
-        suggestions = []
-        performance = interview.get('performance_score', 0)
-        
-        if performance < 70:
-            suggestions.extend([
-                "Practice answering common interview questions out loud",
-                "Prepare specific examples from your experience",
-                "Work on speaking with more confidence and clarity",
-                "Research the university and program thoroughly"
-            ])
-        elif performance < 85:
-            suggestions.extend([
-                "Focus on making your answers more concise and impactful",
-                "Practice the STAR method (Situation, Task, Action, Result) for behavioral questions",
-                "Work on connecting your answers back to the program/university"
-            ])
-        else:
-            suggestions.extend([
-                "Excellent interview skills! Continue practicing to maintain consistency",
-                "Consider helping other students with interview preparation"
-            ])
-        
-        # Add general suggestions
-        suggestions.extend([
-            "Practice maintaining eye contact and good posture",
-            "Prepare thoughtful questions to ask the interviewer",
-            "Do mock interviews with friends or family"
-        ])
-        
-        return suggestions[:5]  # Return top 5 suggestions
-    
-    def _generate_interview_summary(self, interview: Dict) -> Dict:
-        """Generate interview summary"""
-        duration = 0
-        if interview.get('start_time') and interview.get('end_time'):
-            start = datetime.fromisoformat(interview['start_time'])
-            end = datetime.fromisoformat(interview['end_time'])
-            duration = (end - start).total_seconds() / 60
-        
-        return {
-            'interview_type': interview['interview_type'],
-            'questions_answered': len(interview['responses']),
-            'duration_minutes': round(duration, 1),
-            'completion_date': interview.get('end_time', ''),
-            'overall_performance': interview.get('performance_score', 0)
-        }
-    
-    def get_interview_tips(self, category: str = 'general') -> List[str]:
-        """Get interview tips for specific categories"""
-        tips = {
-            'general': [
-                "Research the university and program thoroughly before your interview",
-                "Practice common interview questions out loud",
-                "Prepare specific examples that demonstrate your skills and experience",
-                "Dress professionally and arrive early",
-                "Maintain good eye contact and confident body language",
-                "Ask thoughtful questions about the program and university",
-                "Be authentic and let your personality shine through",
-                "Listen carefully to questions and take a moment to think before answering"
-            ],
-            'technical': [
-                "Prepare to explain technical concepts in simple terms",
-                "Bring examples of your technical work or projects",
-                "Be ready to discuss your problem-solving approach",
-                "Stay current with industry trends and developments",
-                "Practice explaining your thought process step by step"
-            ],
-            'behavioral': [
-                "Use the STAR method: Situation, Task, Action, Result",
-                "Prepare examples that show growth and learning from mistakes",
-                "Focus on your role and contributions in team situations",
-                "Be honest about challenges and how you overcame them",
-                "Show enthusiasm and passion for your field"
-            ],
-            'postgraduate': [
-                "Be prepared to discuss your research interests in detail",
-                "Show knowledge of current research in your field",
-                "Demonstrate critical thinking and analytical skills",
-                "Discuss how the program aligns with your career goals",
-                "Be ready to discuss potential research projects or thesis topics"
-            ]
-        }
-        
-        return tips.get(category, tips['general'])
-    
-    def get_user_interview_history(self, user_profile_id: str) -> List[Dict]:
-        """Get interview history for a specific user"""
-        user_interviews = [
-            interview for interview in self.interview_history 
-            if interview.get('user_profile_id') == user_profile_id
-        ]
-        
-        return sorted(user_interviews, key=lambda x: x.get('created_time', ''), reverse=True)
-    
-    def _get_interview_by_id(self, interview_id: str) -> Optional[Dict]:
-        """Get interview by ID"""
-        for interview in self.mock_interviews:
-            if interview['id'] == interview_id:
-                return interview
-        return None
-    
-    def _calculate_time_remaining(self, interview: Dict) -> int:
-        """Calculate time remaining in interview"""
-        if not interview.get('start_time'):
-            return interview['template']['duration_minutes']
-        
-        start_time = datetime.fromisoformat(interview['start_time'])
-        elapsed_minutes = (datetime.now() - start_time).total_seconds() / 60
-        remaining = interview['template']['duration_minutes'] - elapsed_minutes
-        
-        return max(0, int(remaining))
-    
-    def _get_question_tips(self, question: str) -> List[str]:
-        """Get tips for specific question"""
-        tips = []
-        
-        if 'yourself' in question.lower():
-            tips = [
-                "Keep it concise - aim for 2-3 minutes",
-                "Focus on relevant academic and professional background",
-                "Connect your experience to your interest in this program",
-                "End with why you're excited about this opportunity"
-            ]
-        elif 'strength' in question.lower():
-            tips = [
-                "Choose strengths relevant to the program",
-                "Provide specific examples",
-                "Explain how this strength will help you succeed",
-                "Avoid generic answers like 'hard worker'"
-            ]
-        elif 'weakness' in question.lower():
-            tips = [
-                "Choose a real weakness but not a deal-breaker",
-                "Show how you're actively working to improve",
-                "Demonstrate self-awareness and growth mindset",
-                "Turn it into a learning opportunity"
-            ]
-        else:
-            tips = [
-                "Take a moment to think before answering",
-                "Use specific examples from your experience",
-                "Stay relevant to the question asked",
-                "Show enthusiasm and genuine interest"
-            ]
-        
-        return tips
-
-
-# =============================================================================
-# COURSE RECOMMENDATION SYSTEM
-# =============================================================================
-
-
-class AdvancedCourseRecommendationSystem:
-    """A+ Grade: Advanced recommendation system with multiple ML approaches"""
-
-
-    def recommend_courses(self, user_profile: Dict, preferences: Dict = None) -> List[Dict]:
-        """Generate course recommendations"""
-        try:
-            courses_df = self.data_manager.courses_df
-            if courses_df.empty:
-                return []
-        
-            recommendations = []
-            user_field = user_profile.get('field_of_interest', '').lower()
-        
-            for idx, course in courses_df.iterrows():
-                score = 0.5  # Basic score
-                if user_field in str(course.get('course_name', '')).lower():
-                    score += 0.3
-            
-                recommendations.append({
-                    'course_name': course.get('course_name', 'Unknown Course'),
-                    'department': course.get('department', 'General Studies'),
-                    'level': course.get('level', 'undergraduate'),
-                    'description': course.get('description', 'No description available'),
-                    'fees': f"£{course.get('fees_international', 15000):,}",
-                    'score': score,
-                    'match_quality': "Good Match" if score > 0.7 else "Fair Match",
-                    'reasons': [f"Matches your {user_field} interest"],
-                    'min_gpa': course.get('min_gpa', 3.0),
-                    'min_ielts': course.get('min_ielts', 6.0),
-                    'duration': course.get('duration', '1 year'),
-                    'career_prospects': course.get('career_prospects', 'Various opportunities')
-                })
-        
-            return sorted(recommendations, key=lambda x: x['score'], reverse=True)[:10]
-        
-        except Exception as e:
-            self.logger.error(f"Course recommendation error: {e}")
-            return []
-
-    
-    def __init__(self, data_manager: DataManager):
-        self.data_manager = data_manager
-        self.logger = get_logger(f"{__name__}.AdvancedCourseRecommendationSystem")
-        
-        # Initialize multiple recommendation approaches
-        self.content_based_model = None
-        self.collaborative_model = None
-        self.neural_model = None
-        self.bert_model = None
-        self.ensemble_weights = {'content': 0.3, 'collaborative': 0.2, 'neural': 0.3, 'bert': 0.2}
-        
-        # Research tracking
-        self.recommendation_history = []
-        self.baseline_models = {}
-        self.evaluation_results = {}
-        
-        self._initialize_advanced_models()
-        self._initialize_baseline_models()
-    
-    def _initialize_advanced_models(self):
-        """Initialize advanced ML models"""
-        try:
-            # BERT-based semantic model
-            if ADVANCED_ML_AVAILABLE:
-                self.bert_model = SentenceTransformer('all-MiniLM-L6-v2')
-                self.logger.info("✅ BERT model loaded for semantic recommendations")
-            
-            # Neural collaborative filtering
-            if TORCH_AVAILABLE:
-                self.neural_model = self._create_neural_cf_model()
-                self.logger.info("✅ Neural collaborative filtering model initialized")
-            
-            # Traditional ML models
-            if SKLEARN_AVAILABLE:
-                self.collaborative_model = RandomForestClassifier(n_estimators=100, random_state=42)
-                self.content_based_model = TfidfVectorizer(max_features=1000, stop_words='english')
-                self.logger.info("✅ Traditional ML models initialized")
-                
-        except Exception as e:
-            self.logger.error(f"Advanced model initialization failed: {e}")
-    
-    def _initialize_baseline_models(self):
-        """Initialize baseline models for academic comparison"""
-        self.baseline_models = {
-            'random': self._random_recommendations,
-            'popularity': self._popularity_based_recommendations,
-            'content_based': self._content_based_recommendations,
-            'collaborative': self._collaborative_recommendations
-        }
-        self.logger.info("✅ Baseline models initialized for research comparison")
-    
-    def recommend_courses_with_evaluation(self, user_profile: Dict, method: str = 'ensemble') -> Dict:
-        """A+ Feature: Generate recommendations with comprehensive evaluation"""
-        try:
-            start_time = time.time()
-            
-            # Generate recommendations using specified method
-            if method == 'ensemble':
-                recommendations = self._ensemble_recommendations(user_profile)
-            else:
-                recommendations = self.baseline_models.get(method, self._ensemble_recommendations)(user_profile)
-            
-            processing_time = time.time() - start_time
-            
-            # Add explainable AI components
-            explanations = self._generate_explanations(recommendations, user_profile)
-            
-            # Calculate diversity and novelty metrics
-            diversity_score = self._calculate_diversity(recommendations)
-            novelty_score = self._calculate_novelty(recommendations, user_profile)
-            
-            # Store for research analysis
-            result = {
-                'recommendations': recommendations,
-                'explanations': explanations,
-                'metadata': {
-                    'method_used': method,
-                    'processing_time': processing_time,
-                    'diversity_score': diversity_score,
-                    'novelty_score': novelty_score,
-                    'user_profile_completeness': user_profile.get('profile_completion', 0),
-                    'timestamp': datetime.now().isoformat()
-                }
-            }
-            
-            self._log_recommendation_for_research(result, user_profile)
-            return result
-            
-        except Exception as e:
-            self.logger.error(f"Advanced recommendation error: {e}")
-            return {'error': str(e), 'recommendations': []}
-    
-    def _ensemble_recommendations(self, user_profile: Dict) -> List[Dict]:
-        """A+ Feature: Ensemble of multiple recommendation approaches"""
-        ensemble_scores = {}
-        
-        # Get recommendations from each model
-        content_recs = self._bert_semantic_recommendations(user_profile)
-        neural_recs = self._neural_collaborative_recommendations(user_profile)
-        traditional_recs = self._traditional_ml_recommendations(user_profile)
-        
-        # Combine scores using weighted ensemble
-        for recs, weight_key in [(content_recs, 'bert'), (neural_recs, 'neural'), (traditional_recs, 'content')]:
-            weight = self.ensemble_weights.get(weight_key, 0.25)
-            for rec in recs:
-                course_id = rec.get('course_id')
-                if course_id not in ensemble_scores:
-                    ensemble_scores[course_id] = {'total_score': 0, 'components': {}, 'course_data': rec}
-                
-                ensemble_scores[course_id]['total_score'] += rec.get('score', 0) * weight
-                ensemble_scores[course_id]['components'][weight_key] = rec.get('score', 0)
-        
-        # Sort and format final recommendations
-        final_recs = sorted(ensemble_scores.values(), key=lambda x: x['total_score'], reverse=True)
-        
-        return [self._format_recommendation(rec) for rec in final_recs[:10]]
-    
-    def _bert_semantic_recommendations(self, user_profile: Dict) -> List[Dict]:
-        """A+ Feature: BERT-based semantic similarity recommendations"""
-        if not self.bert_model:
-            return []
-        
-        try:
-            # Create user interest vector
-            user_interests = f"{user_profile.get('field_of_interest', '')} {' '.join(user_profile.get('interests', []))} {user_profile.get('career_goals', '')}"
-            user_embedding = self.bert_model.encode([user_interests])
-            
-            # Get course embeddings
-            courses_df = self.data_manager.courses_df
-            course_texts = [
-                f"{row.get('course_name', '')} {row.get('description', '')} {row.get('keywords', '')}"
-                for _, row in courses_df.iterrows()
-            ]
-            course_embeddings = self.bert_model.encode(course_texts)
-            
-            # Calculate semantic similarities
-            from sklearn.metrics.pairwise import cosine_similarity
-            similarities = cosine_similarity(user_embedding, course_embeddings)[0]
-            
-            # Create recommendations
-            recommendations = []
-            for idx, similarity in enumerate(similarities):
-                if idx < len(courses_df):
-                    course = courses_df.iloc[idx]
-                    recommendations.append({
-                        'course_id': f"course_{idx}",
-                        'course_name': course.get('course_name'),
-                        'score': float(similarity),
-                        'method': 'bert_semantic',
-                        'course_data': course.to_dict()
-                    })
-            
-            return sorted(recommendations, key=lambda x: x['score'], reverse=True)[:10]
-            
-        except Exception as e:
-            self.logger.error(f"BERT recommendation error: {e}")
-            return []
-    
-    def _neural_collaborative_recommendations(self, user_profile: Dict) -> List[Dict]:
-        """A+ Feature: Neural collaborative filtering"""
-        # Placeholder for neural collaborative filtering
-        # In real implementation, this would use user-item interaction matrix
-        return self._traditional_ml_recommendations(user_profile)
-    
-    def _generate_explanations(self, recommendations: List[Dict], user_profile: Dict) -> Dict:
-        """A+ Feature: Generate SHAP-based explanations"""
-        explanations = {}
-        
-        try:
-            if ADVANCED_ML_AVAILABLE and hasattr(self, 'collaborative_model'):
-                # Generate SHAP explanations for top recommendations
-                for rec in recommendations[:5]:
-                    course_id = rec.get('course_id')
-                    
-                    # Simplified explanation (would use SHAP in full implementation)
-                    explanation = {
-                        'course_name': rec.get('course_name'),
-                        'match_factors': self._analyze_match_factors(rec, user_profile),
-                        'confidence': self._calculate_prediction_confidence(rec),
-                        'feature_importance': self._get_feature_importance(rec, user_profile),
-                        'counterfactual': self._generate_counterfactual_explanation(rec, user_profile)
-                    }
-                    
-                    explanations[course_id] = explanation
-            
-        except Exception as e:
-            self.logger.error(f"Explanation generation error: {e}")
-        
-        return explanations
-    
-    def _calculate_diversity(self, recommendations: List[Dict]) -> float:
-        """A+ Feature: Calculate recommendation diversity"""
-        if len(recommendations) < 2:
-            return 0.0
-        
-        # Calculate diversity based on different departments and levels
-        departments = set()
-        levels = set()
-        
-        for rec in recommendations:
-            course_data = rec.get('course_data', {})
-            departments.add(course_data.get('department', 'unknown'))
-            levels.add(course_data.get('level', 'unknown'))
-        
-        # Diversity score based on variety
-        dept_diversity = len(departments) / min(len(recommendations), 5)  # Normalize by expected variety
-        level_diversity = len(levels) / min(len(recommendations), 3)  # Max 3 levels typically
-        
-        return (dept_diversity + level_diversity) / 2
-    
-    def _calculate_novelty(self, recommendations: List[Dict], user_profile: Dict) -> float:
-        """A+ Feature: Calculate recommendation novelty"""
-        # Check how many recommendations are outside user's primary interest
-        primary_interest = user_profile.get('field_of_interest', '').lower()
-        novel_recommendations = 0
-        
-        for rec in recommendations:
-            course_name = rec.get('course_name', '').lower()
-            if primary_interest not in course_name:
-                novel_recommendations += 1
-        
-        return novel_recommendations / len(recommendations) if recommendations else 0
-    
-    def compare_with_baselines(self, user_profiles: List[Dict]) -> Dict:
-        """A+ Feature: Compare recommendation methods for research"""
-        results = {}
-        
-        for method_name in self.baseline_models.keys():
-            method_results = []
-            
-            for profile in user_profiles:
-                try:
-                    recs = self.recommend_courses_with_evaluation(profile, method=method_name)
-                    method_results.append({
-                        'user_id': profile.get('id'),
-                        'recommendations': recs.get('recommendations', []),
-                        'diversity': recs.get('metadata', {}).get('diversity_score', 0),
-                        'processing_time': recs.get('metadata', {}).get('processing_time', 0)
-                    })
-                except Exception as e:
-                    self.logger.error(f"Baseline comparison error for {method_name}: {e}")
-            
-            results[method_name] = {
-                'results': method_results,
-                'avg_diversity': np.mean([r.get('diversity', 0) for r in method_results]),
-                'avg_processing_time': np.mean([r.get('processing_time', 0) for r in method_results]),
-                'total_recommendations': sum(len(r.get('recommendations', [])) for r in method_results)
-            }
-        
-        self.evaluation_results = results
-        return results
-    
-    def _log_recommendation_for_research(self, result: Dict, user_profile: Dict):
-        """Log recommendations for research analysis"""
-        log_entry = {
-            'timestamp': datetime.now().isoformat(),
-            'user_profile_hash': hashlib.md5(str(user_profile).encode()).hexdigest(),
-            'recommendation_result': result,
-            'user_demographics': {
-                'academic_level': user_profile.get('academic_level'),
-                'field_of_interest': user_profile.get('field_of_interest'),
-                'country': user_profile.get('country'),
-                'gpa': user_profile.get('gpa'),
-                'profile_completion': user_profile.get('profile_completion')
-            }
-        }
-        
-        self.recommendation_history.append(log_entry)
-        
-        # Keep only last 1000 entries to manage memory
-        if len(self.recommendation_history) > 1000:
-            self.recommendation_history = self.recommendation_history[-1000:]
-    
-    # ADD PLACEHOLDER METHODS (implement these based on your specific needs)
-    def _traditional_ml_recommendations(self, user_profile: Dict) -> List[Dict]:
-        """Traditional ML approach - use your existing logic"""
-        return self.recommend_courses(user_profile)  # Use existing method
-    
-    def _random_recommendations(self, user_profile: Dict) -> List[Dict]:
-        """Random baseline for comparison"""
-        courses_df = self.data_manager.courses_df
-        if courses_df.empty:
-            return []
-        
-        sample_courses = courses_df.sample(n=min(10, len(courses_df)))
-        return [
-            {
-                'course_id': f"course_{idx}",
-                'course_name': row.get('course_name'),
-                'score': random.random(),
-                'method': 'random_baseline',
-                'course_data': row.to_dict()
-            }
-            for idx, (_, row) in enumerate(sample_courses.iterrows())
-        ]
-    
-    def _popularity_based_recommendations(self, user_profile: Dict) -> List[Dict]:
-        """Popularity baseline"""
-        courses_df = self.data_manager.courses_df
-        if courses_df.empty or 'trending_score' not in courses_df.columns:
-            return []
-        
-        popular_courses = courses_df.nlargest(10, 'trending_score')
-        return [
-            {
-                'course_id': f"course_{idx}",
-                'course_name': row.get('course_name'),
-                'score': row.get('trending_score', 0) / 10.0,  # Normalize
-                'method': 'popularity_baseline',
-                'course_data': row.to_dict()
-            }
-            for idx, (_, row) in enumerate(popular_courses.iterrows())
-        ]
-    
-    def _content_based_recommendations(self, user_profile: Dict) -> List[Dict]:
-        """Content-based baseline"""
-        return self._traditional_ml_recommendations(user_profile)
-    
-    def _collaborative_recommendations(self, user_profile: Dict) -> List[Dict]:
-        """Collaborative filtering baseline"""
-        return self._traditional_ml_recommendations(user_profile)
-    
-    def _analyze_match_factors(self, recommendation: Dict, user_profile: Dict) -> List[str]:
-        """Analyze why course matches user"""
-        factors = []
-        score = recommendation.get('score', 0)
-        
-        if score > 0.8:
-            factors.append("High semantic similarity to your interests")
-        if score > 0.6:
-            factors.append("Good alignment with your academic level")
-        
-        return factors
-    
-    def _calculate_prediction_confidence(self, recommendation: Dict) -> float:
-        """Calculate confidence in recommendation"""
-        return min(recommendation.get('score', 0) + 0.1, 0.95)
-    
-    def _get_feature_importance(self, recommendation: Dict, user_profile: Dict) -> Dict:
-        """Get feature importance for explanation"""
-        return {
-            'interest_match': 0.4,
-            'academic_level': 0.3,
-            'career_alignment': 0.2,
-            'requirements_fit': 0.1
-        }
-    
-    def _generate_counterfactual_explanation(self, recommendation: Dict, user_profile: Dict) -> str:
-        """Generate counterfactual explanation"""
-        return f"If your GPA were 0.2 points higher, this recommendation would have a {(recommendation.get('score', 0) + 0.1) * 100:.1f}% match score"
-    
-    def _format_recommendation(self, rec_data: Dict) -> Dict:
-        """Format recommendation for output"""
-        course_data = rec_data.get('course_data', {})
-        return {
-            'course_id': rec_data.get('course_id'),
-            'course_name': course_data.get('course_name'),
-            'score': rec_data.get('total_score', 0),
-            'method': 'ensemble',
-            'components': rec_data.get('components', {}),
-            'level': course_data.get('level'),
-            'department': course_data.get('department'),
-            'description': course_data.get('description'),
-            'fees': f"£{course_data.get('fees_international', 0):,}",
-            'reasons': [f"Score from {method}: {score:.2f}" for method, score in rec_data.get('components', {}).items()]
-        }
 
 # =============================================================================
 # PREDICTIVE ANALYTICS ENGINE
@@ -3644,8 +3145,12 @@ class ResearchEvaluationFramework:
                 for profile in test_profiles:
                     try:
                         # Get recommendations
-                        result = self.recommendation_system.recommend_courses_with_evaluation(profile)
-                        recommendations = result.get('recommendations', [])
+                        # Call the main recommend_courses method which now incorporates all logic
+                        recommendations_result = self.recommendation_system.recommend_courses(profile, preferences={
+                            'level': profile.get('academic_level'), # Pass profile level as preference
+                            'budget_max': 50000 # Example default
+                        })
+                        recommendations = recommendations_result # This is already a list of dicts
                         
                         # Get user's actual interests (simulate ground truth)
                         relevant_courses = self._get_relevant_courses_for_profile(profile)
@@ -3740,40 +3245,43 @@ class ResearchEvaluationFramework:
     def _compare_with_baselines(self, test_profiles: List[Dict]) -> Dict:
         """A+ Feature: Statistical comparison with baseline methods"""
         try:
+            # This will now call the specific baseline methods directly
             baseline_results = self.recommendation_system.compare_with_baselines(test_profiles)
             
             # Calculate statistical significance
             ensemble_diversity = []
-            baseline_diversity = {}
             
-            for method, results in baseline_results.items():
-                baseline_diversity[method] = results.get('avg_diversity', 0)
-            
-            # Get ensemble results for comparison
+            # Get ensemble results (or main recommendation system results) for comparison
             for profile in test_profiles:
-                result = self.recommendation_system.recommend_courses_with_evaluation(profile, method='ensemble')
-                ensemble_diversity.append(result.get('metadata', {}).get('diversity_score', 0))
+                # Call the main recommend_courses method for the "ensemble" or main system performance
+                recs_main_system = self.recommendation_system.recommend_courses(profile, preferences={
+                    'level': profile.get('academic_level'),
+                    'budget_max': 50000
+                })
+                ensemble_diversity.append(self.recommendation_system._calculate_diversity(recs_main_system))
             
             # Statistical tests
             statistical_results = {}
-            for method, avg_diversity in baseline_diversity.items():
+            for method, data in baseline_results.items():
+                baseline_diversity = data.get('avg_diversity', 0)
+                
                 # Perform t-test (simplified - in real implementation use scipy.stats)
-                ensemble_mean = np.mean(ensemble_diversity)
-                difference = ensemble_mean - avg_diversity
+                ensemble_mean = np.mean(ensemble_diversity) if ensemble_diversity else 0
+                difference = ensemble_mean - baseline_diversity
                 
                 statistical_results[method] = {
                     'ensemble_mean': ensemble_mean,
-                    'baseline_mean': avg_diversity,
+                    'baseline_mean': baseline_diversity,
                     'difference': difference,
-                    'improvement_percentage': (difference / avg_diversity * 100) if avg_diversity > 0 else 0,
+                    'improvement_percentage': (difference / baseline_diversity * 100) if baseline_diversity > 0 else 0,
                     'significant': abs(difference) > 0.05  # Simplified significance test
                 }
             
             return {
                 'baseline_results': baseline_results,
                 'statistical_comparisons': statistical_results,
-                'best_performing_baseline': max(baseline_diversity.items(), key=lambda x: x[1])[0],
-                'ensemble_vs_best_baseline': ensemble_mean - max(baseline_diversity.values())
+                'best_performing_baseline': max(baseline_results.items(), key=lambda x: x[1].get('avg_diversity', 0))[0] if baseline_results else 'N/A',
+                'ensemble_vs_best_baseline': ensemble_mean - max([data.get('avg_diversity', 0) for data in baseline_results.values()]) if baseline_results else 0
             }
             
         except Exception as e:
@@ -3852,9 +3360,13 @@ class ResearchEvaluationFramework:
                 if len(profiles) >= 3:  # Minimum sample size
                     avg_scores = []
                     for profile in profiles:
-                        result = self.recommendation_system.recommend_courses_with_evaluation(profile)
-                        if result.get('recommendations'):
-                            avg_score = np.mean([r.get('score', 0) for r in result['recommendations'][:5]])
+                        # Call the main recommend_courses method
+                        recommendations = self.recommendation_system.recommend_courses(profile, preferences={
+                            'level': profile.get('academic_level'),
+                            'budget_max': 50000
+                        })
+                        if recommendations:
+                            avg_score = np.mean([r.get('score', 0) for r in recommendations[:5]])
                             avg_scores.append(avg_score)
                     
                     bias_analysis['country_bias'][country] = {
@@ -3906,6 +3418,7 @@ This report presents a comprehensive evaluation of the UEL AI recommendation and
 
 ## Statistical Significance
 - Recommendation improvement p-value: {self.experiment_results.get('statistical_significance', {}).get('recommendation_improvement_p_value', 0)}
+- Prediction improvement p-value: {self.experiment_results.get('statistical_significance', {}).get('prediction_improvement_p_value', 0)}
 - Effect size (Cohen's d): {self.experiment_results.get('statistical_significance', {}).get('effect_size_cohens_d', 0)}
 
 ## Bias Analysis
@@ -3929,14 +3442,18 @@ Report generated by UEL AI Research Evaluation Framework
     def _get_relevant_courses_for_profile(self, profile: Dict) -> List[str]:
         """Get relevant courses for a profile (simulate ground truth)"""
         field_interest = profile.get('field_of_interest', '').lower()
+        academic_level = profile.get('academic_level', '').lower()
         courses_df = self.recommendation_system.data_manager.courses_df
         
         relevant = []
         for _, course in courses_df.iterrows():
             course_name = course.get('course_name', '').lower()
             keywords = course.get('keywords', '').lower()
+            course_level = course.get('level', '').lower()
             
-            if field_interest in course_name or field_interest in keywords:
+            # Consider a course relevant if it matches field of interest AND academic level
+            if (field_interest in course_name or field_interest in keywords) and \
+               (academic_level == course_level):
                 relevant.append(course.get('course_name'))
         
         return relevant
@@ -3949,10 +3466,12 @@ Report generated by UEL AI Research Evaluation Framework
         dcg = 0.0
         for i, rec in enumerate(recommendations):
             course_name = rec.get('course_name')
-            if course_name in relevant_courses:
-                dcg += 1.0 / np.log2(i + 2)  # i+2 because log2(1) = 0
+            # Relevance score: 1 if relevant, 0 otherwise
+            relevance = 1.0 if course_name in relevant_courses else 0.0
+            dcg += relevance / np.log2(i + 2)  # i+2 because log2(1) = 0
         
         # Calculate IDCG (ideal DCG)
+        # Assume all relevant courses are equally relevant (relevance 1.0)
         idcg = sum(1.0 / np.log2(i + 2) for i in range(min(len(relevant_courses), len(recommendations))))
         
         return dcg / idcg if idcg > 0 else 0.0
@@ -3987,19 +3506,16 @@ Report generated by UEL AI Research Evaluation Framework
 # =============================================================================
 
 class UELAISystem:
-    """Main unified AI system for University of East London"""
-    
     def __init__(self):
-        """Initialize the complete AI system"""
         self.logger = get_logger(f"{__name__}.UELAISystem")
         self.logger.info("🚀 Initializing UEL AI System...")
-        
+
         # Initialize core components
         try:
             self.db_manager = DatabaseManager()
             self.data_manager = DataManager()
-            self.profile_manager = ProfileManager(self.db_manager)
-            
+            # Pass PROFILE_DATA_DIR to ProfileManager
+            self.profile_manager = ProfileManager(self.db_manager, profile_data_dir=PROFILE_DATA_DIR)
             self.logger.info("✅ Core components initialized")
         except Exception as e:
             self.logger.error(f"❌ Core component initialization failed: {e}")
@@ -4011,17 +3527,9 @@ class UELAISystem:
             self.sentiment_engine = SentimentAnalysisEngine()
             self.document_verifier = DocumentVerificationAI()
             self.voice_service = VoiceService()
-            self.interview_system = InterviewPreparationSystem(
-                data_manager=self.data_manager,
-                ollama_service=self.ollama_service,
-                voice_service=self.voice_service,
-                profile_manager=self.profile_manager
-            )
-            
             self.logger.info("✅ AI services initialized")
         except Exception as e:
             self.logger.error(f"⚠️ Some AI services failed to initialize: {e}")
-            # Set services to None if they fail to initialize to prevent further errors
             self.ollama_service = None
             self.sentiment_engine = None
             self.document_verifier = None
@@ -4029,36 +3537,35 @@ class UELAISystem:
 
         # Initialize interview preparation system (NOW it has ollama_service and voice_service)
         try:
-            self.interview_system = InterviewPreparationSystem(self.ollama_service, self.voice_service)
+            self.interview_system = EnhancedInterviewSystem() # Add this line
             self.logger.info("✅ Interview preparation system initialized")
         except Exception as e:
             self.logger.error(f"⚠️ Interview preparation system initialization failed: {e}")
-            self.interview_system = None
+            self.interview_system = None # Set to None if initialization fails
 
         # Initialize ML components
         try:
-            self.course_recommender = AdvancedCourseRecommendationSystem(self.data_manager)  # Use advanced system
+            self.course_recommender = IntegratedCourseRecommender(csv_path='/Users/muhammadahmed/Downloads/UEL Master Courses/Dissertation CN7000/uel-enhanced-ai-assistant/data/courses.csv')
             self.predictive_engine = PredictiveAnalyticsEngine(self.data_manager)
-            
             self.logger.info("✅ ML components initialized")
         except Exception as e:
             self.logger.error(f"⚠️ ML component initialization failed: {e}")
-            self.course_recommender = None
             self.predictive_engine = None
-        
+
         # System status
         self.is_ready = True
         self.logger.info("🎉 UEL AI System fully initialized and ready!")
+
 
     def get_system_status(self) -> Dict:
         """Get comprehensive system status"""
         return {
             "system_ready": self.is_ready,
-            "ollama_available": self.ollama_service.is_available() if hasattr(self, 'ollama_service') else False,
-            "voice_available": self.voice_service.is_available() if hasattr(self, 'voice_service') else False,
-            "ml_ready": self.predictive_engine.models_trained if hasattr(self, 'predictive_engine') else False,
-            "data_loaded": not self.data_manager.courses_df.empty if hasattr(self, 'data_manager') else False,
-            "data_stats": self.data_manager.get_data_stats() if hasattr(self, 'data_manager') else {},
+            "ollama_available": self.ollama_service.is_available() if hasattr(self, 'ollama_service') and self.ollama_service else False,
+            "voice_available": self.voice_service.is_available() if hasattr(self, 'voice_service') and self.voice_service else False,
+            "ml_ready": self.predictive_engine.models_trained if hasattr(self, 'predictive_engine') and self.predictive_engine else False,
+            "data_loaded": not self.data_manager.courses_df.empty if hasattr(self, 'data_manager') and self.data_manager else False,
+            "data_stats": self.data_manager.get_data_stats() if hasattr(self, 'data_manager') and self.data_manager else {},
             "timestamp": datetime.now().isoformat()
         }
     
@@ -4069,8 +3576,10 @@ class UELAISystem:
             sentiment_data = self.sentiment_engine.analyze_message_sentiment(message)
             
             # Generate AI response
-            system_prompt = self._build_system_prompt(user_profile, context)
-            ai_response = self.ollama_service.generate_response(message, system_prompt)
+            ai_response = "I am sorry, my AI model is not available at the moment."
+            if self.ollama_service:
+                system_prompt = self._build_system_prompt(user_profile, context)
+                ai_response = self.ollama_service.generate_response(message, system_prompt)
             
             # Search for relevant information
             search_results = self.data_manager.intelligent_search(message)
@@ -4156,6 +3665,25 @@ def init_streamlit_session():
     if 'feature_usage' not in st.session_state:
         st.session_state.feature_usage = defaultdict(int)
     
+    # Check if a profile exists locally based on a previous session/login
+    # This assumes we might want to automatically load if only one profile exists
+    # Or, it will be loaded explicitly via login
+    if not st.session_state.profile_active:
+        profile_files = list(Path(PROFILE_DATA_DIR).glob("*.json"))
+        if len(profile_files) == 1:
+            try:
+                with open(profile_files[0], 'r') as f:
+                    data = json.load(f)
+                loaded_profile = UserProfile.from_dict(data)
+                # This bypasses login, so only do if acceptable or for development
+                # For production, always enforce login for security
+                # st.session_state.ai_system.profile_manager.set_current_profile(loaded_profile)
+                # st.success(f"Loaded previous profile for {loaded_profile.first_name}")
+            except Exception as e:
+                get_logger(__name__).error(f"Error loading single profile at startup: {e}")
+        elif len(profile_files) > 1:
+            get_logger(__name__).info("Multiple profiles found locally. User must log in.")
+    
     return True
 
 def render_sidebar():
@@ -4193,43 +3721,50 @@ def render_sidebar():
         st.sidebar.success(f"Welcome, {profile.first_name}!")
         st.sidebar.metric("Profile Completion", f"{profile.profile_completion:.0f}%")
         
-        if st.sidebar.button("📝 Edit Profile"):
-            st.session_state.show_profile_editor = True
+        if st.sidebar.button("📝 Edit Profile", key="sidebar_edit_profile"):
+            # This would typically lead to a separate editor function
+            st.info("Edit Profile functionality to be implemented.")
         
-        if st.sidebar.button("🚪 Sign Out"):
+        if st.sidebar.button("🚪 Sign Out", key="sidebar_sign_out"):
             st.session_state.current_profile = None
             st.session_state.profile_active = False
+            st.session_state.show_login = True # Show login after sign out
             st.rerun()
     else:
         st.sidebar.info("Please create or login to your profile")
-        if st.sidebar.button("➕ Create Profile"):
+        if st.sidebar.button("➕ Create Profile", key="sidebar_create_profile"):
             st.session_state.show_profile_creator = True
-        if st.sidebar.button("🔑 Login"):
+            st.session_state.show_login = False # Hide login if creating profile
+        if st.sidebar.button("🔑 Login", key="sidebar_login"):
             st.session_state.show_login = True
+            st.session_state.show_profile_creator = False # Hide profile creator if logging in
 
 def render_profile_creator():
-    """Render profile creation form"""
+    """Render profile creation form with password and local saving."""
     st.header("👤 Create Student Profile")
+    st.info("All fields marked with * are required.")
     
-    with st.form("profile_creator"):
+    with st.form("profile_creator_form"):
         col1, col2 = st.columns(2)
         
         with col1:
-            first_name = st.text_input("First Name *", key="new_first_name")
-            last_name = st.text_input("Last Name *", key="new_last_name")
-            email = st.text_input("Email", key="new_email")
-            phone = st.text_input("Phone", key="new_phone")
-            date_of_birth = st.date_input("Date of Birth", key="new_dob")
+            first_name = st.text_input("First Name *", key="new_first_name_input")
+            last_name = st.text_input("Last Name *", key="new_last_name_input")
+            email = st.text_input("Email *", key="new_email_input").lower() # Ensure email is lowercased
+            password = st.text_input("Password *", type="password", key="new_password_input")
+            confirm_password = st.text_input("Confirm Password *", type="password", key="confirm_password_input")
+            phone = st.text_input("Phone", key="new_phone_input")
+            date_of_birth = st.date_input("Date of Birth", datetime(2000, 1, 1), key="new_dob_input")
         
         with col2:
             country = st.selectbox("Country *", 
                 ["", "United Kingdom", "United States", "India", "China", "Nigeria", "Pakistan", "Canada", "Other"],
-                key="new_country")
+                key="new_country_input")
             nationality = st.selectbox("Nationality", 
                 ["", "British", "American", "Indian", "Chinese", "Nigerian", "Pakistani", "Canadian", "Other"],
-                key="new_nationality")
-            city = st.text_input("City", key="new_city")
-            postal_code = st.text_input("Postal Code", key="new_postal")
+                key="new_nationality_input")
+            city = st.text_input("City", key="new_city_input")
+            postal_code = st.text_input("Postal Code", key="new_postal_input")
         
         st.subheader("📚 Academic Information")
         
@@ -4237,33 +3772,39 @@ def render_profile_creator():
         with col3:
             academic_level = st.selectbox("Current Academic Level *",
                 ["", "high_school", "undergraduate", "graduate", "postgraduate", "masters", "phd"],
-                key="new_academic_level")
+                key="new_academic_level_input")
             field_of_interest = st.selectbox("Field of Interest *",
                 ["", "Computer Science", "Business Management", "Engineering", "Data Science", 
                  "Psychology", "Medicine", "Law", "Arts", "Other"],
-                key="new_field")
-            current_institution = st.text_input("Current Institution", key="new_institution")
+                key="new_field_input")
+            current_institution = st.text_input("Current Institution", key="new_institution_input")
         
         with col4:
-            gpa = st.number_input("GPA (out of 4.0)", 0.0, 4.0, 3.0, 0.1, key="new_gpa")
-            ielts_score = st.number_input("IELTS Score", 0.0, 9.0, 6.5, 0.5, key="new_ielts")
-            graduation_year = st.number_input("Expected Graduation Year", 2020, 2030, 2024, key="new_grad_year")
+            gpa = st.number_input("GPA (out of 4.0)", 0.0, 4.0, 3.0, 0.1, key="new_gpa_input")
+            ielts_score = st.number_input("IELTS Score", 0.0, 9.0, 6.5, 0.5, key="new_ielts_input")
+            graduation_year = st.number_input("Expected Graduation Year", 2020, 2030, 2024, key="new_grad_year_input")
         
         st.subheader("💼 Professional Background")
-        work_experience = st.number_input("Years of Work Experience", 0, 20, 0, key="new_work_exp")
-        job_title = st.text_input("Current Job Title", key="new_job_title")
+        work_experience = st.number_input("Years of Work Experience", 0, 20, 0, key="new_work_exp_input")
+        job_title = st.text_input("Current Job Title", key="new_job_title_input")
         
         st.subheader("🎯 Preferences")
-        career_goals = st.text_area("Career Goals", key="new_career_goals")
+        career_goals = st.text_area("Career Goals", key="new_career_goals_input")
         interests = st.multiselect("Interests",
             ["Technology", "Business", "Research", "Healthcare", "Education", "Arts", "Sports"],
-            key="new_interests")
+            key="new_interests_input")
+        preferred_modules = st.text_input("Preferred Modules (comma-separated)", key="new_preferred_modules_input") # Added for modules
         
         submitted = st.form_submit_button("✅ Create Profile")
         
         if submitted:
-            if not first_name or not last_name or not field_of_interest:
+            # Basic validation
+            if not all([first_name, last_name, email, password, confirm_password, academic_level, field_of_interest, country]):
                 st.error("❌ Please fill in all required fields marked with *")
+            elif password != confirm_password:
+                st.error("❌ Passwords do not match.")
+            elif len(password) < 6:
+                st.error("❌ Password must be at least 6 characters long.")
             else:
                 try:
                     profile_data = {
@@ -4271,7 +3812,7 @@ def render_profile_creator():
                         'last_name': last_name,
                         'email': email,
                         'phone': phone,
-                        'date_of_birth': str(date_of_birth) if date_of_birth else "",
+                        'date_of_birth': str(date_of_birth),
                         'country': country,
                         'nationality': nationality,
                         'city': city,
@@ -4285,19 +3826,49 @@ def render_profile_creator():
                         'work_experience_years': work_experience,
                         'current_job_title': job_title,
                         'career_goals': career_goals,
-                        'interests': interests
+                        'interests': interests,
+                        'preferred_modules': [m.strip() for m in preferred_modules.split(',')] if preferred_modules else [] # Process modules
                     }
                     
-                    profile = st.session_state.ai_system.profile_manager.create_profile(profile_data)
-                    st.session_state.ai_system.profile_manager.set_current_profile(profile)
+                    profile = st.session_state.ai_system.profile_manager.create_profile(profile_data, password)
                     
                     st.success(f"🎉 Profile created successfully! Welcome {first_name}!")
                     st.balloons()
                     time.sleep(2)
+                    st.session_state.show_profile_creator = False
                     st.rerun()
                     
+                except ValueError as ve:
+                    st.error(f"❌ Creation Error: {ve}")
                 except Exception as e:
-                    st.error(f"❌ Error creating profile: {e}")
+                    st.error(f"❌ An unexpected error occurred: {e}")
+
+def render_login_form():
+    """Render the student login form."""
+    st.header("🔑 Student Login")
+    
+    with st.form("login_form"):
+        email = st.text_input("Email", key="login_email_input").lower()
+        password = st.text_input("Password", type="password", key="login_password_input")
+        
+        login_button = st.form_submit_button("🔑 Login")
+
+        if login_button:
+            if not email or not password:
+                st.error("Please enter both email and password.")
+            else:
+                with st.spinner("Authenticating..."):
+                    profile_manager = st.session_state.ai_system.profile_manager
+                    logged_in_profile = profile_manager.login_profile(email, password)
+                    
+                    if logged_in_profile:
+                        st.success(f"Welcome back, {logged_in_profile.first_name}!")
+                        st.session_state.show_login = False
+                        st.session_state.profile_active = True
+                        st.session_state.current_profile = logged_in_profile
+                        st.rerun()
+                    else:
+                        st.error("Invalid email or password. Please try again or create a new profile.")
 
 def render_main_interface():
     """Render main application interface"""
@@ -4335,7 +3906,7 @@ def render_chat_interface():
     st.header("💬 AI Chat Assistant")
     
     # Voice input section
-    if st.session_state.ai_system.voice_service.is_available():
+    if st.session_state.ai_system.voice_service and st.session_state.ai_system.voice_service.is_available():
         col1, col2 = st.columns([3, 1])
         with col1:
             st.info("🎤 Voice input available! Click the button to speak your question.")
@@ -4346,6 +3917,8 @@ def render_chat_interface():
                     if voice_text and not voice_text.startswith("❌"):
                         st.session_state.voice_input = voice_text
                         st.success(f"Heard: {voice_text}")
+    else:
+        st.warning("Voice service not available. Please check system status.")
     
     # Chat input
     user_input = st.text_input(
@@ -4362,12 +3935,15 @@ def render_chat_interface():
     with col1:
         send_clicked = st.button("📤 Send", key="auto_button_1")
     with col2:
-        if st.button("🔊 Speak Response", key="auto_button_2"):
-            if st.session_state.chat_history:
-                last_response = st.session_state.chat_history[-1].get('ai_response', '')
-                if last_response:
-                    st.session_state.ai_system.voice_service.text_to_speech(last_response)
-                    st.success("🔊 Speaking response...")
+        if st.session_state.ai_system.voice_service and st.session_state.ai_system.voice_service.is_available():
+            if st.button("🔊 Speak Response", key="auto_button_2"):
+                if st.session_state.chat_history:
+                    last_response = st.session_state.chat_history[-1].get('ai_response', '')
+                    if last_response:
+                        st.session_state.ai_system.voice_service.text_to_speech(last_response)
+                        st.success("🔊 Speaking response...")
+        else:
+            st.button("🔊 Speak Response (Unavailable)", disabled=True, key="auto_button_2_disabled")
     
     # Process message
     if send_clicked and user_input.strip():
@@ -4425,7 +4001,7 @@ def render_course_recommendations():
         col1, col2 = st.columns(2)
         with col1:
             preferred_level = st.selectbox("Preferred Level", 
-                ["Any", "undergraduate", "postgraduate", "masters"], key="pref_level")
+                ["Any", "high_school", "undergraduate", "graduate", "postgraduate", "masters", "phd"], key="pref_level")
             study_mode = st.selectbox("Study Mode",
                 ["Any", "full-time", "part-time", "online"], key="pref_mode")
         with col2:
@@ -4443,8 +4019,14 @@ def render_course_recommendations():
                     'start_date': start_date if start_date != "Any" else None
                 }
                 
-                recommendations = st.session_state.ai_system.course_recommender.recommend_courses(
-                    current_profile.to_dict(), preferences
+                # Call the main recommend_courses method
+                recommendations = st.session_state.ai_system.course_recommender.recommend_courses(current_profile.to_dict(), preferences={
+                    'preferred_level': preferred_level,
+                    'study_mode': study_mode,
+                    'budget': budget,
+                    'duration': preferred_duration,
+                    'field_filter': field_filter
+                }
                 )
                 
                 if recommendations:
@@ -4465,9 +4047,14 @@ def render_course_recommendations():
                             st.markdown(f"**Description:** {course['description']}")
                             
                             # Match reasons
-                            st.markdown("**🎯 Why this course matches you:**")
-                            for reason in course['reasons'][:3]:
-                                st.markdown(f"• {reason}")
+                            if course['reasons']:
+                                st.markdown("**🎯 Why this course matches you:**")
+                                for reason in course['reasons']:
+                                    st.markdown(f"• {reason}")
+                            
+                            # Modules
+                            if course['modules'] and course['modules'] != 'No modules listed':
+                                st.markdown(f"**📚 Key Modules:** {course['modules']}")
                             
                             # Requirements and fees
                             col1, col2, col3 = st.columns(3)
@@ -4481,16 +4068,19 @@ def render_course_recommendations():
                             # Action buttons
                             col1, col2, col3 = st.columns(3)
                             with col1:
-                                if st.button(f"📋 More Info", key="auto_button_4"):
+                                if st.button(f"📋 More Info", key=f"more_info_{i}"):
                                     st.info(f"Course prospects: {course['career_prospects']}")
                             with col2:
-                                if st.button(f"❤️ Save Course", key="auto_button_5"):
+                                if st.button(f"❤️ Save Course", key=f"save_course_{i}"):
                                     # Add to profile favorites
-                                    current_profile.preferred_courses.append(course['course_name'])
-                                    st.session_state.ai_system.profile_manager.save_profile(current_profile)
-                                    st.success("✅ Added to your favorites!")
+                                    if course['course_name'] not in current_profile.preferred_courses:
+                                        current_profile.preferred_courses.append(course['course_name'])
+                                        st.session_state.ai_system.profile_manager.save_profile(current_profile)
+                                        st.success("✅ Added to your favorites!")
+                                    else:
+                                        st.info("This course is already in your favorites.")
                             with col3:
-                                if st.button(f"✉️ Apply Now", key="auto_button_6"):
+                                if st.button(f"✉️ Apply Now", key=f"apply_now_{i}"):
                                     st.info(f"📧 Contact: {config.admissions_email}")
                         
                         st.markdown("---")
@@ -4831,17 +4421,20 @@ def main():
     # Render sidebar
     render_sidebar()
     
-    # Handle different views
+    # Handle different views based on session state
     if st.session_state.get('show_profile_creator', False):
         render_profile_creator()
-        if st.button("⬅️ Back to Main", key="auto_button_8"):
+        # "Back to Main" button from profile creator
+        if st.button("⬅️ Back to Main", key="back_from_creator"):
             st.session_state.show_profile_creator = False
+            st.session_state.show_login = False # Ensure login is not shown by default
             st.rerun()
-    elif st.session_state.get('show_login', False):
-        st.header("🔑 Student Login")
-        st.info("Login functionality would connect to your student database here.")
-        if st.button("⬅️ Back to Main", key="auto_button_9"):
+    elif st.session_state.get('show_login', False) and not st.session_state.profile_active:
+        render_login_form()
+        # "Back to Main" button from login
+        if st.button("⬅️ Back to Main", key="back_from_login"):
             st.session_state.show_login = False
+            st.session_state.show_profile_creator = False # Ensure creator is not shown by default
             st.rerun()
     else:
         render_main_interface()

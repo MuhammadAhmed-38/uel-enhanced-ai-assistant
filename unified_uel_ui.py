@@ -1,4 +1,4 @@
-# Complete UEL AI Assistant - Full Feature Implementation with Authentication
+# Complete UEL AI Assistant - Full Feature Implementation wit'/Users/muhammadahmed/Downloads/UEL Master Courses/Dissertation CN7000/uel-enhanced-ai-assistant/data'h Authentication
 # Enhanced unified_uel_ui.py with ALL original features + password system + bug fixes
 
 import streamlit as st
@@ -23,7 +23,8 @@ import scipy.stats as stats
 from sklearn.metrics import precision_recall_fscore_support, confusion_matrix
 import seaborn as sns
 
-
+from interview_preparation import enhanced_interview_mock
+# from unified_uel_ai_system import DocumentVerificationAI
 
 # Import from enhanced system
 from unified_uel_ai_system import (
@@ -178,6 +179,9 @@ def initialize_comprehensive_session_state():
         'recording_active': False,
         'interview_history': [],
         'interview_performance_data': {},
+        'interview_feedback': {}, # Add this one if enhanced_interview_mock uses it
+        'interview_transcript': [], # Add this one if enhanced_interview_mock uses it
+        
    
 
         # Navigation and UI State
@@ -554,6 +558,10 @@ def render_basic_info_editor(profile: Dict):
         help="Your date of birth (used for age calculations)"
     )
 
+
+
+
+
 def render_academic_info_editor(profile: Dict):
     """Render academic information editing section"""
     st.markdown("### 🎓 Academic Background")
@@ -883,883 +891,8 @@ def render_preferences_editor(profile: Dict):
         )
 
 
-
 # =============================================================================
-# INTERVIEW PREPARATION CENTER (NEW FEATURE)
-# =============================================================================
-
-def render_interview_preparation_center():
-    """Render comprehensive interview preparation center"""
-    # Check profile access
-    if not check_profile_access("Interview Preparation", flexible=False):
-        return
-    
-    st.markdown("""
-    <div class="page-header">
-        <div class="header-icon">🎤</div>
-        <div>
-            <h1 style="margin: 0; background: var(--uel-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; font-size: 2.5rem;">Interview Preparation Center</h1>
-            <p style="margin: 0; color: var(--text-secondary); font-size: 1.2rem; font-weight: 500;">AI-powered mock interviews and preparation tools</p>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Get AI agent
-    ai_agent = get_enhanced_ai_agent()
-    
-    # Check if interview system is available
-    if not hasattr(ai_agent, 'interview_system') or ai_agent.interview_system is None:
-        st.error("❌ Interview preparation system not available. Please ensure the enhanced system is properly initialized.")
-        return
-    
-    profile = st.session_state.current_profile
-    
-    # Personalized welcome
-    st.markdown(f"""
-    <div class="enhanced-card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05)); border-left: 6px solid #8b5cf6;">
-        <h3 style="margin-top: 0; color: #8b5cf6;">🎯 Personalized Interview Preparation for {profile.get('first_name', 'Student')}</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-            <div><strong>Program Interest:</strong> {profile.get('field_of_interest', 'Not specified')}</div>
-            <div><strong>Academic Level:</strong> {profile.get('academic_level', 'Not specified')}</div>
-            <div><strong>Target Universities:</strong> University of East London</div>
-            <div><strong>Preparation Level:</strong> {'Advanced' if profile.get('interaction_count', 0) > 20 else 'Intermediate' if profile.get('interaction_count', 0) > 5 else 'Beginner'}</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Main tabs for interview preparation
-    tab1, tab2, tab3, tab4, tab5, = st.tabs([
-        "🚀 Start Mock Interview", 
-        "📚 Question Practice", 
-        "📊 Performance Analytics", 
-        "💡 Interview Tips", 
-        "📋 Interview History"
-        
-    ])
-    
-    with tab1:
-        render_mock_interview_interface(ai_agent.interview_system, profile)
-    
-    with tab2:
-        render_question_practice_interface(ai_agent.interview_system, profile)
-    
-    with tab3:
-        render_interview_analytics(ai_agent.interview_system, profile)
-    
-    with tab4:
-        render_interview_tips_guidance(ai_agent.interview_system, profile)
-    
-    with tab5:
-        render_interview_history(ai_agent.interview_system, profile)
-
-def render_mock_interview_interface(interview_system, profile: Dict):
-    """Render mock interview interface"""
-    st.markdown("### 🚀 AI-Powered Mock Interview")
-    
-    # Check for active interview session
-    active_interview = st.session_state.get('active_interview_session')
-    
-    if not active_interview:
-        # Interview setup
-        st.markdown("#### 🎯 Customize Your Mock Interview")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            interview_type = st.selectbox(
-                "Interview Type",
-                ["undergraduate_admission", "postgraduate_admission", "subject_specific", "scholarship_interview"],
-                format_func=lambda x: x.replace('_', ' ').title(),
-                help="Choose the type of interview you want to practice"
-            )
-            
-            include_voice = st.checkbox(
-                "🎤 Use Voice Responses",
-                value=False,
-                help="Practice speaking your answers aloud (requires microphone)"
-            )
-        
-        with col2:
-            difficulty_level = st.selectbox(
-                "Difficulty Level",
-                ["Beginner", "Intermediate", "Advanced"],
-                index=1,
-                help="Choose based on your interview experience"
-            )
-            
-            focus_area = st.selectbox(
-                "Focus Area",
-                ["General Questions", "Subject-Specific", "Behavioral Questions", "Research Questions"],
-                help="What type of questions to emphasize"
-            )
-        
-        # Interview preparation tips
-        st.markdown("""
-        <div class="enhanced-card" style="background: rgba(34, 197, 94, 0.1); border-left: 4px solid #22c55e;">
-            <h4 style="margin-top: 0; color: #22c55e;">📋 Before You Start</h4>
-            <ul>
-                <li>Find a quiet space with good lighting</li>
-                <li>Test your microphone if using voice responses</li>
-                <li>Have a notepad ready for jotting down thoughts</li>
-                <li>Treat this like a real interview - dress appropriately</li>
-                <li>Take your time to think before answering</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Start interview button
-        if st.button("🎤 Start Mock Interview", type="primary", use_container_width=True, key="start_mock_interview"):
-            with st.spinner("🤖 AI is preparing your personalized interview..."):
-                interview_session = interview_system.create_personalized_interview(profile)
-                
-                if 'error' not in interview_session:
-                    # Start the interview
-                    start_result = interview_system.start_interview_session(interview_session['id'])
-                    
-                    if 'error' not in start_result:
-                        st.session_state.active_interview_session = interview_session['id']
-                        st.session_state.interview_settings = {
-                            'use_voice': include_voice,
-                            'difficulty': difficulty_level,
-                            'focus_area': focus_area
-                        }
-                        st.success("🎉 Interview session started! Get ready for your first question.")
-                        st.rerun()
-                    else:
-                        st.error(f"❌ Failed to start interview: {start_result.get('error')}")
-                else:
-                    st.error(f"❌ Failed to create interview: {interview_session.get('error')}")
-    
-    else:
-        # Active interview session
-        render_active_interview_session(interview_system, active_interview)
-
-def render_active_interview_session(interview_system, interview_id: str):
-    """Render active interview session interface"""
-    st.markdown("### 🎤 Interview in Progress")
-    
-    # Get current question
-    question_data = interview_system.get_next_question(interview_id)
-    
-    if question_data.get('status') == 'completed':
-        st.success("🎉 Interview completed! Generating your performance report...")
-        
-        # Complete interview and show results
-        completion_result = interview_system._complete_interview(interview_id)
-        
-        if 'error' not in completion_result:
-            render_interview_completion_results(completion_result)
-            
-            # Clear active session
-            if 'active_interview_session' in st.session_state:
-                del st.session_state.active_interview_session
-            
-            if st.button("🔄 Start New Interview", type="primary"):
-                st.rerun()
-        else:
-            st.error(f"❌ Error completing interview: {completion_result.get('error')}")
-        
-        return
-    
-    if 'error' in question_data:
-        st.error(f"❌ Error getting question: {question_data.get('error')}")
-        return
-    
-    # Display current question
-    question = question_data['question']
-    question_num = question_data['question_number']
-    total_questions = question_data['total_questions']
-    time_remaining = question_data.get('time_remaining', 20)
-    
-    # Progress indicator
-    progress = question_num / total_questions
-    st.progress(progress)
-    st.markdown(f"**Question {question_num} of {total_questions}** | ⏱️ Time remaining: ~{time_remaining} minutes")
-    
-    # Question display
-    st.markdown(f"""
-    <div class="enhanced-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05)); border-left: 6px solid #3b82f6;">
-        <h3 style="margin-top: 0; color: #3b82f6;">❓ Interview Question</h3>
-        <h4 style="color: var(--text-primary); font-size: 1.2rem; line-height: 1.6;">{question}</h4>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Question tips
-    tips = question_data.get('tips', [])
-    if tips:
-        with st.expander("💡 Tips for this question", expanded=False):
-            for tip in tips:
-                st.markdown(f"• {tip}")
-    
-    # Response interface
-    use_voice = st.session_state.get('interview_settings', {}).get('use_voice', False)
-    
-    if use_voice:
-        render_voice_response_interface(interview_system, interview_id, question)
-    else:
-        render_text_response_interface(interview_system, interview_id, question)
-
-def render_voice_response_interface(interview_system, interview_id: str, question: str):
-    """Render voice response interface"""
-    st.markdown("#### 🎤 Voice Response")
-    
-    col1, col2, col3 = st.columns([1, 2, 1])
-    
-    with col1:
-        if st.button("🎤 Start Recording", type="primary", use_container_width=True):
-            st.session_state.recording_active = True
-            st.rerun()
-    
-    with col2:
-        if st.session_state.get('recording_active', False):
-            st.warning("🔴 Recording... Speak your answer clearly")
-            
-            # Get AI agent for voice service
-            ai_agent = get_enhanced_ai_agent()
-            if ai_agent.voice_service.is_available():
-                with st.spinner("🎧 Listening to your response..."):
-                    voice_response = ai_agent.voice_service.speech_to_text()
-                
-                if voice_response and not voice_response.startswith("❌"):
-                    st.session_state.current_voice_response = voice_response
-                    st.session_state.recording_active = False
-                    st.success(f"✅ Response recorded: {voice_response[:100]}...")
-                else:
-                    st.error(voice_response)
-                    st.session_state.recording_active = False
-            else:
-                st.error("❌ Voice service not available")
-                st.session_state.recording_active = False
-    
-    with col3:
-        if st.button("⏹️ Stop & Submit", use_container_width=True):
-            voice_response = st.session_state.get('current_voice_response', '')
-            if voice_response:
-                submit_interview_response(interview_system, interview_id, voice_response)
-            else:
-                st.error("❌ No voice response recorded")
-    
-    # Show recorded response
-    if st.session_state.get('current_voice_response'):
-        st.markdown("#### 📝 Your Recorded Response:")
-        st.text_area("Response", value=st.session_state.current_voice_response, height=150, disabled=True)
-
-def render_text_response_interface(interview_system, interview_id: str, question: str):
-    """Render text response interface"""
-    st.markdown("#### ✍️ Type Your Response")
-    
-    # Response input
-    response = st.text_area(
-        "Your answer:",
-        placeholder="Take your time to provide a thoughtful, detailed answer...",
-        height=200,
-        help="Aim for 1-3 minutes of speaking time (roughly 150-400 words)"
-    )
-    
-    # Response timer
-    if response:
-        word_count = len(response.split())
-        estimated_time = word_count / 2.5  # Rough estimate: 150 words per minute
-        
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("📝 Word Count", word_count)
-        with col2:
-            st.metric("⏱️ Est. Speaking Time", f"{estimated_time:.1f} min")
-        with col3:
-            if word_count < 50:
-                st.error("Too short")
-            elif word_count > 400:
-                st.warning("Too long")
-            else:
-                st.success("Good length")
-    
-    # Submit response
-    col1, col2 = st.columns([3, 1])
-    
-    with col1:
-        if st.button("📤 Submit Response", type="primary", use_container_width=True, disabled=not response.strip()):
-            submit_interview_response(interview_system, interview_id, response)
-    
-    with col2:
-        if st.button("⏭️ Skip Question", use_container_width=True):
-            submit_interview_response(interview_system, interview_id, "Question skipped")
-
-def submit_interview_response(interview_system, interview_id: str, response: str):
-    with st.spinner("🤖 AI is analyzing your response..."):
-        result = interview_system.submit_response(interview_id, response)
-
-    if 'error' not in result:
-        # Show immediate feedback
-        if result.get('analysis'):
-            analysis = result['analysis']
-
-            # Quick feedback - Updated to reflect new metrics
-            col1, col2, col3, col4 = st.columns(4)
-
-            with col1:
-                st.metric("🎯 Relevance", f"{analysis.get('relevance_score', 0)*100:.1f}%")
-            with col2:
-                st.metric("💬 Coherence", f"{analysis.get('coherence_score', 0)*100:.1f}%")
-            with col3:
-                st.metric("💡 Content", f"{analysis.get('content_score', 0)*100:.1f}%")
-            with col4:
-                length = analysis.get('response_length', 'appropriate')
-                if length == 'appropriate':
-                    st.success("✅ Good length")
-                elif length == 'too_short':
-                    st.warning("⚠️ Too short")
-                else:
-                    st.warning("⚠️ Too long")
-
-            # AI feedback if available
-            if analysis.get('ai_feedback'):
-                with st.expander("🤖 Detailed AI Feedback", expanded=True):
-                    st.markdown(analysis['ai_feedback'])
-                    if analysis.get('missed_points'):
-                        st.markdown(f"**Missed Points:** {', '.join(analysis['missed_points'])}")
-                    if analysis.get('irrelevant_info'):
-                        st.markdown(f"**Irrelevant Info:** {', '.join(analysis['irrelevant_info'])}")
-                    if analysis.get('suggestions_for_improvement'):
-                        st.markdown(f"**Suggestions:** {analysis['suggestions_for_improvement']}")
-
-        # Clear session state for next question
-        if 'current_voice_response' in st.session_state:
-            del st.session_state.current_voice_response
-
-        st.success("✅ Response recorded! Moving to next question...")
-        time.sleep(2)
-        st.rerun()
-    else:
-        st.error(f"❌ Error submitting response: {result.get('error')}")
-
-def render_interview_completion_results(completion_result: Dict):
-    st.markdown("### 🎉 Interview Complete - Performance Report")
-
-    performance = completion_result.get('performance_report', {})
-    improvements = completion_result.get('improvement_suggestions', [])
-    summary = completion_result.get('interview_summary', {})
-    all_responses_analysis = [r['analysis'] for r in completion_result.get('responses', [])] # Access individual response analysis
-
-    # Overall score display (remains similar, but now based on new metrics)
-    overall_score = performance.get('overall_score', 0)
-    grade = performance.get('grade', 'N/A')
-
-    st.markdown(f"""
-    <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 3rem; border-radius: 20px; text-align: center; margin: 2rem 0;">
-        <h1 style="margin: 0; font-size: 3rem; font-weight: 800;">{overall_score:.1f}%</h1>
-        <h2 style="margin: 1rem 0; font-size: 1.8rem;">{grade}</h2>
-        <p style="font-size: 1.1rem; opacity: 0.9;">Overall Interview Performance Score</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # Detailed breakdown with new metrics
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.metric("💬 Coherence", f"{performance.get('communication_score', 0):.1f}%", help="How well-structured and logical your answers were.")
-    with col2:
-        st.metric("🎯 Relevance", f"{performance.get('relevance_score', 0):.1f}%", help="How directly your answers addressed the questions.")
-    with col3:
-        st.metric("💡 Content Depth", f"{performance.get('confidence_score', 0):.1f}%", help="Quality, insightfulness, and detail of your answers.")
-    with col4:
-        st.metric("⏱️ Avg Time", f"{summary.get('duration_minutes', 0):.1f} min", help="Total duration of the interview session.")
-
-    # Strengths and improvements (now populated from LLM analysis)
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown("#### 💪 Your Strengths")
-        strengths = performance.get('strengths', [])
-        if strengths:
-            for strength in strengths:
-                st.success(f"✅ {strength}")
-        else:
-            st.info("No specific strengths identified yet. Keep practicing!")
-
-    with col2:
-        st.markdown("#### 📈 Areas for Improvement")
-        areas = performance.get('areas_for_improvement', [])
-        if areas:
-            for area in areas:
-                st.warning(f"📌 {area}")
-        else:
-            st.info("Great job! No major areas for improvement identified.")
-
-    # Personalized Improvement Plan (from LLM suggestions)
-    if improvements:
-        st.markdown("#### 💡 Personalized Improvement Plan")
-        for i, suggestion in enumerate(improvements, 1):
-            st.markdown(f"**{i}.** {suggestion}")
-    else:
-        st.info("No specific improvement suggestions at this time.")
-
-    # Interview summary
-    st.markdown("#### 📋 Interview Summary")
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.metric("Questions Answered", summary.get('questions_answered', 0))
-    with col2:
-        st.metric("Duration", f"{summary.get('duration_minutes', 0):.1f} min")
-    with col3:
-        st.metric("Interview Type", summary.get('interview_type', 'Unknown').replace('_', ' ').title())
-
-    # Display detailed feedback for each question
-    st.markdown("#### 📝 Detailed Question-by-Question Feedback")
-    if all_responses_analysis:
-        for i, response_analysis in enumerate(all_responses_analysis, 1):
-            with st.expander(f"Question {i} Feedback (Relevance: {response_analysis.get('relevance_score',0):.1f}, Coherence: {response_analysis.get('coherence_score',0):.1f}, Content: {response_analysis.get('content_score',0):.1f})"):
-                st.markdown(f"**Question:** {completion_result['responses'][i-1]['question']}")
-                st.markdown(f"**Your Response:** {completion_result['responses'][i-1]['response']}")
-                st.markdown("---")
-                st.markdown(f"**AI Feedback:** {response_analysis.get('ai_feedback', 'No specific feedback.')}")
-                st.markdown(f"**Strengths:** {', '.join(response_analysis.get('strengths', ['N/A']))}")
-                st.markdown(f"**Weaknesses:** {', '.join(response_analysis.get('weaknesses', ['N/A']))}")
-                st.markdown(f"**Missed Key Points:** {', '.join(response_analysis.get('missed_points', ['None']))}")
-                st.markdown(f"**Irrelevant Information:** {', '.join(response_analysis.get('irrelevant_info', ['None']))}")
-                st.markdown(f"**Suggestions for this question:** {response_analysis.get('suggestions_for_improvement', 'N/A')}")
-    else:
-        st.info("No detailed response analysis available.")
-
-
-def render_question_practice_interface(interview_system, profile: Dict):
-    """Render question practice interface"""
-    st.markdown("### 📚 Interview Question Practice")
-    
-    # Question category selection
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        category = st.selectbox(
-            "Question Category",
-            ["general", "computer_science", "business", "engineering", "psychology", "behavioral", "postgraduate"],
-            format_func=lambda x: x.replace('_', ' ').title(),
-            help="Choose the type of questions to practice"
-        )
-    
-    with col2:
-        num_questions = st.selectbox(
-            "Number of Questions",
-            [1, 3, 5, 10],
-            index=1,
-            help="How many questions to practice"
-        )
-    
-    if st.button("🎯 Generate Practice Questions", type="primary", key="generate_practice_questions"):
-        # Get questions from the interview system
-        try:
-            questions = interview_system.question_banks.get(category, [])
-            if questions:
-                selected_questions = random.sample(questions, min(num_questions, len(questions)))
-                st.session_state.practice_questions = selected_questions
-                st.session_state.current_practice_index = 0
-                st.session_state.practice_responses = []
-                st.success(f"✅ Generated {len(selected_questions)} practice questions!")
-            else:
-                st.error("❌ No questions available for this category")
-        except Exception as e:
-            st.error(f"❌ Error generating questions: {e}")
-    
-    # Display practice questions
-    if st.session_state.get('practice_questions'):
-        render_practice_question_session(interview_system)
-
-def render_practice_question_session(interview_system):
-    """Render practice question session"""
-    questions = st.session_state.practice_questions
-    current_index = st.session_state.get('current_practice_index', 0)
-    
-    if current_index >= len(questions):
-        st.success("🎉 Practice session completed!")
-        
-        # Show summary of practice session
-        responses = st.session_state.get('practice_responses', [])
-        if responses:
-            st.markdown("#### 📊 Practice Session Summary")
-            
-            avg_words = np.mean([len(r.split()) for r in responses])
-            st.metric("Average Response Length", f"{avg_words:.0f} words")
-            
-            for i, (q, r) in enumerate(zip(questions, responses), 1):
-                with st.expander(f"Question {i}: {q[:50]}..."):
-                    st.markdown(f"**Question:** {q}")
-                    st.markdown(f"**Your Response:** {r}")
-        
-        if st.button("🔄 Start New Practice Session"):
-            # Clear practice session
-            for key in ['practice_questions', 'current_practice_index', 'practice_responses']:
-                if key in st.session_state:
-                    del st.session_state[key]
-            st.rerun()
-        
-        return
-    
-    # Current question
-    current_question = questions[current_index]
-    
-    st.markdown(f"#### Question {current_index + 1} of {len(questions)}")
-    
-    st.markdown(f"""
-    <div class="enhanced-card" style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b;">
-        <h4 style="margin-top: 0; color: #f59e0b;">{current_question}</h4>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Response area
-    response = st.text_area(
-        "Your practice response:",
-        placeholder="Practice your answer here...",
-        height=150,
-        key=f"practice_response_{current_index}"
-    )
-    
-    # Action buttons
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        if st.button("📤 Submit & Next", type="primary", disabled=not response.strip()):
-            # Store response
-            if 'practice_responses' not in st.session_state:
-                st.session_state.practice_responses = []
-            
-            st.session_state.practice_responses.append(response)
-            st.session_state.current_practice_index += 1
-            
-            st.success("✅ Response saved! Moving to next question...")
-            time.sleep(1)
-            st.rerun()
-    
-    with col2:
-        if st.button("⏭️ Skip Question"):
-            st.session_state.current_practice_index += 1
-            st.rerun()
-    
-    with col3:
-        if st.button("💡 Get Tips"):
-            tips = interview_system._get_question_tips(current_question)
-            st.info("💡 Tips:\n" + "\n".join([f"• {tip}" for tip in tips]))
-
-def render_interview_analytics(interview_system, profile: Dict):
-    """Render interview performance analytics"""
-    st.markdown("### 📊 Interview Performance Analytics")
-    
-    # Get user's interview history
-    user_history = interview_system.get_user_interview_history(profile.get('id'))
-    
-    if not user_history:
-        st.info("📈 No interview history available. Complete some mock interviews to see your analytics!")
-        return
-    
-    # Performance overview
-    scores = [interview.get('performance_score', 0) for interview in user_history if interview.get('performance_score')]
-    
-    if scores:
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            avg_score = np.mean(scores)
-            st.metric("📈 Average Score", f"{avg_score:.1f}%")
-        
-        with col2:
-            latest_score = scores[0] if scores else 0
-            previous_score = scores[1] if len(scores) > 1 else 0
-            improvement = latest_score - previous_score
-            st.metric("🚀 Latest Score", f"{latest_score:.1f}%", delta=f"{improvement:+.1f}%")
-        
-        with col3:
-            best_score = max(scores)
-            st.metric("🏆 Best Score", f"{best_score:.1f}%")
-        
-        with col4:
-            total_interviews = len(user_history)
-            st.metric("🎤 Total Interviews", total_interviews)
-        
-        # Performance trend chart
-        if len(scores) > 1:
-            st.markdown("#### 📈 Performance Trend")
-            
-            trend_data = pd.DataFrame({
-                'Interview': range(1, len(scores) + 1),
-                'Score': scores[::-1]  # Reverse to show chronological order
-            })
-            
-            fig = px.line(
-                trend_data, 
-                x='Interview', 
-                y='Score',
-                title="Interview Performance Over Time",
-                markers=True
-            )
-            fig.update_layout(height=400)
-            st.plotly_chart(fig, use_container_width=True)
-        
-        # Skills breakdown
-        st.markdown("#### 🎯 Skills Analysis")
-        
-        # Aggregate performance data
-        comm_scores = []
-        rel_scores = []
-        conf_scores = []
-        
-        for interview in user_history:
-            if interview.get('responses'):
-                responses = interview['responses']
-                comm_scores.extend([r['analysis'].get('coherence_score', 0.7) for r in responses])
-                rel_scores.extend([r['analysis'].get('relevance_score', 0.7) for r in responses])
-                # Confidence calculation would be more complex in real implementation
-                conf_scores.append(0.8)  # Placeholder
-        
-        if comm_scores:
-            skills_data = pd.DataFrame({
-                'Skill': ['Communication', 'Relevance', 'Confidence'],
-                'Average Score': [
-                    np.mean(comm_scores) * 100,
-                    np.mean(rel_scores) * 100,
-                    np.mean(conf_scores) * 100
-                ]
-            })
-            
-            fig = px.bar(
-                skills_data,
-                x='Skill',
-                y='Average Score',
-                title="Skills Breakdown",
-                color='Average Score',
-                color_continuous_scale='viridis'
-            )
-            fig.update_layout(height=400, showlegend=False)
-            st.plotly_chart(fig, use_container_width=True)
-
-def render_interview_tips_guidance(interview_system, profile: Dict):
-    """Render interview tips and guidance"""
-    st.markdown("### 💡 Interview Tips & Guidance")
-    
-    # Personalized tips based on profile
-    field_of_interest = profile.get('field_of_interest', '').lower()
-    academic_level = profile.get('academic_level', '').lower()
-    
-    # Determine relevant tip categories
-    tip_categories = ['general']
-    
-    if any(word in field_of_interest for word in ['computer', 'technology', 'software', 'data']):
-        tip_categories.append('technical')
-    
-    if 'postgraduate' in academic_level or 'masters' in academic_level or 'phd' in academic_level:
-        tip_categories.append('postgraduate')
-    
-    tip_categories.append('behavioral')
-    
-    # Display tips in tabs
-    if len(tip_categories) > 1:
-        tip_tabs = st.tabs([cat.replace('_', ' ').title() + " Tips" for cat in tip_categories])
-        
-        for tab, category in zip(tip_tabs, tip_categories):
-            with tab:
-                tips = interview_system.get_interview_tips(category)
-                for i, tip in enumerate(tips, 1):
-                    st.markdown(f"**{i}.** {tip}")
-    else:
-        # Single category
-        tips = interview_system.get_interview_tips(tip_categories[0])
-        for i, tip in enumerate(tips, 1):
-            st.markdown(f"**{i}.** {tip}")
-    
-    # Interview preparation checklist
-    st.markdown("#### ✅ Interview Preparation Checklist")
-    
-    checklist_items = [
-        "Research the university and specific program thoroughly",
-        "Review your application and personal statement",
-        "Prepare specific examples of your achievements",
-        "Practice common interview questions out loud",
-        "Prepare thoughtful questions to ask the interviewer",
-        "Plan your outfit and test your technology (for virtual interviews)",
-        "Review current events in your field of study",
-        "Practice good posture and eye contact",
-        "Prepare your introduction (tell me about yourself)",
-        "Get a good night's sleep before the interview"
-    ]
-    
-    for item in checklist_items:
-        st.checkbox(item, key=f"checklist_{hash(item)}")
-    
-    # Common mistakes to avoid
-    st.markdown("#### ❌ Common Interview Mistakes to Avoid")
-    
-    mistakes = [
-        "**Not researching the university** - Show you've done your homework",
-        "**Speaking too fast** - Take your time and speak clearly",
-        "**Being too modest** - Confidently discuss your achievements",
-        "**Not asking questions** - Prepare thoughtful questions about the program",
-        "**Giving vague answers** - Use specific examples and the STAR method",
-        "**Appearing disinterested** - Show enthusiasm and passion",
-        "**Not practicing** - Practice common questions beforehand",
-        "**Poor body language** - Maintain good posture and eye contact"
-    ]
-    
-    for mistake in mistakes:
-        st.markdown(f"• {mistake}")
-    
-    # STAR method explanation
-    st.markdown("#### 🌟 The STAR Method for Behavioral Questions")
-    
-    st.markdown("""
-    <div class="enhanced-card">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-            <div style="text-align: center; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 10px;">
-                <h4 style="color: #3b82f6; margin-top: 0;">🎯 Situation</h4>
-                <p>Describe the context and background</p>
-            </div>
-            <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
-                <h4 style="color: #10b981; margin-top: 0;">📋 Task</h4>
-                <p>Explain what you needed to accomplish</p>
-            </div>
-            <div style="text-align: center; padding: 1rem; background: rgba(245, 158, 11, 0.1); border-radius: 10px;">
-                <h4 style="color: #f59e0b; margin-top: 0;">⚡ Action</h4>
-                <p>Detail the steps you took</p>
-            </div>
-            <div style="text-align: center; padding: 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 10px;">
-                <h4 style="color: #8b5cf6; margin-top: 0;">🏆 Result</h4>
-                <p>Share the outcome and what you learned</p>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-def render_interview_history(interview_system, profile: Dict):
-    """Render interview history"""
-    st.markdown("### 📋 Your Interview History")
-    
-    # Get user's interview history
-    user_history = interview_system.get_user_interview_history(profile.get('id'))
-    
-    if not user_history:
-        st.info("📚 No interview history yet. Complete some mock interviews to build your history!")
-        return
-    
-    # Display interviews
-    for i, interview in enumerate(user_history):
-        with st.expander(
-            f"🎤 Interview #{len(user_history) - i} - {interview.get('interview_type', 'Unknown').replace('_', ' ').title()} "
-            f"({interview.get('performance_score', 0):.0f}%)",
-            expanded=(i == 0)  # Expand most recent
-        ):
-            # Interview details
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                created_time = interview.get('created_time', '')
-                if created_time:
-                    dt = datetime.fromisoformat(created_time)
-                    st.markdown(f"**📅 Date:** {dt.strftime('%Y-%m-%d')}")
-                
-                st.markdown(f"**🎯 Type:** {interview.get('interview_type', 'Unknown').replace('_', ' ').title()}")
-            
-            with col2:
-                st.markdown(f"**❓ Questions:** {len(interview.get('questions', []))}")
-                st.markdown(f"**✅ Completed:** {len(interview.get('responses', []))}")
-            
-            with col3:
-                score = interview.get('performance_score', 0)
-                st.markdown(f"**📊 Score:** {score:.1f}%")
-                
-                status = interview.get('status', 'unknown')
-                if status == 'completed':
-                    st.success("✅ Completed")
-                else:
-                    st.warning(f"⚠️ {status.title()}")
-            
-            # Questions and responses
-            if interview.get('responses'):
-                st.markdown("#### 💬 Questions & Responses")
-                
-                for j, response_data in enumerate(interview['responses'][:3], 1):  # Show first 3
-                    with st.container():
-                        st.markdown(f"**Q{j}:** {response_data['question']}")
-                        
-                        # Response preview
-                        response_text = response_data['response']
-                        preview = response_text[:200] + "..." if len(response_text) > 200 else response_text
-                        st.markdown(f"**A{j}:** {preview}")
-                        
-                        # Analysis summary
-                        analysis = response_data.get('analysis', {})
-                        word_count = analysis.get('word_count', 0)
-                        length_assessment = analysis.get('response_length', 'unknown')
-                        
-                        st.caption(f"📝 {word_count} words • {length_assessment}")
-                        
-                        st.markdown("---")
-                
-                if len(interview['responses']) > 3:
-                    st.info(f"... and {len(interview['responses']) - 3} more responses")
-    
-    # Export interview history
-    if st.button("📥 Export Interview History", key="export_interview_history"):
-        export_interview_history(user_history, profile)
-
-def export_interview_history(interview_history: List[Dict], profile: Dict):
-    """Export interview history to downloadable format"""
-    try:
-        # Create comprehensive report
-        report_content = f"""
-# Interview History Report
-
-**Student:** {profile.get('first_name', '')} {profile.get('last_name', '')}
-**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-
-## Summary
-- Total Interviews: {len(interview_history)}
-- Average Score: {np.mean([i.get('performance_score', 0) for i in interview_history if i.get('performance_score')]):.1f}%
-- Interview Types: {', '.join(set([i.get('interview_type', 'Unknown') for i in interview_history]))}
-
-## Interview Details
-"""
-        
-        for i, interview in enumerate(interview_history, 1):
-            report_content += f"""
-### Interview {i}
-- **Date:** {interview.get('created_time', 'Unknown')[:10]}
-- **Type:** {interview.get('interview_type', 'Unknown').replace('_', ' ').title()}
-- **Score:** {interview.get('performance_score', 0):.1f}%
-- **Questions:** {len(interview.get('questions', []))}
-- **Responses:** {len(interview.get('responses', []))}
-
-"""
-            
-            # Add top responses
-            if interview.get('responses'):
-                report_content += "**Sample Responses:**\n"
-                for j, response in enumerate(interview['responses'][:2], 1):
-                    report_content += f"""
-Q{j}: {response['question']}
-A{j}: {response['response'][:300]}...
-
-"""
-        
-        report_content += f"""
----
-Report generated by UEL AI Interview Preparation Center
-© {datetime.now().year} University of East London
-"""
-        
-        # Download button
-        st.download_button(
-            label="📥 Download Interview History Report",
-            data=report_content,
-            file_name=f"uel_interview_history_{profile.get('first_name', 'student')}_{datetime.now().strftime('%Y%m%d')}.txt",
-            mime="text/plain"
-        )
-        
-        st.success("✅ Interview history report generated successfully!")
-        
-    except Exception as e:
-        st.error(f"❌ Export failed: {e}")
-        module_logger.error(f"Interview history export error: {e}")
-
-# =============================================================================
-# ADVANCED DOCUMENT VERIFICATION SYSTEM (RESTORED)
+# ADVANCED DOCUMENT VERIFICATION SYSTEM (RESTORED) 
 # =============================================================================
 
 def render_advanced_document_verification():
@@ -1966,9 +1099,67 @@ def render_document_upload_interface():
                         additional_info['referee_institution'] = st.text_input("Referee Institution *")
                         additional_info['referee_email'] = st.text_input("Referee Email")
                 
-                # Submit for verification
-                if st.form_submit_button("🔍 Verify Document", type="primary", use_container_width=True):
-                    verify_uploaded_document(uploaded_file, doc_info['code'], additional_info)
+                # Submit for verification - THIS IS THE KEY FIX
+                verify_clicked = st.form_submit_button("🔍 Verify Document", type="primary", use_container_width=True)
+                
+                # FIXED: Actually handle the form submission
+                if verify_clicked:
+                    try:
+                        with st.spinner("🤖 AI is analyzing your document..."):
+                            # Read file content
+                            file_content = uploaded_file.read()
+                            
+                            # Ensure document verifier is available
+                            ensure_document_verifier_initialized()
+                            
+                            # Convert date objects to strings for additional_info
+                            processed_additional_info = {}
+                            for key, value in additional_info.items():
+                                if hasattr(value, 'isoformat'):  # datetime/date object
+                                    processed_additional_info[key] = value.isoformat()
+                                else:
+                                    processed_additional_info[key] = value
+                            
+                            # Perform verification with corrected parameters
+                            verification_result = verify_document_with_fallback(
+                                file_content,
+                                uploaded_file.name,
+                                doc_info['code'],
+                                processed_additional_info
+                            )
+                            
+                            # Store verification result
+                            doc_id = verification_result.get('document_id', f"doc_{int(time.time())}")
+                            if 'verification_results' not in st.session_state:
+                                st.session_state.verification_results = {}
+                            st.session_state.verification_results[doc_id] = verification_result
+                            
+                            # Display results
+                            display_enhanced_verification_results(verification_result)
+                            
+                            # Update profile interaction if user is logged in
+                            if st.session_state.get('current_profile'):
+                                profile = st.session_state.current_profile
+                                if hasattr(profile, 'add_interaction'):
+                                    profile.add_interaction("document_verification")
+                                elif isinstance(profile, dict):
+                                    profile['interaction_count'] = profile.get('interaction_count', 0) + 1
+                                st.session_state.current_profile = profile
+                            
+                            st.success("✅ Document verification completed!")
+                            
+                    except Exception as e:
+                        st.error(f"❌ Document verification failed: {str(e)}")
+                        st.write("Debug info:")
+                        st.write(f"File name: {uploaded_file.name}")
+                        st.write(f"File size: {uploaded_file.size}")
+                        st.write(f"Document type: {doc_info['code']}")
+                        st.write(f"Additional info keys: {list(additional_info.keys())}")
+                        
+                        # Show full error traceback for debugging
+                        import traceback
+                        st.code(traceback.format_exc())
+
 
 def verify_uploaded_document(uploaded_file, doc_type: str, additional_info: Dict):
     """Process and verify uploaded document"""
@@ -2009,8 +1200,10 @@ def verify_uploaded_document(uploaded_file, doc_type: str, additional_info: Dict
         st.error(f"❌ Document verification failed: {e}")
         logger.error(f"Document verification error: {e}")
 
-def display_verification_results(result: Dict):
-    """Display comprehensive verification results"""
+def display_enhanced_verification_results(result: Dict):
+    """Display verification results with error handling"""
+    if result.get('fallback_used'):
+        st.warning("⚠️ Using fallback verification - manual review recommended")
     status = result.get('verification_status', 'unknown')
     confidence = result.get('confidence_score', 0.0)
     doc_type = result.get('document_type', 'unknown')
@@ -4129,6 +3322,93 @@ def get_enhanced_ai_agent() -> 'UELAISystem':
     
     return st.session_state.ai_agent
 
+
+
+
+# Add this new function after get_enhanced_ai_agent()
+def ensure_document_verifier_initialized():
+    """Ensure document verification is properly initialized"""
+    
+    ai_agent = get_enhanced_ai_agent()
+    
+    # Check if document verification is available
+    if not hasattr(ai_agent, 'document_verifier') or ai_agent.document_verifier is None:
+        st.info("🔄 Initializing document verification...")
+        
+        try:
+            # Import and initialize
+            # from unified_uel_ai_system import DocumentVerificationAI
+            # ai_agent.document_verifier = DocumentVerificationAI()
+            st.success("✅ Document verifier initialized")
+        except Exception as e:
+            st.warning(f"⚠️ Using fallback: {e}")
+            ai_agent.document_verifier = create_fallback_document_verifier()
+    
+    return ai_agent.document_verifier is not None
+
+def create_fallback_document_verifier():
+    """Simple fallback verification"""
+    class FallbackDocumentVerifier:
+        def verify_document(self, file_content, filename, doc_type, user_data=None):
+            return {
+                "verification_status": "needs_review",
+                "confidence_score": 0.5,
+                "fallback_used": True,
+                "message": "AI verification unavailable - manual review required",
+                "file_info": {
+                    "filename": filename,
+                    "type": doc_type,
+                    "size_mb": len(file_content) / (1024 * 1024)
+                },
+                "timestamp": datetime.now().isoformat()
+            }
+    
+    return FallbackDocumentVerifier()
+
+
+
+def verify_document_with_fallback(file_content, filename, doc_type, user_data=None):
+    """Enhanced document verification with error handling"""
+    try:
+        ai_agent = get_enhanced_ai_agent()
+        
+        # Ensure document verifier exists
+        if not hasattr(ai_agent, 'document_verifier') or ai_agent.document_verifier is None:
+            st.info("📄 Using fallback document verification...")
+            return create_fallback_document_verification(file_content, filename, doc_type)
+        
+        # Perform actual verification with corrected argument order
+        return ai_agent.document_verifier.verify_document(file_content, filename, doc_type, user_data)
+        
+    except Exception as e:
+        st.error(f"❌ Document verification failed: {str(e)}")
+        return {
+            "verification_status": "error",
+            "error": str(e),
+            "fallback_used": True,
+            "timestamp": datetime.now().isoformat()
+        }
+
+def create_fallback_document_verification(file_content, filename, doc_type):
+    """Simple fallback verification"""
+    file_size_mb = len(file_content) / (1024 * 1024) if isinstance(file_content, bytes) else 0
+    
+    return {
+        "verification_status": "needs_review",
+        "confidence_score": 0.5,
+        "fallback_used": True,
+        "message": "AI verification unavailable - manual review required",
+        "file_info": {
+            "filename": filename,
+            "type": doc_type,
+            "size_mb": file_size_mb
+        },
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+
+
 def get_ai_response(user_input: str) -> Dict:
     """Get AI response with profile integration"""
     try:
@@ -4569,13 +3849,13 @@ def render_complete_sidebar_navigation():
         ("💬 AI Chat", "ai_chat", False),
         ("🎯 Recommendations", "recommendations", True),
         ("🔮 Predictions", "predictions", True),
-        ("🎤 Interview Prep", "interview_preparation", True),
         ("📄 Documents", "documents", False),
         ("📊 Analytics", "analytics", False),
         ("🔍 Search", "search", False),
         ("⚖️ Compare", "comparison", False),
         ("📤 Export", "export", False),
-        ("🎤 Voice", "voice", False)
+        ("🎤 Voice", "voice", False),
+        ("🎤 CAS Interview Prep", "interview_prep", True) # ADD THIS LINE
     ]
     
     profile_active = st.session_state.get('profile_active', False)
@@ -4645,9 +3925,6 @@ def render_enhanced_quick_actions():
         # Profile-enabled quick actions
         if st.button("🎯 Get Recommendations", use_container_width=True, key="__get_recommendation_3021"):
             st.session_state.current_page = "recommendations"
-            st.rerun()
-        if st.button("🎤 Interview Practice", use_container_width=True, key="__interview_practice_quick"):
-            st.session_state.current_page = "interview_preparation"
             st.rerun()
         
         if st.button("🔮 Check Admission Chances", use_container_width=True, key="__check_admission_ch_3022"):
@@ -6368,6 +5645,36 @@ Report ID: {datetime.now().strftime('%Y%m%d_%H%M%S')}
 # ENHANCED DASHBOARD (RESTORED)
 # =============================================================================
 
+
+# =============================================================================
+# INTERVIEW PREPARATION PAGE (NEW)
+# =============================================================================
+
+def render_interview_preparation_page():
+    """Render the interview preparation interface."""
+    # This feature requires a profile to be active
+    if not check_profile_access("Interview Preparation", flexible=False):
+        return
+
+    st.markdown("""
+    <div class="page-header">
+        <div class="header-icon">🎤</div>
+        <div>
+            <h1 style="margin: 0; background: var(--uel-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; font-size: 2.5rem;">AI Interview Preparation</h1>
+            <p style="margin: 0; color: var(--text-secondary); font-size: 1.2rem; font-weight: 500;">Practice your interview skills with AI-powered mock interviews</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Call the enhanced_interview_mock function from interview_preparation.py
+    # This function is designed to render its own Streamlit UI
+    enhanced_interview_mock()
+
+    # You can add more UI elements here if needed, e.g.,
+    # st.info("💡 Use the controls above to start your mock interview session.")
+
+
+
 def render_enhanced_dashboard():
     """Render enhanced dashboard with complete functionality"""
     st.markdown("""
@@ -6539,10 +5846,6 @@ def render_personalized_feature_grid(profile: Dict):
             <p><strong>Features:</strong> Voice practice, AI feedback, analytics</p>
         </div>
         """, unsafe_allow_html=True)
-    
-        if st.button("Start Interview Prep", use_container_width=True, key="start_interview_prep_dashboard"):
-            st.session_state.current_page = "interview_preparation"
-            st.rerun()
     
 
 
@@ -7158,8 +6461,6 @@ def main():
                 render_enhanced_predictions_page()
             elif page == "documents":
                 render_advanced_document_verification()
-            elif page == "interview_preparation":
-                render_interview_preparation_center()  # ADD THIS LINE
             elif page == "analytics":
                 render_comprehensive_analytics_dashboard()
             elif page == "search":
@@ -7170,6 +6471,8 @@ def main():
                 render_export_and_reporting_interface()
             elif page == "voice":
                 render_voice_services_interface()
+            elif page == "interview_prep": # ADD THIS NEW ELIF BLOCK
+                render_interview_preparation_page() # Call the new rendering function
             else:
                 # Default to dashboard
                 st.session_state.current_page = "dashboard"

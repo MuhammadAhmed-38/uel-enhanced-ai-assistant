@@ -2125,9 +2125,6 @@ class CourseRecommendationSystem:
         return self.recommend_courses(user_profile, preferences)
 
 
-
-
-
 class DocumentVerificationAI:
     """AI-powered document verification - COMPLETE AND FIXED VERSION"""
     

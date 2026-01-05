@@ -1,5 +1,21 @@
 # Ignore Python virtual environments
-uel_ai_env/
-*.pyc
+
+# Python cache
 __pycache__/
+*.pyc
+
+# Virtual environment
+uel_ai_env/
+
+# Databases and logs
+*.db
+*.log
+
+# JSON outputs
+*.json
+
+# Any other local files
+*.txt
+*.pdf
+*.html
 

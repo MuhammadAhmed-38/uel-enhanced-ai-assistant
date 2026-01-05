@@ -1,8 +1,1001 @@
 applicant_id,name,course_applied,status,gpa,ielts_score,work_experience_years,nationality,application_date
-APP_001,John Smith,MSc Artificial Intelligence,Under Review,3.5,7.0,2,UK,2024-06-15
+APP_001,John Smith,MSc Artificial Intelligence,Under Review,3.3,7.0,2,UK,2024-06-15
 APP_002,Priya Patel,MBA,Accepted,3.8,6.5,5,India,2024-05-20
-APP_003,Ahmed Hassan,MSc Cybersecurity,Documents Pending,3.2,6.0,1,Egypt,2024-07-01
+APP_003,Ahmed Hassan,MSc Cybersecurity,Accepted,3.2,6.0,1,Egypt,2024-07-01
 APP_004,Maria Garcia,BSc Computer Science,Under Review,3.6,7.5,0,Spain,2024-06-30
 APP_005,David Chen,MSc Data Science,Accepted,3.9,8.0,3,China,2024-05-10
-APP_006,Muhammad Ahmed,MSc Artificial Intelligence,Accepted,3.43,7.5,1,Pakistan,2024-05-10
+APP_006,Muhammad Ahmed,MSc Artificial Intelligence,Accepted,3.2,6.5,1,Pakistan,2024-05-10
 APP_007,Zainab Noor,MSc Biotechnology,Under Review,3.90,7,1,Pakistan,2025-01-01
+APP_008,Emily White,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-20
+APP_009,Omar Khan,MSc Data Science,Under Review,3.6,6.5,2,Saudi Arabia,2024-07-05
+APP_010,Sophie Dubois,MSc Cybersecurity,Accepted,3.3,7.0,1,France,2024-06-25
+APP_011,Liam Gallagher,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-10
+APP_012,Aisha Rahman,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-15
+APP_013,Carlos Ramirez,MBA,Under Review,3.7,6.5,4,Mexico,2024-06-01
+APP_014,Mei Lin,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-22
+APP_015,Ben Carter,BSc Web Development,Under Review,2.9,6.0,0,Australia,2024-07-12
+APP_016,Fatima Zahra,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-08
+APP_017,Daniel Lee,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-18
+APP_018,Chloe Brown,BSc Psychology,Accepted,3.0,6.0,0,Canada,2024-07-03
+APP_019,Hiroshi Tanaka,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-28
+APP_020,Isabella Rossi,MSc Environmental Engineering,Accepted,3.4,6.5,2,Italy,2024-06-10
+APP_021,Samuel Green,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-22
+APP_022,Nadia Petrova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-15
+APP_023,Juan Perez,MSc Finance,Accepted,3.2,6.5,2,Argentina,2024-06-05
+APP_024,Grace Taylor,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-28
+APP_025,Mohammed Ali,MSc Entrepreneurship,Accepted,3.0,6.5,3,UAE,2024-07-01
+APP_026,Olivia Wilson,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-16
+APP_027,Wei Zhang,MSc Biotechnology,Accepted,3.8,7.0,1,China,2024-07-09
+APP_028,Anna Kowalski,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-30
+APP_029,Ricardo Silva,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-11
+APP_030,Yara Al-Farsi,MSc Human Resource Management,Accepted,2.8,6.5,1,Qatar,2024-06-07
+APP_031,Chris Evans,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-24
+APP_032,Lena Schmidt,MSc Supply Chain Management,Accepted,3.1,6.5,2,Germany,2024-07-06
+APP_033,Kevin Wong,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-19
+APP_034,Sofia Rodriguez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-13
+APP_035,Alex Turner,BSc Environmental Science,Accepted,2.9,6.0,0,Australia,2024-07-02
+APP_036,Priya Sharma,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-25
+APP_037,David Kim,BSc Mechanical Engineering,Accepted,3.0,6.0,0,South Korea,2024-07-04
+APP_038,Maria Santos,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-14
+APP_039,John Doe,BSc Civil Engineering,Accepted,3.0,6.0,0,USA,2024-07-07
+APP_040,Jane Smith,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-21
+APP_041,Peter Jones,BSc Aerospace Engineering,Accepted,3.0,6.0,0,Canada,2024-07-16
+APP_042,Sarah Miller,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-26
+APP_043,Michael Davis,BSc Automotive Engineering,Accepted,3.0,6.0,0,UK,2024-07-18
+APP_044,Jessica Brown,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-29
+APP_045,Robert Garcia,BSc Architecture,Accepted,3.0,6.5,0,Spain,2024-07-19
+APP_046,Laura Martinez,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-08
+APP_047,James Wilson,BSc Interior Design,Accepted,2.7,6.0,0,USA,2024-07-20
+APP_048,Linda Taylor,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-11
+APP_049,William Thomas,BSc Landscape Architecture,Accepted,2.8,6.0,0,UK,2024-07-21
+APP_050,Elizabeth White,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-13
+APP_051,Richard Green,BA Graphic Design,Accepted,2.5,6.0,0,USA,2024-07-22
+APP_052,Susan Hall,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-17
+APP_053,Joseph King,BA Fine Art,Accepted,2.5,6.0,0,Canada,2024-07-23
+APP_054,Nancy Wright,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-27
+APP_055,Charles Scott,BA Photography,Accepted,2.5,6.0,0,UK,2024-07-24
+APP_056,Karen Adams,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-09
+APP_057,Thomas Baker,BA Digital Media,Accepted,2.5,6.0,0,USA,2024-07-25
+APP_058,Betty Nelson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-12
+APP_059,Paul Carter,MA Theatre Studies,Accepted,3.0,6.5,1,Canada,2024-07-26
+APP_060,Dorothy Mitchell,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-15
+APP_061,George Perez,MA Educational Leadership,Accepted,3.0,6.5,2,Mexico,2024-07-27
+APP_062,Helen Roberts,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_063,Edward Turner,BA Criminology,Accepted,2.7,6.0,0,USA,2024-07-28
+APP_064,Sharon Phillips,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-25
+APP_065,Frank Campbell,MSW Social Work,Accepted,3.0,6.5,1,UK,2024-07-29
+APP_066,Deborah Parker,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-06-30
+APP_067,Gary Evans,BSc Sport and Exercise Science,Accepted,3.0,6.5,0,USA,2024-07-30
+APP_068,Cynthia Edwards,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-01
+APP_069,Ronald Collins,MSc Occupational Therapy,Accepted,3.0,6.5,1,Canada,2024-07-31
+APP_070,Carol Stewart,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-05
+APP_071,Jeffrey Sanchez,MSc Health Informatics,Accepted,3.0,6.5,1,Mexico,2024-08-01
+APP_072,Christine Morris,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-10
+APP_073,Larry Rogers,BSc Medical Imaging,Accepted,3.0,6.0,0,USA,2024-08-02
+APP_074,Shirley Reed,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-15
+APP_075,Timothy Cook,BSc Environmental Biology,Accepted,2.8,6.0,0,Australia,2024-08-03
+APP_076,Pamela Morgan,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_077,Stephen Bell,BSc Ecology,Accepted,2.8,6.0,0,USA,2024-08-04
+APP_078,Donna Murphy,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-25
+APP_079,Gregory Bailey,BSc Wildlife Biology,Accepted,2.8,6.0,0,UK,2024-08-05
+APP_080,Michelle Rivera,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-06-30
+APP_081,Kevin Cooper,MSc Pharmacology,Accepted,3.2,6.5,1,Australia,2024-08-06
+APP_082,Sandra Kelly,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-05
+APP_083,Brian Howard,MSc Neuroscience,Accepted,3.2,6.5,1,USA,2024-08-07
+APP_084,Amanda Ward,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-10
+APP_085,Jason Cox,MBBS Medicine,Accepted,3.8,7.5,0,UK,2024-08-08
+APP_086,Rebecca Price,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-15
+APP_087,Scott Peterson,MSc Computer Vision,Accepted,3.2,6.5,1,Australia,2024-08-09
+APP_088,Nicole Gray,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-20
+APP_089,Patrick Ramirez,Postgraduate Diploma Information Security,Accepted,3.0,6.5,0,USA,2024-08-10
+APP_090,Angela James,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-25
+APP_091,Dennis Brooks,BSc Web Development,Accepted,2.7,6.0,0,UK,2024-08-11
+APP_092,Catherine Watson,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-30
+APP_093,Jerry Wright,MSc Computer Networks,Accepted,3.0,6.5,1,Australia,2024-08-12
+APP_094,Martha King,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-04
+APP_095,Arthur Green,MSc Cloud Computing,Accepted,3.0,6.5,1,USA,2024-08-13
+APP_096,Christine Baker,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-09
+APP_097,Walter Adams,MSc Cybersecurity,Accepted,3.0,6.5,1,UK,2024-08-14
+APP_098,Brenda Nelson,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-15
+APP_099,Roger Hall,PhD Artificial Intelligence,Accepted,3.2,6.5,0,Australia,2024-08-16
+APP_100,Joyce Young,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-17
+APP_101,Juan Garcia,MSc Artificial Intelligence,Accepted,3.3,7.0,2,Spain,2024-06-16
+APP_102,Maria Rodriguez,MBA,Accepted,3.8,6.5,5,Mexico,2024-05-21
+APP_103,Ahmed Khan,MSc Cybersecurity,Accepted,3.2,6.0,1,Pakistan,2024-07-02
+APP_104,Sophie Martin,BSc Computer Science,Accepted,3.6,7.5,0,France,2024-07-01
+APP_105,David Lee,MSc Data Science,Accepted,3.9,8.0,3,South Korea,2024-05-11
+APP_106,Fatima Zahra,MSc Artificial Intelligence,Accepted,3.2,7.5,1,Morocco,2024-05-11
+APP_107,Zainab Ali,MSc Biotechnology,Accepted,3.92,7.0,1,Egypt,2025-01-02
+APP_108,Emily Chen,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-21
+APP_109,Omar Hassan,MSc Data Science,Accepted,3.6,6.5,2,Saudi Arabia,2024-07-06
+APP_110,Sophie Johnson,MSc Cybersecurity,Accepted,3.3,7.0,1,UK,2024-06-26
+APP_111,Liam Smith,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-11
+APP_112,Aisha Khan,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-16
+APP_113,Carlos Garcia,MBA,Accepted,3.7,6.5,4,Mexico,2024-06-02
+APP_114,Mei Wong,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-23
+APP_115,Ben Davis,BSc Web Development,Accepted,2.9,6.0,0,Australia,2024-07-13
+APP_116,Fatima Ahmed,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-09
+APP_117,Daniel Kim,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-19
+APP_118,Chloe White,BSc Psychology,Accepted,3.0,6.0,0,Canada,2024-07-04
+APP_119,Hiroshi Sato,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-29
+APP_120,Isabella Bianchi,MSc Environmental Engineering,Accepted,3.4,6.5,2,Italy,2024-06-11
+APP_121,Samuel Brown,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-23
+APP_122,Nadia Ivanova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-16
+APP_123,Juan Lopez,MSc Finance,Accepted,3.2,6.5,2,Argentina,2024-06-06
+APP_124,Grace Wilson,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-29
+APP_125,Mohammed Hassan,MSc Entrepreneurship,Accepted,3.0,6.5,3,UAE,2024-07-02
+APP_126,Olivia Taylor,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-17
+APP_127,Wei Li,MSc Biotechnology,Accepted,3.8,7.0,1,China,2024-07-10
+APP_128,Anna Nowak,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-31
+APP_129,Ricardo Costa,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-12
+APP_130,Yara Hassan,MSc Human Resource Management,Accepted,2.8,6.5,1,Qatar,2024-06-08
+APP_131,Chris Miller,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-25
+APP_132,Lena Weber,MSc Supply Chain Management,Accepted,3.1,6.5,2,Germany,2024-07-07
+APP_133,Kevin Chen,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-20
+APP_134,Sofia Perez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-14
+APP_135,Alex Green,BSc Environmental Science,Accepted,2.9,6.0,0,Australia,2024-07-03
+APP_136,Priya Singh,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-26
+APP_137,David Park,BSc Mechanical Engineering,Accepted,3.0,6.0,0,South Korea,2024-07-05
+APP_138,Maria Silva,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-15
+APP_139,John White,BSc Civil Engineering,Accepted,3.0,6.0,0,USA,2024-07-08
+APP_140,Jane Brown,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-22
+APP_141,Peter Smith,BSc Aerospace Engineering,Accepted,3.0,6.0,0,Canada,2024-07-17
+APP_142,Sarah Johnson,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-27
+APP_143,Michael White,BSc Automotive Engineering,Accepted,3.0,6.0,0,UK,2024-07-19
+APP_144,Jessica Davis,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-30
+APP_145,Robert Martinez,BSc Architecture,Accepted,3.0,6.5,0,Spain,2024-07-20
+APP_146,Laura Garcia,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-09
+APP_147,James Brown,BSc Interior Design,Accepted,2.7,6.0,0,USA,2024-07-21
+APP_148,Linda Wilson,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-12
+APP_149,William Davis,BSc Landscape Architecture,Accepted,2.8,6.0,0,UK,2024-07-22
+APP_150,Elizabeth Taylor,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-14
+APP_151,Richard Brown,BA Graphic Design,Accepted,2.5,6.0,0,USA,2024-07-23
+APP_152,Susan Davis,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-18
+APP_153,Joseph White,BA Fine Art,Accepted,2.5,6.0,0,Canada,2024-07-24
+APP_154,Nancy Johnson,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-28
+APP_155,Charles Brown,BA Photography,Accepted,2.5,6.0,0,UK,2024-07-25
+APP_156,Karen Davis,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-10
+APP_157,Thomas White,BA Digital Media,Accepted,2.5,6.0,0,USA,2024-07-26
+APP_158,Betty Johnson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-13
+APP_159,Paul Davis,MA Theatre Studies,Accepted,3.0,6.5,1,Canada,2024-07-27
+APP_160,Dorothy White,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-16
+APP_161,George Brown,MA Educational Leadership,Accepted,3.0,6.5,2,Mexico,2024-07-28
+APP_162,Helen Davis,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_163,Edward White,BA Criminology,Accepted,2.7,6.0,0,USA,2024-07-29
+APP_164,Sharon Johnson,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-26
+APP_165,Frank Davis,MSW Social Work,Accepted,3.0,6.5,1,UK,2024-07-30
+APP_166,Deborah White,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-07-01
+APP_167,Gary Johnson,BSc Sport and Exercise Science,Accepted,3.0,6.5,0,USA,2024-07-31
+APP_168,Cynthia Davis,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-02
+APP_169,Ronald White,MSc Occupational Therapy,Accepted,3.0,6.5,1,Canada,2024-08-01
+APP_170,Carol Johnson,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-06
+APP_171,Jeffrey Davis,MSc Health Informatics,Accepted,3.0,6.5,1,Mexico,2024-08-02
+APP_172,Christine White,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-11
+APP_173,Larry Johnson,BSc Medical Imaging,Accepted,3.0,6.0,0,USA,2024-08-03
+APP_174,Shirley Davis,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-16
+APP_175,Timothy White,BSc Environmental Biology,Accepted,2.8,6.0,0,Australia,2024-08-04
+APP_176,Pamela Johnson,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_177,Stephen Davis,BSc Ecology,Accepted,2.8,6.0,0,USA,2024-08-05
+APP_178,Donna White,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-26
+APP_179,Gregory Johnson,BSc Wildlife Biology,Accepted,2.8,6.0,0,UK,2024-08-06
+APP_180,Michelle Davis,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-07-01
+APP_181,Kevin White,MSc Pharmacology,Accepted,3.2,6.5,1,Australia,2024-08-07
+APP_182,Sandra Johnson,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-06
+APP_183,Brian Davis,MSc Neuroscience,Accepted,3.2,6.5,1,USA,2024-08-08
+APP_184,Amanda White,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-11
+APP_185,Jason Johnson,MBBS Medicine,Accepted,3.8,7.5,0,UK,2024-08-09
+APP_186,Rebecca Davis,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-16
+APP_187,Scott White,MSc Computer Vision,Accepted,3.2,6.5,1,Australia,2024-08-10
+APP_188,Nicole Johnson,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-21
+APP_189,Patrick Davis,Postgraduate Diploma Information Security,Accepted,3.0,6.5,0,USA,2024-08-11
+APP_190,Angela White,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-26
+APP_191,Dennis Johnson,BSc Web Development,Accepted,2.7,6.0,0,UK,2024-08-12
+APP_192,Catherine Davis,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-31
+APP_193,Jerry White,MSc Computer Networks,Accepted,3.0,6.5,1,Australia,2024-08-13
+APP_194,Martha Johnson,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-05
+APP_195,Arthur Davis,MSc Cloud Computing,Accepted,3.0,6.5,1,USA,2024-08-14
+APP_196,Christine Johnson,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-10
+APP_197,Walter White,MSc Cybersecurity,Accepted,3.0,6.5,1,UK,2024-08-15
+APP_198,Brenda Davis,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-16
+APP_199,Roger Johnson,PhD Artificial Intelligence,Accepted,3.2,6.5,0,Australia,2024-08-17
+APP_200,Joyce White,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-18
+APP_201,John Smith,MSc Artificial Intelligence,Accepted,3.2,7.0,2,UK,2024-06-15
+APP_202,Priya Patel,MBA,Accepted,3.8,6.5,5,India,2024-05-20
+APP_203,Ahmed Hassan,MSc Cybersecurity,Accepted,3.2,6.0,1,Egypt,2024-07-01
+APP_204,Maria Garcia,BSc Computer Science,Accepted,3.6,7.5,0,Spain,2024-06-30
+APP_205,David Chen,MSc Data Science,Accepted,3.9,8.0,3,China,2024-05-10
+APP_206,Muhammad Ahmed,MSc Artificial Intelligence,Accepted,3.43,7.5,1,Pakistan,2024-05-10
+APP_207,Zainab Noor,MSc Biotechnology,Accepted,3.90,7,1,Pakistan,2025-01-01
+APP_208,Emily White,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-20
+APP_209,Omar Khan,MSc Data Science,Accepted,3.6,6.5,2,Saudi Arabia,2024-07-05
+APP_210,Sophie Dubois,MSc Cybersecurity,Accepted,3.3,7.0,1,France,2024-06-25
+APP_211,Liam Gallagher,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-10
+APP_212,Aisha Rahman,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-15
+APP_213,Carlos Ramirez,MBA,Accepted,3.7,6.5,4,Mexico,2024-06-01
+APP_214,Mei Lin,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-22
+APP_215,Ben Carter,BSc Web Development,Accepted,2.9,6.0,0,Australia,2024-07-12
+APP_216,Fatima Zahra,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-08
+APP_217,Daniel Lee,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-18
+APP_218,Chloe Brown,BSc Psychology,Accepted,3.0,6.0,0,Canada,2024-07-03
+APP_219,Hiroshi Tanaka,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-28
+APP_220,Isabella Rossi,MSc Environmental Engineering,Accepted,3.4,6.5,2,Italy,2024-06-10
+APP_221,Samuel Green,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-22
+APP_222,Nadia Petrova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-15
+APP_223,Juan Perez,MSc Finance,Accepted,3.2,6.5,2,Argentina,2024-06-05
+APP_224,Grace Taylor,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-28
+APP_225,Mohammed Ali,MSc Entrepreneurship,Accepted,3.0,6.5,3,UAE,2024-07-01
+APP_226,Olivia Wilson,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-16
+APP_227,Wei Zhang,MSc Biotechnology,Accepted,3.8,7.0,1,China,2024-07-09
+APP_228,Anna Kowalski,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-30
+APP_229,Ricardo Silva,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-11
+APP_230,Yara Al-Farsi,MSc Human Resource Management,Accepted,2.8,6.5,1,Qatar,2024-06-07
+APP_231,Chris Evans,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-24
+APP_232,Lena Schmidt,MSc Supply Chain Management,Accepted,3.1,6.5,2,Germany,2024-07-06
+APP_233,Kevin Wong,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-19
+APP_234,Sofia Rodriguez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-13
+APP_235,Alex Turner,BSc Environmental Science,Accepted,2.9,6.0,0,Australia,2024-07-02
+APP_236,Priya Sharma,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-25
+APP_237,David Kim,BSc Mechanical Engineering,Accepted,3.0,6.0,0,South Korea,2024-07-04
+APP_238,Maria Santos,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-14
+APP_239,John Doe,BSc Civil Engineering,Accepted,3.0,6.0,0,USA,2024-07-07
+APP_240,Jane Smith,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-21
+APP_241,Peter Jones,BSc Aerospace Engineering,Accepted,3.0,6.0,0,Canada,2024-07-16
+APP_242,Sarah Miller,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-26
+APP_243,Michael Davis,BSc Automotive Engineering,Accepted,3.0,6.0,0,UK,2024-07-18
+APP_244,Jessica Brown,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-29
+APP_245,Robert Garcia,BSc Architecture,Accepted,3.0,6.5,0,Spain,2024-07-19
+APP_246,Laura Martinez,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-08
+APP_247,James Wilson,BSc Interior Design,Accepted,2.7,6.0,0,USA,2024-07-20
+APP_248,Linda Taylor,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-11
+APP_249,William Thomas,BSc Landscape Architecture,Accepted,2.8,6.0,0,UK,2024-07-21
+APP_250,Elizabeth White,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-13
+APP_251,Richard Green,BA Graphic Design,Accepted,2.5,6.0,0,USA,2024-07-22
+APP_252,Susan Hall,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-17
+APP_253,Joseph King,BA Fine Art,Accepted,2.5,6.0,0,Canada,2024-07-23
+APP_254,Nancy Wright,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-27
+APP_255,Charles Scott,BA Photography,Accepted,2.5,6.0,0,UK,2024-07-24
+APP_256,Karen Adams,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-09
+APP_257,Thomas Baker,BA Digital Media,Accepted,2.5,6.0,0,USA,2024-07-25
+APP_258,Betty Nelson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-12
+APP_259,Paul Carter,MA Theatre Studies,Accepted,3.0,6.5,1,Canada,2024-07-26
+APP_260,Dorothy Mitchell,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-15
+APP_261,George Perez,MA Educational Leadership,Accepted,3.0,6.5,2,Mexico,2024-07-27
+APP_262,Helen Roberts,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_263,Edward Turner,BA Criminology,Accepted,2.7,6.0,0,USA,2024-07-28
+APP_264,Sharon Phillips,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-25
+APP_265,Frank Campbell,MSW Social Work,Accepted,3.0,6.5,1,UK,2024-07-29
+APP_266,Deborah Parker,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-06-30
+APP_267,Gary Evans,BSc Sport and Exercise Science,Under Review,3.0,6.5,0,USA,2024-07-30
+APP_268,Cynthia Edwards,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-01
+APP_269,Ronald Collins,MSc Occupational Therapy,Accepted,3.0,6.5,1,Canada,2024-07-31
+APP_270,Carol Stewart,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-05
+APP_271,Jeffrey Sanchez,MSc Health Informatics,Accepted,3.0,6.5,1,Mexico,2024-08-01
+APP_272,Christine Morris,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-10
+APP_273,Larry Rogers,BSc Medical Imaging,Accepted,3.0,6.0,0,USA,2024-08-02
+APP_274,Shirley Reed,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-15
+APP_275,Timothy Cook,BSc Environmental Biology,Accepted,2.8,6.0,0,Australia,2024-08-03
+APP_276,Pamela Morgan,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_277,Stephen Bell,BSc Ecology,Accepted,2.8,6.0,0,USA,2024-08-04
+APP_278,Donna Murphy,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-25
+APP_279,Gregory Bailey,BSc Wildlife Biology,Accepted,2.8,6.0,0,UK,2024-08-05
+APP_280,Michelle Rivera,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-06-30
+APP_281,Kevin Cooper,MSc Pharmacology,Accepted,3.2,6.5,1,Australia,2024-08-06
+APP_282,Sandra Kelly,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-05
+APP_283,Brian Howard,MSc Neuroscience,Accepted,3.2,6.5,1,USA,2024-08-07
+APP_284,Amanda Ward,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-10
+APP_285,Jason Cox,MBBS Medicine,Accepted,3.8,7.5,0,UK,2024-08-08
+APP_286,Rebecca Price,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-15
+APP_287,Scott Peterson,MSc Computer Vision,Accepted,3.2,6.5,1,Australia,2024-08-09
+APP_288,Nicole Gray,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-20
+APP_289,Patrick Ramirez,Postgraduate Diploma Information Security,Accepted,3.0,6.5,0,USA,2024-08-10
+APP_290,Angela James,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-25
+APP_291,Dennis Brooks,BSc Web Development,Accepted,2.7,6.0,0,UK,2024-08-11
+APP_292,Catherine Watson,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-30
+APP_293,Jerry Wright,MSc Computer Networks,Accepted,3.0,6.5,1,Australia,2024-08-12
+APP_294,Martha King,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-04
+APP_295,Arthur Green,MSc Cloud Computing,Accepted,3.0,6.5,1,USA,2024-08-13
+APP_296,Christine Baker,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-09
+APP_297,Walter Adams,MSc Cybersecurity,Accepted,3.0,6.5,1,UK,2024-08-14
+APP_298,Brenda Nelson,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-15
+APP_299,Roger Hall,PhD Artificial Intelligence,Accepted,3.2,6.5,0,Australia,2024-08-16
+APP_300,Joyce Young,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-17
+APP_301,Juan Garcia,MSc Artificial Intelligence,Accepted,3.2,7.0,2,Spain,2024-06-16
+APP_302,Maria Rodriguez,MBA,Accepted,3.8,6.5,5,Mexico,2024-05-21
+APP_303,Ahmed Khan,MSc Cybersecurity,Accepted,3.2,6.0,1,Pakistan,2024-07-02
+APP_304,Sophie Martin,BSc Computer Science,Accepted,3.6,7.5,0,France,2024-07-01
+APP_305,David Lee,MSc Data Science,Accepted,3.9,8.0,3,South Korea,2024-05-11
+APP_306,Fatima Zahra,MSc Artificial Intelligence,Accepted,3.45,7.5,1,Morocco,2024-05-11
+APP_307,Zainab Ali,MSc Biotechnology,Accepted,3.92,7.0,1,Egypt,2025-01-02
+APP_308,Emily Chen,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-21
+APP_309,Omar Hassan,MSc Data Science,Accepted,3.6,6.5,2,Saudi Arabia,2024-07-06
+APP_310,Sophie Johnson,MSc Cybersecurity,Accepted,3.3,7.0,1,UK,2024-06-26
+APP_311,Liam Smith,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-11
+APP_312,Aisha Khan,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-16
+APP_313,Carlos Garcia,MBA,Accepted,3.7,6.5,4,Mexico,2024-06-02
+APP_314,Mei Wong,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-23
+APP_315,Ben Davis,BSc Web Development,Accepted,2.9,6.0,0,Australia,2024-07-13
+APP_316,Fatima Ahmed,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-09
+APP_317,Daniel Kim,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-19
+APP_318,Chloe White,BSc Psychology,Accepted,3.0,6.0,0,Canada,2024-07-04
+APP_319,Hiroshi Sato,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-29
+APP_320,Isabella Bianchi,MSc Environmental Engineering,Accepted,3.4,6.5,2,Italy,2024-06-11
+APP_321,Samuel Brown,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-23
+APP_322,Nadia Ivanova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-16
+APP_323,Juan Lopez,MSc Finance,Accepted,3.2,6.5,2,Argentina,2024-06-06
+APP_324,Grace Wilson,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-29
+APP_325,Mohammed Hassan,MSc Entrepreneurship,Accepted,3.0,6.5,3,UAE,2024-07-02
+APP_326,Olivia Taylor,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-17
+APP_327,Wei Li,MSc Biotechnology,Accepted,3.8,7.0,1,China,2024-07-10
+APP_328,Anna Nowak,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-31
+APP_329,Ricardo Costa,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-12
+APP_330,Yara Hassan,MSc Human Resource Management,Accepted,2.8,6.5,1,Qatar,2024-06-08
+APP_331,Chris Miller,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-25
+APP_332,Lena Weber,MSc Supply Chain Management,Accepted,3.1,6.5,2,Germany,2024-07-07
+APP_333,Kevin Chen,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-20
+APP_334,Sofia Perez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-14
+APP_335,Alex Green,BSc Environmental Science,Accepted,2.9,6.0,0,Australia,2024-07-03
+APP_336,Priya Singh,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-26
+APP_337,David Park,BSc Mechanical Engineering,Accepted,3.0,6.0,0,South Korea,2024-07-05
+APP_338,Maria Silva,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-15
+APP_339,John White,BSc Civil Engineering,Accepted,3.0,6.0,0,USA,2024-07-08
+APP_340,Jane Brown,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-22
+APP_341,Peter Smith,BSc Aerospace Engineering,Accepted,3.0,6.0,0,Canada,2024-07-17
+APP_342,Sarah Johnson,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-27
+APP_343,Michael White,BSc Automotive Engineering,Accepted,3.0,6.0,0,UK,2024-07-19
+APP_344,Jessica Davis,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-30
+APP_345,Robert Martinez,BSc Architecture,Accepted,3.0,6.5,0,Spain,2024-07-20
+APP_346,Laura Garcia,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-09
+APP_347,James Brown,BSc Interior Design,Accepted,2.7,6.0,0,USA,2024-07-21
+APP_348,Linda Wilson,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-12
+APP_349,William Davis,BSc Landscape Architecture,Accepted,2.8,6.0,0,UK,2024-07-22
+APP_350,Elizabeth Taylor,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-14
+APP_351,Richard Brown,BA Graphic Design,Accepted,2.5,6.0,0,USA,2024-07-23
+APP_352,Susan Davis,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-18
+APP_353,Joseph White,BA Fine Art,Accepted,2.5,6.0,0,Canada,2024-07-24
+APP_354,Nancy Johnson,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-28
+APP_355,Charles Brown,BA Photography,Accepted,2.5,6.0,0,UK,2024-07-25
+APP_356,Karen Davis,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-10
+APP_357,Thomas White,BA Digital Media,Accepted,2.5,6.0,0,USA,2024-07-26
+APP_358,Betty Johnson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-13
+APP_359,Paul Davis,MA Theatre Studies,Accepted,3.0,6.5,1,Canada,2024-07-27
+APP_360,Dorothy White,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-16
+APP_361,George Brown,MA Educational Leadership,Accepted,3.0,6.5,2,Mexico,2024-07-28
+APP_362,Helen Davis,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_363,Edward White,BA Criminology,Accepted,2.7,6.0,0,USA,2024-07-29
+APP_364,Sharon Johnson,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-26
+APP_365,Frank Davis,MSW Social Work,Accepted,3.0,6.5,1,UK,2024-07-30
+APP_366,Deborah White,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-07-01
+APP_367,Gary Johnson,BSc Sport and Exercise Science,Under Review,3.0,6.5,0,USA,2024-07-31
+APP_368,Cynthia Davis,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-02
+APP_369,Ronald White,MSc Occupational Therapy,Under Review,3.0,6.5,1,Canada,2024-08-01
+APP_370,Carol Johnson,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-06
+APP_371,Jeffrey Davis,MSc Health Informatics,Under Review,3.0,6.5,1,Mexico,2024-08-02
+APP_372,Christine White,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-11
+APP_373,Larry Johnson,BSc Medical Imaging,Under Review,3.0,6.0,0,USA,2024-08-03
+APP_374,Shirley Davis,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-16
+APP_375,Timothy White,BSc Environmental Biology,Under Review,2.8,6.0,0,Australia,2024-08-04
+APP_376,Pamela Johnson,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_377,Stephen Davis,BSc Ecology,Under Review,2.8,6.0,0,USA,2024-08-05
+APP_378,Donna White,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-26
+APP_379,Gregory Johnson,BSc Wildlife Biology,Under Review,2.8,6.0,0,UK,2024-08-06
+APP_380,Michelle Davis,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-07-01
+APP_381,Kevin White,MSc Pharmacology,Under Review,3.2,6.5,1,Australia,2024-08-07
+APP_382,Sandra Johnson,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-06
+APP_383,Brian Davis,MSc Neuroscience,Under Review,3.2,6.5,1,USA,2024-08-08
+APP_384,Amanda White,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-11
+APP_385,Jason Johnson,MBBS Medicine,Under Review,3.8,7.5,0,UK,2024-08-09
+APP_386,Rebecca Davis,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-16
+APP_387,Scott White,MSc Computer Vision,Under Review,3.2,6.5,1,Australia,2024-08-10
+APP_388,Nicole Johnson,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-21
+APP_389,Patrick Davis,Postgraduate Diploma Information Security,Under Review,3.0,6.5,0,USA,2024-08-11
+APP_390,Angela White,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-26
+APP_391,Dennis Johnson,BSc Web Development,Under Review,2.7,6.0,0,UK,2024-08-12
+APP_392,Catherine Davis,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-31
+APP_393,Jerry White,MSc Computer Networks,Under Review,3.0,6.5,1,Australia,2024-08-13
+APP_394,Martha Johnson,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-05
+APP_395,Arthur Davis,MSc Cloud Computing,Under Review,3.0,6.5,1,USA,2024-08-14
+APP_396,Christine Johnson,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-10
+APP_397,Walter White,MSc Cybersecurity,Under Review,3.0,6.5,1,UK,2024-08-15
+APP_398,Brenda Davis,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-16
+APP_399,Roger Johnson,PhD Artificial Intelligence,Under Review,3.2,6.5,0,Australia,2024-08-17
+APP_400,Joyce White,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-18
+APP_401,John Smith,MSc Artificial Intelligence,Under Review,3,7.0,2,UK,2024-06-15
+APP_402,Priya Patel,MBA,Accepted,3.8,6.5,5,India,2024-05-20
+APP_403,Ahmed Hassan,MSc Cybersecurity,Accepted,3.2,6.0,1,Egypt,2024-07-01
+APP_404,Maria Garcia,BSc Computer Science,Under Review,3.6,7.5,0,Spain,2024-06-30
+APP_405,David Chen,MSc Data Science,Accepted,3.9,8.0,3,China,2024-05-10
+APP_406,Muhammad Ahmed,MSc Artificial Intelligence,Accepted,3.43,7.5,1,Pakistan,2024-05-10
+APP_407,Zainab Noor,MSc Biotechnology,Under Review,3.90,7,1,Pakistan,2025-01-01
+APP_408,Emily White,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-20
+APP_409,Omar Khan,MSc Data Science,Under Review,3.6,6.5,2,Saudi Arabia,2024-07-05
+APP_410,Sophie Dubois,MSc Cybersecurity,Accepted,3.3,7.0,1,France,2024-06-25
+APP_411,Liam Gallagher,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-10
+APP_412,Aisha Rahman,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-15
+APP_413,Carlos Ramirez,MBA,Under Review,3.7,6.5,4,Mexico,2024-06-01
+APP_414,Mei Lin,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-22
+APP_415,Ben Carter,BSc Web Development,Under Review,2.9,6.0,0,Australia,2024-07-12
+APP_416,Fatima Zahra,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-08
+APP_417,Daniel Lee,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-18
+APP_418,Chloe Brown,BSc Psychology,Under Review,3.0,6.0,0,Canada,2024-07-03
+APP_419,Hiroshi Tanaka,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-28
+APP_420,Isabella Rossi,MSc Environmental Engineering,Under Review,3.4,6.5,2,Italy,2024-06-10
+APP_421,Samuel Green,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-22
+APP_422,Nadia Petrova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-15
+APP_423,Juan Perez,MSc Finance,Under Review,3.2,6.5,2,Argentina,2024-06-05
+APP_424,Grace Taylor,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-28
+APP_425,Mohammed Ali,MSc Entrepreneurship,Under Review,3.0,6.5,3,UAE,2024-07-01
+APP_426,Olivia Wilson,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-16
+APP_427,Wei Zhang,MSc Biotechnology,Under Review,3.8,7.0,1,China,2024-07-09
+APP_428,Anna Kowalski,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-30
+APP_429,Ricardo Silva,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-11
+APP_430,Yara Al-Farsi,MSc Human Resource Management,Under Review,2.8,6.5,1,Qatar,2024-06-07
+APP_431,Chris Evans,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-24
+APP_432,Lena Schmidt,MSc Supply Chain Management,Under Review,3.1,6.5,2,Germany,2024-07-06
+APP_433,Kevin Wong,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-19
+APP_434,Sofia Rodriguez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-13
+APP_435,Alex Turner,BSc Environmental Science,Under Review,2.9,6.0,0,Australia,2024-07-02
+APP_436,Priya Sharma,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-25
+APP_437,David Kim,BSc Mechanical Engineering,Under Review,3.0,6.0,0,South Korea,2024-07-04
+APP_438,Maria Santos,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-14
+APP_439,John Doe,BSc Civil Engineering,Under Review,3.0,6.0,0,USA,2024-07-07
+APP_440,Jane Smith,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-21
+APP_441,Peter Jones,BSc Aerospace Engineering,Under Review,3.0,6.0,0,Canada,2024-07-16
+APP_442,Sarah Miller,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-26
+APP_443,Michael Davis,BSc Automotive Engineering,Under Review,3.0,6.0,0,UK,2024-07-18
+APP_444,Jessica Brown,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-29
+APP_445,Robert Garcia,BSc Architecture,Under Review,3.0,6.5,0,Spain,2024-07-19
+APP_446,Laura Martinez,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-08
+APP_447,James Wilson,BSc Interior Design,Under Review,2.7,6.0,0,USA,2024-07-20
+APP_448,Linda Taylor,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-11
+APP_449,William Thomas,BSc Landscape Architecture,Under Review,2.8,6.0,0,UK,2024-07-21
+APP_450,Elizabeth White,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-13
+APP_451,Richard Green,BA Graphic Design,Under Review,2.5,6.0,0,USA,2024-07-22
+APP_452,Susan Hall,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-17
+APP_453,Joseph King,BA Fine Art,Under Review,2.5,6.0,0,Canada,2024-07-23
+APP_454,Nancy Wright,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-27
+APP_455,Charles Scott,BA Photography,Under Review,2.5,6.0,0,UK,2024-07-24
+APP_456,Karen Adams,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-09
+APP_457,Thomas Baker,BA Digital Media,Under Review,2.5,6.0,0,USA,2024-07-25
+APP_458,Betty Nelson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-12
+APP_459,Paul Carter,MA Theatre Studies,Under Review,3.0,6.5,1,Canada,2024-07-26
+APP_460,Dorothy Mitchell,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-15
+APP_461,George Perez,MA Educational Leadership,Under Review,3.0,6.5,2,Mexico,2024-07-27
+APP_462,Helen Roberts,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_463,Edward Turner,BA Criminology,Under Review,2.7,6.0,0,USA,2024-07-28
+APP_464,Sharon Phillips,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-25
+APP_465,Frank Campbell,MSW Social Work,Under Review,3.0,6.5,1,UK,2024-07-29
+APP_466,Deborah Parker,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-06-30
+APP_467,Gary Evans,BSc Sport and Exercise Science,Under Review,3.0,6.5,0,USA,2024-07-30
+APP_468,Cynthia Edwards,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-01
+APP_469,Ronald Collins,MSc Occupational Therapy,Under Review,3.0,6.5,1,Canada,2024-07-31
+APP_470,Carol Stewart,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-05
+APP_471,Jeffrey Sanchez,MSc Health Informatics,Under Review,3.0,6.5,1,Mexico,2024-08-01
+APP_472,Christine Morris,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-10
+APP_473,Larry Rogers,BSc Medical Imaging,Under Review,3.0,6.0,0,USA,2024-08-02
+APP_474,Shirley Reed,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-15
+APP_475,Timothy Cook,BSc Environmental Biology,Under Review,2.8,6.0,0,Australia,2024-08-03
+APP_476,Pamela Morgan,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_477,Stephen Bell,BSc Ecology,Under Review,2.8,6.0,0,USA,2024-08-04
+APP_478,Donna Murphy,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-25
+APP_479,Gregory Bailey,BSc Wildlife Biology,Under Review,2.8,6.0,0,UK,2024-08-05
+APP_480,Michelle Rivera,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-06-30
+APP_481,Kevin Cooper,MSc Pharmacology,Under Review,3.2,6.5,1,Australia,2024-08-06
+APP_482,Sandra Kelly,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-05
+APP_483,Brian Howard,MSc Neuroscience,Under Review,3.2,6.5,1,USA,2024-08-07
+APP_484,Amanda Ward,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-10
+APP_485,Jason Cox,MBBS Medicine,Under Review,3.8,7.5,0,UK,2024-08-08
+APP_486,Rebecca Price,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-15
+APP_487,Scott Peterson,MSc Computer Vision,Under Review,3.2,6.5,1,Australia,2024-08-09
+APP_488,Nicole Gray,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-20
+APP_489,Patrick Ramirez,Postgraduate Diploma Information Security,Under Review,3.0,6.5,0,USA,2024-08-10
+APP_490,Angela James,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-25
+APP_491,Dennis Brooks,BSc Web Development,Under Review,2.7,6.0,0,UK,2024-08-11
+APP_492,Catherine Watson,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-30
+APP_493,Jerry Wright,MSc Computer Networks,Under Review,3.0,6.5,1,Australia,2024-08-12
+APP_494,Martha King,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-04
+APP_495,Arthur Green,MSc Cloud Computing,Under Review,3.0,6.5,1,USA,2024-08-13
+APP_496,Christine Baker,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-09
+APP_497,Walter Adams,MSc Cybersecurity,Under Review,3.0,6.5,1,UK,2024-08-14
+APP_498,Brenda Nelson,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-15
+APP_499,Roger Hall,PhD Artificial Intelligence,Under Review,3.2,6.5,0,Australia,2024-08-16
+APP_500,Joyce Young,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-17
+APP_501,Juan Garcia,MSc Artificial Intelligence,Under Review,3.3,7.0,2,Spain,2024-06-16
+APP_502,Maria Rodriguez,MBA,Accepted,3.8,6.5,5,Mexico,2024-05-21
+APP_503,Ahmed Khan,MSc Cybersecurity,Accepted,3.2,6.0,1,Pakistan,2024-07-02
+APP_504,Sophie Martin,BSc Computer Science,Under Review,3.6,7.5,0,France,2024-07-01
+APP_505,David Lee,MSc Data Science,Accepted,3.9,8.0,3,South Korea,2024-05-11
+APP_506,Fatima Zahra,MSc Artificial Intelligence,Accepted,3.45,7.5,1,Morocco,2024-05-11
+APP_507,Zainab Ali,MSc Biotechnology,Under Review,3.92,7.0,1,Egypt,2025-01-02
+APP_508,Emily Chen,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-21
+APP_509,Omar Hassan,MSc Data Science,Under Review,3.6,6.5,2,Saudi Arabia,2024-07-06
+APP_510,Sophie Johnson,MSc Cybersecurity,Accepted,3.3,7.0,1,UK,2024-06-26
+APP_511,Liam Smith,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-11
+APP_512,Aisha Khan,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-16
+APP_513,Carlos Garcia,MBA,Under Review,3.7,6.5,4,Mexico,2024-06-02
+APP_514,Mei Wong,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-23
+APP_515,Ben Davis,BSc Web Development,Under Review,2.9,6.0,0,Australia,2024-07-13
+APP_516,Fatima Ahmed,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-09
+APP_517,Daniel Kim,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-19
+APP_518,Chloe White,BSc Psychology,Under Review,3.0,6.0,0,Canada,2024-07-04
+APP_519,Hiroshi Sato,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-29
+APP_520,Isabella Bianchi,MSc Environmental Engineering,Under Review,3.4,6.5,2,Italy,2024-06-11
+APP_521,Samuel Brown,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-23
+APP_522,Nadia Ivanova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-16
+APP_523,Juan Lopez,MSc Finance,Under Review,3.2,6.5,2,Argentina,2024-06-06
+APP_524,Grace Wilson,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-29
+APP_525,Mohammed Hassan,MSc Entrepreneurship,Under Review,3.0,6.5,3,UAE,2024-07-02
+APP_526,Olivia Taylor,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-17
+APP_527,Wei Li,MSc Biotechnology,Under Review,3.8,7.0,1,China,2024-07-10
+APP_528,Anna Nowak,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-31
+APP_529,Ricardo Costa,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-12
+APP_530,Yara Hassan,MSc Human Resource Management,Under Review,2.8,6.5,1,Qatar,2024-06-08
+APP_531,Chris Miller,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-25
+APP_532,Lena Weber,MSc Supply Chain Management,Under Review,3.1,6.5,2,Germany,2024-07-07
+APP_533,Kevin Chen,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-20
+APP_534,Sofia Perez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-14
+APP_535,Alex Green,BSc Environmental Science,Under Review,2.9,6.0,0,Australia,2024-07-03
+APP_536,Priya Singh,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-26
+APP_537,David Park,BSc Mechanical Engineering,Under Review,3.0,6.0,0,South Korea,2024-07-05
+APP_538,Maria Silva,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-15
+APP_539,John White,BSc Civil Engineering,Under Review,3.0,6.0,0,USA,2024-07-08
+APP_540,Jane Brown,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-22
+APP_541,Peter Smith,BSc Aerospace Engineering,Under Review,3.0,6.0,0,Canada,2024-07-17
+APP_542,Sarah Johnson,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-27
+APP_543,Michael White,BSc Automotive Engineering,Under Review,3.0,6.0,0,UK,2024-07-19
+APP_544,Jessica Davis,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-30
+APP_545,Robert Martinez,BSc Architecture,Under Review,3.0,6.5,0,Spain,2024-07-20
+APP_546,Laura Garcia,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-09
+APP_547,James Brown,BSc Interior Design,Under Review,2.7,6.0,0,USA,2024-07-21
+APP_548,Linda Wilson,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-12
+APP_549,William Davis,BSc Landscape Architecture,Under Review,2.8,6.0,0,UK,2024-07-22
+APP_550,Elizabeth Taylor,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-14
+APP_551,Richard Brown,BA Graphic Design,Under Review,2.5,6.0,0,USA,2024-07-23
+APP_552,Susan Davis,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-18
+APP_553,Joseph White,BA Fine Art,Under Review,2.5,6.0,0,Canada,2024-07-24
+APP_554,Nancy Johnson,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-28
+APP_555,Charles Brown,BA Photography,Under Review,2.5,6.0,0,UK,2024-07-25
+APP_556,Karen Davis,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-10
+APP_557,Thomas White,BA Digital Media,Under Review,2.5,6.0,0,USA,2024-07-26
+APP_558,Betty Johnson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-13
+APP_559,Paul Davis,MA Theatre Studies,Under Review,3.0,6.5,1,Canada,2024-07-27
+APP_560,Dorothy White,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-16
+APP_561,George Brown,MA Educational Leadership,Under Review,3.0,6.5,2,Mexico,2024-07-28
+APP_562,Helen Davis,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_563,Edward White,BA Criminology,Under Review,2.7,6.0,0,USA,2024-07-29
+APP_564,Sharon Johnson,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-26
+APP_565,Frank Davis,MSW Social Work,Under Review,3.0,6.5,1,UK,2024-07-30
+APP_566,Deborah White,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-07-01
+APP_567,Gary Johnson,BSc Sport and Exercise Science,Under Review,3.0,6.5,0,USA,2024-07-31
+APP_568,Cynthia Davis,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-02
+APP_569,Ronald White,MSc Occupational Therapy,Under Review,3.0,6.5,1,Canada,2024-08-01
+APP_570,Carol Johnson,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-06
+APP_571,Jeffrey Davis,MSc Health Informatics,Under Review,3.0,6.5,1,Mexico,2024-08-02
+APP_572,Christine White,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-11
+APP_573,Larry Johnson,BSc Medical Imaging,Under Review,3.0,6.0,0,USA,2024-08-03
+APP_574,Shirley Davis,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-16
+APP_575,Timothy White,BSc Environmental Biology,Under Review,2.8,6.0,0,Australia,2024-08-04
+APP_576,Pamela Johnson,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_577,Stephen Davis,BSc Ecology,Under Review,2.8,6.0,0,USA,2024-08-05
+APP_578,Donna White,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-26
+APP_579,Gregory Johnson,BSc Wildlife Biology,Under Review,2.8,6.0,0,UK,2024-08-06
+APP_580,Michelle Davis,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-07-01
+APP_581,Kevin White,MSc Pharmacology,Under Review,3.2,6.5,1,Australia,2024-08-07
+APP_582,Sandra Johnson,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-06
+APP_583,Brian Davis,MSc Neuroscience,Under Review,3.2,6.5,1,USA,2024-08-08
+APP_584,Amanda White,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-11
+APP_585,Jason Johnson,MBBS Medicine,Under Review,3.8,7.5,0,UK,2024-08-09
+APP_586,Rebecca Davis,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-16
+APP_587,Scott White,MSc Computer Vision,Under Review,3.2,6.5,1,Australia,2024-08-10
+APP_588,Nicole Johnson,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-21
+APP_589,Patrick Davis,Postgraduate Diploma Information Security,Under Review,3.0,6.5,0,USA,2024-08-11
+APP_590,Angela White,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-26
+APP_591,Dennis Johnson,BSc Web Development,Under Review,2.7,6.0,0,UK,2024-08-12
+APP_592,Catherine Davis,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-31
+APP_593,Jerry White,MSc Computer Networks,Under Review,3.0,6.5,1,Australia,2024-08-13
+APP_594,Martha Johnson,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-05
+APP_595,Arthur Davis,MSc Cloud Computing,Under Review,3.0,6.5,1,USA,2024-08-14
+APP_596,Christine Johnson,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-10
+APP_597,Walter White,MSc Cybersecurity,Under Review,3.0,6.5,1,UK,2024-08-15
+APP_598,Brenda Davis,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-16
+APP_599,Roger Johnson,PhD Artificial Intelligence,Under Review,3.2,6.5,0,Australia,2024-08-17
+APP_600,Joyce White,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-18
+APP_601,John Smith,MSc Artificial Intelligence,Under Review,3.3,7.0,2,UK,2024-06-15
+APP_602,Priya Patel,MBA,Accepted,3.8,6.5,5,India,2024-05-20
+APP_603,Ahmed Hassan,MSc Cybersecurity,Accepted,3.2,6.0,1,Egypt,2024-07-01
+APP_604,Maria Garcia,BSc Computer Science,Under Review,3.6,7.5,0,Spain,2024-06-30
+APP_605,David Chen,MSc Data Science,Accepted,3.9,8.0,3,China,2024-05-10
+APP_606,Muhammad Ahmed,MSc Artificial Intelligence,Accepted,3.43,7.5,1,Pakistan,2024-05-10
+APP_607,Zainab Noor,MSc Biotechnology,Under Review,3.90,7,1,Pakistan,2025-01-01
+APP_608,Emily White,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-20
+APP_609,Omar Khan,MSc Data Science,Under Review,3.6,6.5,2,Saudi Arabia,2024-07-05
+APP_610,Sophie Dubois,MSc Cybersecurity,Accepted,3.3,7.0,1,France,2024-06-25
+APP_611,Liam Gallagher,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-10
+APP_612,Aisha Rahman,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-15
+APP_613,Carlos Ramirez,MBA,Under Review,3.7,6.5,4,Mexico,2024-06-01
+APP_614,Mei Lin,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-22
+APP_615,Ben Carter,BSc Web Development,Under Review,2.9,6.0,0,Australia,2024-07-12
+APP_616,Fatima Zahra,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-08
+APP_617,Daniel Lee,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-18
+APP_618,Chloe Brown,BSc Psychology,Under Review,3.0,6.0,0,Canada,2024-07-03
+APP_619,Hiroshi Tanaka,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-28
+APP_620,Isabella Rossi,MSc Environmental Engineering,Under Review,3.4,6.5,2,Italy,2024-06-10
+APP_621,Samuel Green,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-22
+APP_622,Nadia Petrova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-15
+APP_623,Juan Perez,MSc Finance,Under Review,3.2,6.5,2,Argentina,2024-06-05
+APP_624,Grace Taylor,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-28
+APP_625,Mohammed Ali,MSc Entrepreneurship,Under Review,3.0,6.5,3,UAE,2024-07-01
+APP_626,Olivia Wilson,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-16
+APP_627,Wei Zhang,MSc Biotechnology,Under Review,3.8,7.0,1,China,2024-07-09
+APP_628,Anna Kowalski,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-30
+APP_629,Ricardo Silva,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-11
+APP_630,Yara Al-Farsi,MSc Human Resource Management,Under Review,2.8,6.5,1,Qatar,2024-06-07
+APP_631,Chris Evans,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-24
+APP_632,Lena Schmidt,MSc Supply Chain Management,Under Review,3.1,6.5,2,Germany,2024-07-06
+APP_633,Kevin Wong,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-19
+APP_634,Sofia Rodriguez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-13
+APP_635,Alex Turner,BSc Environmental Science,Under Review,2.9,6.0,0,Australia,2024-07-02
+APP_636,Priya Sharma,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-25
+APP_637,David Kim,BSc Mechanical Engineering,Under Review,3.0,6.0,0,South Korea,2024-07-04
+APP_638,Maria Santos,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-14
+APP_639,John Doe,BSc Civil Engineering,Under Review,3.0,6.0,0,USA,2024-07-07
+APP_640,Jane Smith,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-21
+APP_641,Peter Jones,BSc Aerospace Engineering,Under Review,3.0,6.0,0,Canada,2024-07-16
+APP_642,Sarah Miller,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-26
+APP_643,Michael Davis,BSc Automotive Engineering,Under Review,3.0,6.0,0,UK,2024-07-18
+APP_644,Jessica Brown,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-29
+APP_645,Robert Garcia,BSc Architecture,Under Review,3.0,6.5,0,Spain,2024-07-19
+APP_646,Laura Martinez,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-08
+APP_647,James Wilson,BSc Interior Design,Under Review,2.7,6.0,0,USA,2024-07-20
+APP_648,Linda Taylor,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-11
+APP_649,William Thomas,BSc Landscape Architecture,Under Review,2.8,6.0,0,UK,2024-07-21
+APP_650,Elizabeth White,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-13
+APP_651,Richard Green,BA Graphic Design,Under Review,2.5,6.0,0,USA,2024-07-22
+APP_652,Susan Hall,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-17
+APP_653,Joseph King,BA Fine Art,Under Review,2.5,6.0,0,Canada,2024-07-23
+APP_654,Nancy Wright,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-27
+APP_655,Charles Scott,BA Photography,Under Review,2.5,6.0,0,UK,2024-07-24
+APP_656,Karen Adams,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-09
+APP_657,Thomas Baker,BA Digital Media,Under Review,2.5,6.0,0,USA,2024-07-25
+APP_658,Betty Nelson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-12
+APP_659,Paul Carter,MA Theatre Studies,Under Review,3.0,6.5,1,Canada,2024-07-26
+APP_660,Dorothy Mitchell,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-15
+APP_661,George Perez,MA Educational Leadership,Under Review,3.0,6.5,2,Mexico,2024-07-27
+APP_662,Helen Roberts,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_663,Edward Turner,BA Criminology,Under Review,2.7,6.0,0,USA,2024-07-28
+APP_664,Sharon Phillips,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-25
+APP_665,Frank Campbell,MSW Social Work,Under Review,3.0,6.5,1,UK,2024-07-29
+APP_666,Deborah Parker,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-06-30
+APP_667,Gary Evans,BSc Sport and Exercise Science,Under Review,3.0,6.5,0,USA,2024-07-30
+APP_668,Cynthia Edwards,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-01
+APP_669,Ronald Collins,MSc Occupational Therapy,Under Review,3.0,6.5,1,Canada,2024-07-31
+APP_670,Carol Stewart,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-05
+APP_671,Jeffrey Sanchez,MSc Health Informatics,Under Review,3.0,6.5,1,Mexico,2024-08-01
+APP_672,Christine Morris,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-10
+APP_673,Larry Rogers,BSc Medical Imaging,Under Review,3.0,6.0,0,USA,2024-08-02
+APP_674,Shirley Reed,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-15
+APP_675,Timothy Cook,BSc Environmental Biology,Under Review,2.8,6.0,0,Australia,2024-08-03
+APP_676,Pamela Morgan,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_677,Stephen Bell,BSc Ecology,Under Review,2.8,6.0,0,USA,2024-08-04
+APP_678,Donna Murphy,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-25
+APP_679,Gregory Bailey,BSc Wildlife Biology,Under Review,2.8,6.0,0,UK,2024-08-05
+APP_680,Michelle Rivera,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-06-30
+APP_681,Kevin Cooper,MSc Pharmacology,Under Review,3.2,6.5,1,Australia,2024-08-06
+APP_682,Sandra Kelly,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-05
+APP_683,Brian Howard,MSc Neuroscience,Under Review,3.2,6.5,1,USA,2024-08-07
+APP_684,Amanda Ward,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-10
+APP_685,Jason Cox,MBBS Medicine,Under Review,3.8,7.5,0,UK,2024-08-08
+APP_686,Rebecca Price,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-15
+APP_687,Scott Peterson,MSc Computer Vision,Under Review,3.2,6.5,1,Australia,2024-08-09
+APP_688,Nicole Gray,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-20
+APP_689,Patrick Ramirez,Postgraduate Diploma Information Security,Under Review,3.0,6.5,0,USA,2024-08-10
+APP_690,Angela James,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-25
+APP_691,Dennis Brooks,BSc Web Development,Under Review,2.7,6.0,0,UK,2024-08-11
+APP_692,Catherine Watson,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-30
+APP_693,Jerry Wright,MSc Computer Networks,Under Review,3.0,6.5,1,Australia,2024-08-12
+APP_694,Martha King,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-04
+APP_695,Arthur Green,MSc Cloud Computing,Under Review,3.0,6.5,1,USA,2024-08-13
+APP_696,Christine Baker,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-09
+APP_697,Walter Adams,MSc Cybersecurity,Under Review,3.0,6.5,1,UK,2024-08-14
+APP_698,Brenda Nelson,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-15
+APP_699,Roger Hall,PhD Artificial Intelligence,Under Review,3.2,6.5,0,Australia,2024-08-16
+APP_700,Joyce Young,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-17
+APP_701,Juan Garcia,MSc Artificial Intelligence,Under Review,3.3,7.0,2,Spain,2024-06-16
+APP_702,Maria Rodriguez,MBA,Accepted,3.8,6.5,5,Mexico,2024-05-21
+APP_703,Ahmed Khan,MSc Cybersecurity,Accepted,3.2,6.0,1,Pakistan,2024-07-02
+APP_704,Sophie Martin,BSc Computer Science,Under Review,3.6,7.5,0,France,2024-07-01
+APP_705,David Lee,MSc Data Science,Accepted,3.9,8.0,3,South Korea,2024-05-11
+APP_706,Fatima Zahra,MSc Artificial Intelligence,Accepted,3.45,7.5,1,Morocco,2024-05-11
+APP_707,Zainab Ali,MSc Biotechnology,Under Review,3.92,7.0,1,Egypt,2025-01-02
+APP_708,Emily Chen,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-21
+APP_709,Omar Hassan,MSc Data Science,Under Review,3.6,6.5,2,Saudi Arabia,2024-07-06
+APP_710,Sophie Johnson,MSc Cybersecurity,Accepted,3.3,7.0,1,UK,2024-06-26
+APP_711,Liam Smith,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-11
+APP_712,Aisha Khan,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-16
+APP_713,Carlos Garcia,MBA,Under Review,3.7,6.5,4,Mexico,2024-06-02
+APP_714,Mei Wong,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-23
+APP_715,Ben Davis,BSc Web Development,Under Review,2.9,6.0,0,Australia,2024-07-13
+APP_716,Fatima Ahmed,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-09
+APP_717,Daniel Kim,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-19
+APP_718,Chloe White,BSc Psychology,Under Review,3.0,6.0,0,Canada,2024-07-04
+APP_719,Hiroshi Sato,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-29
+APP_720,Isabella Bianchi,MSc Environmental Engineering,Under Review,3.4,6.5,2,Italy,2024-06-11
+APP_721,Samuel Brown,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-23
+APP_722,Nadia Ivanova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-16
+APP_723,Juan Lopez,MSc Finance,Under Review,3.2,6.5,2,Argentina,2024-06-06
+APP_724,Grace Wilson,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-29
+APP_725,Mohammed Hassan,MSc Entrepreneurship,Under Review,3.0,6.5,3,UAE,2024-07-02
+APP_726,Olivia Taylor,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-17
+APP_727,Wei Li,MSc Biotechnology,Under Review,3.8,7.0,1,China,2024-07-10
+APP_728,Anna Nowak,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-31
+APP_729,Ricardo Costa,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-12
+APP_730,Yara Hassan,MSc Human Resource Management,Under Review,2.8,6.5,1,Qatar,2024-06-08
+APP_731,Chris Miller,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-25
+APP_732,Lena Weber,MSc Supply Chain Management,Under Review,3.1,6.5,2,Germany,2024-07-07
+APP_733,Kevin Chen,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-20
+APP_734,Sofia Perez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-14
+APP_735,Alex Green,BSc Environmental Science,Under Review,2.9,6.0,0,Australia,2024-07-03
+APP_736,Priya Singh,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-26
+APP_737,David Park,BSc Mechanical Engineering,Under Review,3.0,6.0,0,South Korea,2024-07-05
+APP_738,Maria Silva,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-15
+APP_739,John White,BSc Civil Engineering,Under Review,3.0,6.0,0,USA,2024-07-08
+APP_740,Jane Brown,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-22
+APP_741,Peter Smith,BSc Aerospace Engineering,Under Review,3.0,6.0,0,Canada,2024-07-17
+APP_742,Sarah Johnson,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-27
+APP_743,Michael White,BSc Automotive Engineering,Under Review,3.0,6.0,0,UK,2024-07-19
+APP_744,Jessica Davis,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-30
+APP_745,Robert Martinez,BSc Architecture,Under Review,3.0,6.5,0,Spain,2024-07-20
+APP_746,Laura Garcia,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-09
+APP_747,James Brown,BSc Interior Design,Under Review,2.7,6.0,0,USA,2024-07-21
+APP_748,Linda Wilson,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-12
+APP_749,William Davis,BSc Landscape Architecture,Under Review,2.8,6.0,0,UK,2024-07-22
+APP_750,Elizabeth Taylor,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-14
+APP_751,Richard Brown,BA Graphic Design,Under Review,2.5,6.0,0,USA,2024-07-23
+APP_752,Susan Davis,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-18
+APP_753,Joseph White,BA Fine Art,Under Review,2.5,6.0,0,Canada,2024-07-24
+APP_754,Nancy Johnson,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-28
+APP_755,Charles Brown,BA Photography,Under Review,2.5,6.0,0,UK,2024-07-25
+APP_756,Karen Davis,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-10
+APP_757,Thomas White,BA Digital Media,Under Review,2.5,6.0,0,USA,2024-07-26
+APP_758,Betty Johnson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-13
+APP_759,Paul Davis,MA Theatre Studies,Under Review,3.0,6.5,1,Canada,2024-07-27
+APP_760,Dorothy White,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-16
+APP_761,George Brown,MA Educational Leadership,Under Review,3.0,6.5,2,Mexico,2024-07-28
+APP_762,Helen Davis,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_763,Edward White,BA Criminology,Under Review,2.7,6.0,0,USA,2024-07-29
+APP_764,Sharon Johnson,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-26
+APP_765,Frank Davis,MSW Social Work,Under Review,3.0,6.5,1,UK,2024-07-30
+APP_766,Deborah White,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-07-01
+APP_767,Gary Johnson,BSc Sport and Exercise Science,Under Review,3.0,6.5,0,USA,2024-07-31
+APP_768,Cynthia Davis,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-02
+APP_769,Ronald White,MSc Occupational Therapy,Under Review,3.0,6.5,1,Canada,2024-08-01
+APP_770,Carol Johnson,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-06
+APP_771,Jeffrey Davis,MSc Health Informatics,Under Review,3.0,6.5,1,Mexico,2024-08-02
+APP_772,Christine White,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-11
+APP_773,Larry Johnson,BSc Medical Imaging,Under Review,3.0,6.0,0,USA,2024-08-03
+APP_774,Shirley Davis,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-16
+APP_775,Timothy White,BSc Environmental Biology,Under Review,2.8,6.0,0,Australia,2024-08-04
+APP_776,Pamela Johnson,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_777,Stephen Davis,BSc Ecology,Under Review,2.8,6.0,0,USA,2024-08-05
+APP_778,Donna White,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-26
+APP_779,Gregory Johnson,BSc Wildlife Biology,Under Review,2.8,6.0,0,UK,2024-08-06
+APP_780,Michelle Davis,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-07-01
+APP_781,Kevin White,MSc Pharmacology,Under Review,3.2,6.5,1,Australia,2024-08-07
+APP_782,Sandra Johnson,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-06
+APP_783,Brian Davis,MSc Neuroscience,Under Review,3.2,6.5,1,USA,2024-08-08
+APP_784,Amanda White,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-11
+APP_785,Jason Johnson,MBBS Medicine,Under Review,3.8,7.5,0,UK,2024-08-09
+APP_786,Rebecca Davis,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-16
+APP_787,Scott White,MSc Computer Vision,Under Review,3.2,6.5,1,Australia,2024-08-10
+APP_788,Nicole Johnson,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-21
+APP_789,Patrick Davis,Postgraduate Diploma Information Security,Under Review,3.0,6.5,0,USA,2024-08-11
+APP_790,Angela White,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-26
+APP_791,Dennis Johnson,BSc Web Development,Under Review,2.7,6.0,0,UK,2024-08-12
+APP_792,Catherine Davis,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-31
+APP_793,Jerry White,MSc Computer Networks,Under Review,3.0,6.5,1,Australia,2024-08-13
+APP_794,Martha Johnson,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-05
+APP_795,Arthur Davis,MSc Cloud Computing,Under Review,3.0,6.5,1,USA,2024-08-14
+APP_796,Christine Johnson,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-10
+APP_797,Walter White,MSc Cybersecurity,Under Review,3.0,6.5,1,UK,2024-08-15
+APP_798,Brenda Davis,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-16
+APP_799,Roger Johnson,PhD Artificial Intelligence,Under Review,3.2,6.5,0,Australia,2024-08-17
+APP_800,Joyce White,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-18
+APP_801,John Smith,MSc Artificial Intelligence,Under Review,3.3,7.0,2,UK,2024-06-15
+APP_802,Priya Patel,MBA,Accepted,3.8,6.5,5,India,2024-05-20
+APP_803,Ahmed Hassan,MSc Cybersecurity,Accepted,3.2,6.0,1,Egypt,2024-07-01
+APP_804,Maria Garcia,BSc Computer Science,Under Review,3.6,7.5,0,Spain,2024-06-30
+APP_805,David Chen,MSc Data Science,Accepted,3.9,8.0,3,China,2024-05-10
+APP_806,Muhammad Ahmed,MSc Artificial Intelligence,Accepted,3.43,7.5,1,Pakistan,2024-05-10
+APP_807,Zainab Noor,MSc Biotechnology,Under Review,3.90,7,1,Pakistan,2025-01-01
+APP_808,Emily White,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-20
+APP_809,Omar Khan,MSc Data Science,Under Review,3.6,6.5,2,Saudi Arabia,2024-07-05
+APP_810,Sophie Dubois,MSc Cybersecurity,Accepted,3.3,7.0,1,France,2024-06-25
+APP_811,Liam Gallagher,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-10
+APP_812,Aisha Rahman,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-15
+APP_813,Carlos Ramirez,MBA,Under Review,3.7,6.5,4,Mexico,2024-06-01
+APP_814,Mei Lin,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-22
+APP_815,Ben Carter,BSc Web Development,Under Review,2.9,6.0,0,Australia,2024-07-12
+APP_816,Fatima Zahra,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-08
+APP_817,Daniel Lee,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-18
+APP_818,Chloe Brown,BSc Psychology,Under Review,3.0,6.0,0,Canada,2024-07-03
+APP_819,Hiroshi Tanaka,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-28
+APP_820,Isabella Rossi,MSc Environmental Engineering,Under Review,3.4,6.5,2,Italy,2024-06-10
+APP_821,Samuel Green,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-22
+APP_822,Nadia Petrova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-15
+APP_823,Juan Perez,MSc Finance,Under Review,3.2,6.5,2,Argentina,2024-06-05
+APP_824,Grace Taylor,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-28
+APP_825,Mohammed Ali,MSc Entrepreneurship,Under Review,3.0,6.5,3,UAE,2024-07-01
+APP_826,Olivia Wilson,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-16
+APP_827,Wei Zhang,MSc Biotechnology,Under Review,3.8,7.0,1,China,2024-07-09
+APP_828,Anna Kowalski,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-30
+APP_829,Ricardo Silva,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-11
+APP_830,Yara Al-Farsi,MSc Human Resource Management,Under Review,2.8,6.5,1,Qatar,2024-06-07
+APP_831,Chris Evans,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-24
+APP_832,Lena Schmidt,MSc Supply Chain Management,Under Review,3.1,6.5,2,Germany,2024-07-06
+APP_833,Kevin Wong,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-19
+APP_834,Sofia Rodriguez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-13
+APP_835,Alex Turner,BSc Environmental Science,Under Review,2.9,6.0,0,Australia,2024-07-02
+APP_836,Priya Sharma,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-25
+APP_837,David Kim,BSc Mechanical Engineering,Under Review,3.0,6.0,0,South Korea,2024-07-04
+APP_838,Maria Santos,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-14
+APP_839,John Doe,BSc Civil Engineering,Under Review,3.0,6.0,0,USA,2024-07-07
+APP_840,Jane Smith,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-21
+APP_841,Peter Jones,BSc Aerospace Engineering,Under Review,3.0,6.0,0,Canada,2024-07-16
+APP_842,Sarah Miller,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-26
+APP_843,Michael Davis,BSc Automotive Engineering,Under Review,3.0,6.0,0,UK,2024-07-18
+APP_844,Jessica Brown,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-29
+APP_845,Robert Garcia,BSc Architecture,Under Review,3.0,6.5,0,Spain,2024-07-19
+APP_846,Laura Martinez,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-08
+APP_847,James Wilson,BSc Interior Design,Under Review,2.7,6.0,0,USA,2024-07-20
+APP_848,Linda Taylor,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-11
+APP_849,William Thomas,BSc Landscape Architecture,Under Review,2.8,6.0,0,UK,2024-07-21
+APP_850,Elizabeth White,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-13
+APP_851,Richard Green,BA Graphic Design,Under Review,2.5,6.0,0,USA,2024-07-22
+APP_852,Susan Hall,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-17
+APP_853,Joseph King,BA Fine Art,Under Review,2.5,6.0,0,Canada,2024-07-23
+APP_854,Nancy Wright,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-27
+APP_855,Charles Scott,BA Photography,Under Review,2.5,6.0,0,UK,2024-07-24
+APP_856,Karen Adams,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-09
+APP_857,Thomas Baker,BA Digital Media,Under Review,2.5,6.0,0,USA,2024-07-25
+APP_858,Betty Nelson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-12
+APP_859,Paul Carter,MA Theatre Studies,Under Review,3.0,6.5,1,Canada,2024-07-26
+APP_860,Dorothy Mitchell,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-15
+APP_861,George Perez,MA Educational Leadership,Under Review,3.0,6.5,2,Mexico,2024-07-27
+APP_862,Helen Roberts,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_863,Edward Turner,BA Criminology,Under Review,2.7,6.0,0,USA,2024-07-28
+APP_864,Sharon Phillips,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-25
+APP_865,Frank Campbell,MSW Social Work,Under Review,3.0,6.5,1,UK,2024-07-29
+APP_866,Deborah Parker,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-06-30
+APP_867,Gary Evans,BSc Sport and Exercise Science,Under Review,3.0,6.5,0,USA,2024-07-30
+APP_868,Cynthia Edwards,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-01
+APP_869,Ronald Collins,MSc Occupational Therapy,Under Review,3.0,6.5,1,Canada,2024-07-31
+APP_870,Carol Stewart,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-05
+APP_871,Jeffrey Sanchez,MSc Health Informatics,Under Review,3.0,6.5,1,Mexico,2024-08-01
+APP_872,Christine Morris,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-10
+APP_873,Larry Rogers,BSc Medical Imaging,Under Review,3.0,6.0,0,USA,2024-08-02
+APP_874,Shirley Reed,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-15
+APP_875,Timothy Cook,BSc Environmental Biology,Under Review,2.8,6.0,0,Australia,2024-08-03
+APP_876,Pamela Morgan,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-20
+APP_877,Stephen Bell,BSc Ecology,Under Review,2.8,6.0,0,USA,2024-08-04
+APP_878,Donna Murphy,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-25
+APP_879,Gregory Bailey,BSc Wildlife Biology,Under Review,2.8,6.0,0,UK,2024-08-05
+APP_880,Michelle Rivera,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-06-30
+APP_881,Kevin Cooper,MSc Pharmacology,Under Review,3.2,6.5,1,Australia,2024-08-06
+APP_882,Sandra Kelly,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-05
+APP_883,Brian Howard,MSc Neuroscience,Under Review,3.2,6.5,1,USA,2024-08-07
+APP_884,Amanda Ward,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-10
+APP_885,Jason Cox,MBBS Medicine,Under Review,3.8,7.5,0,UK,2024-08-08
+APP_886,Rebecca Price,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-15
+APP_887,Scott Peterson,MSc Computer Vision,Under Review,3.2,6.5,1,Australia,2024-08-09
+APP_888,Nicole Gray,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-20
+APP_889,Patrick Ramirez,Postgraduate Diploma Information Security,Under Review,3.0,6.5,0,USA,2024-08-10
+APP_890,Angela James,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-25
+APP_891,Dennis Brooks,BSc Web Development,Under Review,2.7,6.0,0,UK,2024-08-11
+APP_892,Catherine Watson,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-30
+APP_893,Jerry Wright,MSc Computer Networks,Under Review,3.0,6.5,1,Australia,2024-08-12
+APP_894,Martha King,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-04
+APP_895,Arthur Green,MSc Cloud Computing,Under Review,3.0,6.5,1,USA,2024-08-13
+APP_896,Christine Baker,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-09
+APP_897,Walter Adams,MSc Cybersecurity,Under Review,3.0,6.5,1,UK,2024-08-14
+APP_898,Brenda Nelson,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-15
+APP_899,Roger Hall,PhD Artificial Intelligence,Under Review,3.2,6.5,0,Australia,2024-08-16
+APP_900,Joyce Young,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-17
+APP_901,Juan Garcia,MSc Artificial Intelligence,Under Review,3.3,7.0,2,Spain,2024-06-16
+APP_902,Maria Rodriguez,MBA,Accepted,3.8,6.5,5,Mexico,2024-05-21
+APP_903,Ahmed Khan,MSc Cybersecurity,Accepted,3.2,6.0,1,Pakistan,2024-07-02
+APP_904,Sophie Martin,BSc Computer Science,Under Review,3.6,7.5,0,France,2024-07-01
+APP_905,David Lee,MSc Data Science,Accepted,3.9,8.0,3,South Korea,2024-05-11
+APP_906,Fatima Zahra,MSc Artificial Intelligence,Accepted,3.45,7.5,1,Morocco,2024-05-11
+APP_907,Zainab Ali,MSc Biotechnology,Under Review,3.92,7.0,1,Egypt,2025-01-02
+APP_908,Emily Chen,BSc Computer Science,Accepted,3.7,7.0,0,USA,2024-06-21
+APP_909,Omar Hassan,MSc Data Science,Under Review,3.6,6.5,2,Saudi Arabia,2024-07-06
+APP_910,Sophie Johnson,MSc Cybersecurity,Accepted,3.3,7.0,1,UK,2024-06-26
+APP_911,Liam Smith,BSc Software Engineering,Accepted,3.1,6.0,0,Ireland,2024-07-11
+APP_912,Aisha Khan,MSc Artificial Intelligence,Accepted,3.8,7.5,3,Bangladesh,2024-05-16
+APP_913,Carlos Garcia,MBA,Under Review,3.7,6.5,4,Mexico,2024-06-02
+APP_914,Mei Wong,MSc Cloud Computing,Accepted,3.9,8.0,2,Singapore,2024-05-23
+APP_915,Ben Davis,BSc Web Development,Under Review,2.9,6.0,0,Australia,2024-07-13
+APP_916,Fatima Ahmed,MSc Robotics,Accepted,3.3,6.5,1,Morocco,2024-07-09
+APP_917,Daniel Kim,MSc Computer Networks,Accepted,3.6,7.0,2,South Korea,2024-06-19
+APP_918,Chloe White,BSc Psychology,Under Review,3.0,6.0,0,Canada,2024-07-04
+APP_919,Hiroshi Sato,MSc Bioinformatics,Accepted,3.7,7.5,1,Japan,2024-05-29
+APP_920,Isabella Bianchi,MSc Environmental Engineering,Under Review,3.4,6.5,2,Italy,2024-06-11
+APP_921,Samuel Brown,BSc Biomedical Sciences,Accepted,3.3,6.0,0,UK,2024-06-23
+APP_922,Nadia Ivanova,MSc Public Health,Accepted,3.1,6.5,3,Russia,2024-07-16
+APP_923,Juan Lopez,MSc Finance,Under Review,3.2,6.5,2,Argentina,2024-06-06
+APP_924,Grace Wilson,BSc Nursing,Accepted,2.8,6.5,1,New Zealand,2024-06-29
+APP_925,Mohammed Hassan,MSc Entrepreneurship,Under Review,3.0,6.5,3,UAE,2024-07-02
+APP_926,Olivia Taylor,BSc Genetics,Accepted,3.6,6.0,0,USA,2024-06-17
+APP_927,Wei Li,MSc Biotechnology,Under Review,3.8,7.0,1,China,2024-07-10
+APP_928,Anna Nowak,MSc Digital Marketing,Accepted,2.9,6.5,2,Poland,2024-05-31
+APP_929,Ricardo Costa,BSc Accounting,Accepted,2.9,6.0,0,Brazil,2024-07-12
+APP_930,Yara Hassan,MSc Human Resource Management,Under Review,2.8,6.5,1,Qatar,2024-06-08
+APP_931,Chris Miller,BSc Marketing,Accepted,2.7,6.0,0,UK,2024-06-25
+APP_932,Lena Weber,MSc Supply Chain Management,Under Review,3.1,6.5,2,Germany,2024-07-07
+APP_933,Kevin Chen,BSc International Business,Accepted,2.7,6.5,0,Canada,2024-06-20
+APP_934,Sofia Perez,MSc Clinical Psychology,Accepted,3.3,6.5,1,Spain,2024-07-14
+APP_935,Alex Green,BSc Environmental Science,Under Review,2.9,6.0,0,Australia,2024-07-03
+APP_936,Priya Singh,MSc Cognitive Psychology,Accepted,3.4,6.5,1,India,2024-05-26
+APP_937,David Park,BSc Mechanical Engineering,Under Review,3.0,6.0,0,South Korea,2024-07-05
+APP_938,Maria Silva,MSc Forensic Psychology,Accepted,3.1,6.5,2,Portugal,2024-06-15
+APP_939,John White,BSc Civil Engineering,Under Review,3.0,6.0,0,USA,2024-07-08
+APP_940,Jane Brown,MSc Renewable Energy Engineering,Accepted,3.3,6.5,1,UK,2024-06-22
+APP_941,Peter Smith,BSc Aerospace Engineering,Under Review,3.0,6.0,0,Canada,2024-07-17
+APP_942,Sarah Johnson,MSc Chemical Engineering,Accepted,3.3,6.5,1,USA,2024-06-27
+APP_943,Michael White,BSc Automotive Engineering,Under Review,3.0,6.0,0,UK,2024-07-19
+APP_944,Jessica Davis,MSc Engineering Management,Accepted,3.1,6.5,2,Australia,2024-06-30
+APP_945,Robert Martinez,BSc Architecture,Under Review,3.0,6.5,0,Spain,2024-07-20
+APP_946,Laura Garcia,MSc Construction Project Management,Accepted,3.1,6.5,1,Mexico,2024-06-09
+APP_947,James Brown,BSc Interior Design,Under Review,2.7,6.0,0,USA,2024-07-21
+APP_948,Linda Wilson,MSc Urban Planning,Accepted,3.1,6.5,1,Canada,2024-06-12
+APP_949,William Davis,BSc Landscape Architecture,Under Review,2.8,6.0,0,UK,2024-07-22
+APP_950,Elizabeth Taylor,MSc Sustainable Architecture,Accepted,3.1,6.5,1,Australia,2024-06-14
+APP_951,Richard Brown,BA Graphic Design,Under Review,2.5,6.0,0,USA,2024-07-23
+APP_952,Susan Davis,MA Creative Writing,Accepted,3.0,6.5,1,UK,2024-06-18
+APP_953,Joseph White,BA Fine Art,Under Review,2.5,6.0,0,Canada,2024-07-24
+APP_954,Nancy Johnson,MA Film Studies,Accepted,3.0,6.5,1,USA,2024-06-28
+APP_955,Charles Brown,BA Photography,Under Review,2.5,6.0,0,UK,2024-07-25
+APP_956,Karen Davis,MSc Animation,Accepted,3.1,6.5,1,Australia,2024-06-10
+APP_957,Thomas White,BA Digital Media,Under Review,2.5,6.0,0,USA,2024-07-26
+APP_958,Betty Johnson,BA Fashion Design,Accepted,2.5,6.0,0,UK,2024-06-13
+APP_959,Paul Davis,MA Theatre Studies,Under Review,3.0,6.5,1,Canada,2024-07-27
+APP_960,Dorothy White,BA Education Studies,Accepted,2.7,6.0,0,USA,2024-06-16
+APP_961,George Brown,MA Educational Leadership,Under Review,3.0,6.5,2,Mexico,2024-07-28
+APP_962,Helen Davis,MSc Special Education,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_963,Edward White,BA Criminology,Under Review,2.7,6.0,0,USA,2024-07-29
+APP_964,Sharon Johnson,BA Sociology,Accepted,2.7,6.0,0,Canada,2024-06-26
+APP_965,Frank Davis,MSW Social Work,Under Review,3.0,6.5,1,UK,2024-07-30
+APP_966,Deborah White,MSc Criminology,Accepted,3.0,6.5,1,Australia,2024-07-01
+APP_967,Gary Johnson,BSc Sport and Exercise Science,Under Review,3.0,6.5,0,USA,2024-07-31
+APP_968,Cynthia Davis,BSc Physiotherapy,Accepted,3.0,6.5,0,UK,2024-06-02
+APP_969,Ronald White,MSc Occupational Therapy,Under Review,3.0,6.5,1,Canada,2024-08-01
+APP_970,Carol Johnson,BSc Nutrition and Dietetics,Accepted,2.8,6.0,0,USA,2024-06-06
+APP_971,Jeffrey Davis,MSc Health Informatics,Under Review,3.0,6.5,1,Mexico,2024-08-02
+APP_972,Christine White,MSc Mental Health Nursing,Accepted,3.0,6.5,1,UK,2024-06-11
+APP_973,Larry Johnson,BSc Medical Imaging,Under Review,3.0,6.0,0,USA,2024-08-03
+APP_974,Shirley Davis,MSc Health Policy,Accepted,3.0,6.5,1,Canada,2024-06-16
+APP_975,Timothy White,BSc Environmental Biology,Under Review,2.8,6.0,0,Australia,2024-08-04
+APP_976,Pamela Johnson,MSc Marine Biology,Accepted,3.0,6.5,1,UK,2024-06-21
+APP_977,Stephen Davis,BSc Ecology,Under Review,2.8,6.0,0,USA,2024-08-05
+APP_978,Donna White,MSc Conservation Biology,Accepted,3.0,6.5,1,Canada,2024-06-26
+APP_979,Gregory Johnson,BSc Wildlife Biology,Under Review,2.8,6.0,0,UK,2024-08-06
+APP_980,Michelle Davis,BSc Biochemistry,Accepted,3.0,6.0,0,USA,2024-07-01
+APP_981,Kevin White,MSc Pharmacology,Under Review,3.2,6.5,1,Australia,2024-08-07
+APP_982,Sandra Johnson,MSc Microbiology,Accepted,3.2,6.5,1,UK,2024-07-06
+APP_983,Brian Davis,MSc Neuroscience,Under Review,3.2,6.5,1,USA,2024-08-08
+APP_984,Amanda White,MSc Medical Research,Accepted,3.2,6.5,1,Canada,2024-07-11
+APP_985,Jason Johnson,MBBS Medicine,Under Review,3.8,7.5,0,UK,2024-08-09
+APP_986,Rebecca Davis,MBBS Medicine with Placement,Accepted,3.8,7.5,0,USA,2024-07-16
+APP_987,Scott White,MSc Computer Vision,Under Review,3.2,6.5,1,Australia,2024-08-10
+APP_988,Nicole Johnson,MSc Machine Learning Apprenticeship,Accepted,2.5,5.5,0,UK,2024-07-21
+APP_989,Patrick Davis,Postgraduate Diploma Information Security,Under Review,3.0,6.5,0,USA,2024-08-11
+APP_990,Angela White,MSc Database Systems,Accepted,3.0,6.5,1,Canada,2024-07-26
+APP_991,Dennis Johnson,BSc Web Development,Under Review,2.7,6.0,0,UK,2024-08-12
+APP_992,Catherine Davis,MSc Robotics,Accepted,3.2,6.5,1,USA,2024-07-31
+APP_993,Jerry White,MSc Computer Networks,Under Review,3.0,6.5,1,Australia,2024-08-13
+APP_994,Martha Johnson,BSc Software Engineering,Accepted,2.8,6.0,0,UK,2024-08-05
+APP_995,Arthur Davis,MSc Cloud Computing,Under Review,3.0,6.5,1,USA,2024-08-14
+APP_996,Christine Johnson,MSc Cybersecurity with Placement,Accepted,3.0,6.5,1,Canada,2024-08-10
+APP_997,Walter White,MSc Cybersecurity,Under Review,3.0,6.5,1,UK,2024-08-15
+APP_998,Brenda Davis,Postgraduate Diploma Data Science,Accepted,3.0,6.5,0,USA,2024-08-16
+APP_999,Roger Johnson,PhD Artificial Intelligence,Under Review,3.2,6.5,0,Australia,2024-08-17
+APP_1000,Joyce White,PhD Computer Science,Accepted,3.2,6.5,0,UK,2024-08-18
