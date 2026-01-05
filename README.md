@@ -6,7 +6,7 @@ A comprehensive AI-powered university admission assistant system that combines m
 ## 🚀 Features
 
 ### 🤖 Advanced AI Integration
-- **Open-Source LLM**: Powered by DeepSeek via Ollama for intelligent conversations
+- **Open-Source LLM**: Powered by Ollama Mistral via Ollama for intelligent conversations
 - **Machine Learning**: Admission prediction models with 87% accuracy
 - **Sentiment Analysis**: Real-time emotion detection and satisfaction tracking
 - **Voice AI**: Speech-to-text and text-to-speech capabilities
