@@ -7,15 +7,23 @@ __pycache__/
 # Virtual environment
 uel_ai_env/
 
-# Databases and logs
+# Databases
 *.db
+
+# Logs
 *.log
 
-# JSON outputs
+# JSON outputs / ML results
 *.json
 
-# Any other local files
-*.txt
+# PDFs / HTML / other local documents
 *.pdf
 *.html
+*.txt
+
+# System files
+.DS_Store
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
 
