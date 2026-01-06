@@ -27,3 +27,4 @@ uel_ai_env/
 # Jupyter checkpoints
 .ipynb_checkpoints/
 
+.DS_Store
