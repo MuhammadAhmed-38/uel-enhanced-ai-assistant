@@ -207,7 +207,7 @@ uel-enhanced-ai-assistant/
 ## 📸 Result's Screenshots
 
 ### Admission Prediction Flowchart
-![Admission Prediction Flowchart](screenshots/Addmission_Prediction_Flowchart.jpg)
+![Admission Prediction Flowchart](screenshots/Admission_Prediction_Flowchart.jpg)
 
 ### Admission Prediction Accuracy
 ![Admission Prediction Accuracy](screenshots/Admission_Prediction_Accuracy.jpg)
@@ -258,7 +258,7 @@ uel-enhanced-ai-assistant/
 ![AI Chat Bot Accuracy](screenshots/Interview_And_Cheating_Detection_Accuracies_And_Confusion_Matrix.jpg)
 
 ### Interview Prep Flowchart
-![AI Chat Bot Accuracy](screenshots/Interview_Preperation_Flowchart.jpg)
+![AI Chat Bot Accuracy](screenshots/Interview_Preparation_Flowchart.jpg)
 
 ### Large Language Model Flowchart
 ![AI Chat Bot Accuracy](screenshots/LLM_Flowchart.jpg)
