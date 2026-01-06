@@ -1,546 +1,355 @@
-<<<<<<< HEAD
-# UEL Enhanced AI Assistant
+# 🎓 UEL Enhanced AI Admission Assistant
 
-A comprehensive AI-powered university admission assistant system that combines multiple AI technologies for intelligent student support.
+## Overview
 
-## 🚀 Features
+The **UEL Enhanced AI Admission Assistant** is a comprehensive, research-oriented AI system designed to demonstrate how multiple AI components can be **integrated into a single, coherent admission-support workflow**. Instead of showcasing isolated machine learning models, this project focuses on **system-level AI engineering**, where NLP, machine learning, analytics, persistence, and an interactive UI operate together.
 
-### 🤖 Advanced AI Integration
-- **Open-Source LLM**: Powered by Ollama Mistral via Ollama for intelligent conversations
-- **Machine Learning**: Admission prediction models with 87% accuracy
-- **Sentiment Analysis**: Real-time emotion detection and satisfaction tracking
-- **Voice AI**: Speech-to-text and text-to-speech capabilities
+This repository represents a **first integrated version** of the system, prioritising architectural clarity, modularity, and academic rigor over production-scale deployment.
 
-### 🎓 University-Specific Features
-- **Course Recommendations**: AI-powered course matching based on student profiles
-- **Application Management**: Complete application tracking and management
-- **Document Verification**: AI-powered document analysis and fraud detection
-- **Admission Predictions**: ML models predict admission success probability
+> ⚠️ **Important Disclaimer**
+> This is an **academic and personal project** created strictly for learning, research, and dissertation demonstration.
+---
 
-### 📊 Analytics & Monitoring
-- **Real-time Analytics**: Comprehensive system and user behavior analytics
-- **Performance Monitoring**: System health and performance tracking
-- **Advanced Insights**: AI-generated insights and recommendations
+## 🎯 Motivation & Problem Context
 
-## 🛠️ Installation
+University admission processes involve multiple decision points:
 
-### Prerequisites
-- Python 3.8+
-- Ollama (for LLM functionality)
+* Personalised AI chat bot availability 
+* Course suitability assessment
+* Applicant profile evaluation
+* Interview readiness and performance
+* Document verification
+* Decision support and analytics
 
-### Quick Start
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd uel-enhanced-ai-assistant
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Install and setup Ollama**
-   ```bash
-   # Install Ollama from https://ollama.ai
-   ollama serve
-   ollama pull deepseek:latest
-   ```
-
-4. **Run the application**
-   ```bash
-   python main.py --run
-   ```
-
-### Docker Installation
-
-1. **Using Docker Compose**
-   ```bash
-   docker-compose up -d
-   ```
-
-2. **Access the application**
-   - Open http://localhost:8501 in your browser
-
-## 📁 Project Structure
-
-```
-uel-enhanced-ai-assistant/
-├── unified_uel_ai_system.py    # Core AI system and models
-├── unified_uel_ui.py           # Streamlit web interface
-├── main.py                     # Application runner and setup
-├── data/                       # Data directory
-│   ├── applications.csv        # Sample applications data
-│   ├── courses.csv            # Sample courses data
-│   ├── faqs.csv               # FAQ data
-│   └── counseling_slots.csv   # Counseling availability
-├── requirements.txt           # Python dependencies
-├── config.ini                # System configuration
-├── Dockerfile                # Docker configuration
-├── docker-compose.yml        # Docker Compose setup
-└── README.md                 # This file
-```
-
-## 🔧 Configuration
-
-The system can be configured through:
-- **config.ini**: Main configuration file
-- **Environment variables**: Override config settings
-- **Streamlit interface**: Runtime settings adjustment
-
-### Key Configuration Options
-
-```ini
-[ollama]
-host = "http://localhost:11434"
-model = "deepseek:latest"
-temperature = 0.7
-
-[features]
-enable_ml_predictions = true
-enable_sentiment_analysis = true
-enable_voice_services = true
-```
-
-## 🚀 Usage
-
-### Web Interface
-1. Start the application: `python main.py --run`
-2. Open http://localhost:8501
-3. Navigate through different features:
-   - **Dashboard**: System overview and quick actions
-   - **AI Chat**: Intelligent conversation interface
-   - **Predictions**: Admission success forecasting
-   - **Recommendations**: Personalized course matching
-   - **Documents**: AI document verification
-   - **Analytics**: Comprehensive insights and metrics
-
-### API Usage
-The system can also be used programmatically:
-
-```python
-from unified_uel_ai_system import UnifiedUELAIAgent
-
-# Initialize the AI agent
-agent = UnifiedUELAIAgent()
-
-# Get AI response
-response = agent.get_ai_response("Tell me about computer science courses")
-
-# Predict admission success
-prediction = agent.predict_admission_success({
-    'gpa': 3.5,
-    'ielts_score': 7.0,
-    'course_applied': 'Computer Science'
-})
-
-# Get course recommendations
-recommendations = agent.get_course_recommendations({
-    'field_of_interest': 'Computer Science',
-    'academic_level': 'undergraduate'
-})
-```
-
-## 🧠 AI Models and Features
-
-### Language Model Integration
-- **Primary**: DeepSeek (via Ollama)
-- **Fallback**: Rule-based responses
-- **Features**: Context awareness, conversation memory
-
-### Machine Learning Models
-- **Admission Predictor**: Random Forest Classifier
-- **Success Probability**: Gradient Boosting Regressor
-- **Course Matching**: TF-IDF + Cosine Similarity
-
-### Sentiment Analysis
-- **Engine**: TextBlob + custom emotion detection
-- **Features**: Polarity, subjectivity, emotion classification
-- **Urgency Detection**: Automatic priority assessment
-
-## 📊 Analytics and Monitoring
-
-The system provides comprehensive analytics:
-- **User Interactions**: Message analysis and patterns
-- **System Performance**: Response times, error rates
-- **Feature Usage**: Most used features and satisfaction
-- **Predictive Insights**: Trends and recommendations
-
-## 🔒 Security and Privacy
-
-- **Data Encryption**: Personal data encryption at rest
-- **Local Processing**: LLM runs locally for privacy
-- **Session Management**: Secure session handling
-- **Input Validation**: Comprehensive input sanitization
-- **Document Security**: Secure document handling and verification
-
-## 🛠️ Development
-
-### Setting up Development Environment
-
-1. **Clone and install**
-   ```bash
-   git clone <repository-url>
-   cd uel-enhanced-ai-assistant
-   pip install -r requirements.txt
-   ```
-
-2. **Run tests**
-   ```bash
-   pytest tests/
-   ```
-
-3. **Code formatting**
-   ```bash
-   black .
-   flake8 .
-   ```
-
-### Adding New Features
-
-The system is designed to be extensible:
-
-1. **Add new AI services** in `unified_uel_ai_system.py`
-2. **Create UI components** in `unified_uel_ui.py`
-3. **Update configuration** in `config.ini`
-
-## 📈 Performance
-
-### Benchmarks
-- **Response Time**: Average 2.3 seconds
-- **Prediction Accuracy**: 87% for admission forecasts
-- **System Uptime**: 99.9% availability target
-- **Memory Usage**: ~512MB average footprint
-
-### Optimization Tips
-- Use SSD storage for better database performance
-- Allocate sufficient RAM for ML models
-- Configure Ollama with appropriate model size
-- Enable caching for frequently accessed data
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make changes and test thoroughly
-4. Submit a pull request with detailed description
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Ollama Connection Issues**
-```bash
-# Check Ollama status
-curl http://localhost:11434/api/tags
-
-# Restart Ollama
-ollama serve
-```
-
-**Missing Dependencies**
-```bash
-# Install all dependencies
-pip install -r requirements.txt
-
-# Install optional dependencies for full functionality
-pip install scikit-learn textblob plotly SpeechRecognition pyttsx3
-```
-
-**Performance Issues**
-- Check system resources (RAM, CPU)
-- Verify Ollama model size compatibility
-- Review log files for errors
-- Consider using smaller ML models for lower-end hardware
-
-## 📞 Support
-
-For support and questions:
-- **Email**: admissions@uel.ac.uk
-- **Phone**: +44 20 8223 3000
-- **Documentation**: Check inline code documentation
-- **Issues**: Create GitHub issues for bugs and feature requests
-
-## 📜 License
-
-This project is licensed under the MIT License. See LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- **Ollama**: For open-source LLM infrastructure
-- **Streamlit**: For the excellent web framework
-- **DeepSeek**: For the powerful language model
-- **University of East London**: For the use case and requirements
-- **Open Source Community**: For the amazing tools and libraries
+Most AI projects address **only one** of these problems in isolation. This project was created to explore how **multiple AI-driven components can coexist within a unified system**, sharing context, data, and evaluation logic — a scenario closer to real-world AI deployments.
 
 ---
 
-**Version**: 2.0  
-**Last Updated**: 2024  
-**Maintained by**: AI Development Team
-=======
-# 🚀 UEL Enhanced AI Assistant - Profile-Driven Experience
+## ✨ Core Capabilities
 
-Version 3.0 - A revolutionary AI-powered university admission assistant designed to provide a personalized, seamless, and intelligent experience for prospective students. By integrating a mandatory user profile, this system ensures that every interaction, recommendation, and prediction is uniquely tailored to the user's background and aspirations.
+### 🧩 Profile-Driven Personalisation
 
-🌟 What's New in Version 3.0: The Profile-First Revolution
-This version marks a significant leap forward by placing the user's profile at the core of the entire system.
+* Persistent applicant profiles stored locally using SQLite
+* Shared profile context across all modules
+* System behaviour adapts based on:
 
-🎯 Profile-First Experience
-Mandatory Profile Creation: Users are guided through a comprehensive profile setup process upon their first visit. Access to advanced features is unlocked and enhanced by a complete profile.
-Seamless Integration: All features dynamically pull information from the user's profile, eliminating the need for repetitive data entry.
-No Re-entry: Once your profile is created and updated, the system automatically leverages this data across all functionalities.
-Personalized Everything: AI responses, course recommendations, admission predictions, and even interview preparation are deeply personalized based on your unique profile data.
+  * Academic background
+  * Skills and interests
+  * Historical interactions
+* Enables consistent, context-aware recommendations and evaluations
 
-🔗 Interconnected Features
-The system is designed as a cohesive ecosystem where each feature enhances the others through shared profile data:
-Create Profile Once: Your single source of truth for all interactions.
-AI Chat: The AI assistant understands your context, academic level, and goals without you having to repeat them.
-Course Recommendations: Generates highly relevant course suggestions by analyzing your complete profile.
-Admission Predictions: Automatically uses your academic and professional data to provide accurate probability assessments.
-Cross-Feature Intelligence: Interactions within one feature (e.g., saving a preferred course) can inform and refine other features (e.g., future recommendations).
+### 🧠 AI & Analytics Modules
 
-🚀 Key Features & Capabilities
+#### 🎓 Course Recommendation
 
-👤 Comprehensive Profile Management
-A robust system to capture and manage detailed user information:
-Basic Information: Name, email, phone, date of birth, country, nationality, city, postal code.
-Academic Background: Current education level, field of interest, current institution, major, GPA, graduation year, IELTS/TOEFL scores, other English certifications, previous applications, rejected courses.
-Professional Background: Years of work experience, current job title, target industry, professional skills.
-Interests & Preferences: Personal interests, career goals, preferred study mode (full-time, part-time, online), preferred start date, budget range, preferred courses.
-System Data: Tracks profile creation/update dates, last active timestamp, and calculates profile completion percentage.
-AI Interaction History: Logs interaction count, favorite features, and AI preferences to further tailor the experience.
+* Feature-based recommendation logic
+* Uses applicant profile attributes
+* Designed for extensibility (future collaborative filtering / deep models)
 
-🤖 Profile-Aware AI Chat Assistant
-Contextual Conversations: The AI remembers your name, academic background, and interests, providing highly relevant and personalized responses.
-Intelligent Guidance: Offers specific advice on applications, courses, and university services, tailored to your profile's details.
-Sentiment Analysis: Understands the emotional tone of your messages (positive, negative, neutral, urgency, emotions) to respond empathetically.
-Voice Integration: Supports both speech-to-text for input and text-to-speech for AI responses, offering a natural conversational experience (if voice libraries are available).
+#### 🗣️ Interview Preparation & Evaluation
 
-🎯 Advanced Course Recommendation System
-Leverages multiple machine learning approaches for highly accurate and diverse recommendations:
-Content-Based Filtering: Matches courses based on your stated interests, academic background, and career goals.
-BERT-based Semantic Similarity: Utilizes advanced natural language processing to understand the deeper meaning of your profile and course descriptions, finding semantically similar matches.
-Neural Collaborative Filtering (Placeholder): Designed to learn from user-item interactions (e.g., what similar students liked) to suggest courses.
-Ensemble Modeling: Combines the strengths of various models (content-based, BERT, neural) with weighted scores for robust recommendations.
-Explainable AI (XAI): Provides reasons why a particular course is recommended, highlighting matching factors and feature importance (e.g., "Matches your Computer Science interest," "High GPA fit").
-Diversity & Novelty Metrics: Ensures recommendations are not only relevant but also diverse (offering variety) and novel (suggesting courses you might not have considered).
+* Practice interview workflows
+* Response relevance checking
+* Sentiment analysis of textual responses
+* Performance scoring using custom evaluation logic
 
-🔮 Intelligent Admission Probability Prediction
-Provides data-driven insights into your chances of admission:
-Automated Data Input: Automatically uses your GPA, IELTS/TOEFL scores, academic level, and work experience from your profile.
-Machine Learning Models: Employs RandomForestClassifier for admission prediction and GradientBoostingRegressor for success probability, trained on historical application data.
-Key Factor Analysis: Identifies and explains the primary factors influencing your prediction (e.g., "Excellent academic performance," "Strong English proficiency").
-Personalized Recommendations: Offers actionable advice to improve your admission chances based on your current profile and the prediction outcome (e.g., "Consider retaking IELTS," "Strengthen your personal statement").
-Fallback Models: Ensures predictions are still provided even if advanced ML models cannot be trained due to insufficient data, using rule-based logic.
+#### 📄 Document Verification
 
-📄 AI-Powered Document Verification
-Streamlines the document submission process with intelligent checks:
-Automated Checks: Verifies required fields and format requirements for various document types (transcripts, IELTS certificates, passports, personal statements, reference letters).
-Confidence Scoring: Provides a confidence score for each verification, indicating the AI's certainty.
-Issue Identification: Highlights missing information or potential issues in uploaded documents.
-Actionable Recommendations: Offers clear suggestions for addressing identified issues and improving document quality for successful submission.
+* Rule-based structural checks
+* NLP-assisted content consistency analysis
+* Prototype-level verification for academic demonstration
 
-🎤 Interview Preparation Center (NEW!)
-An AI-powered mock interview system to help you ace your admissions interviews:
-Personalized Mock Interviews: Creates tailored interview sessions based on your academic level, field of interest, and chosen interview type (undergraduate, postgraduate, subject-specific, scholarship).
-Dynamic Question Banks: Draws from comprehensive question banks covering general, behavioral, and subject-specific areas (Computer Science, Business, Engineering, Psychology).
-AI Response Analysis: Evaluates your interview responses for relevance, coherence, content quality, depth, clarity, and confidence.
-Detailed Feedback: Provides specific strengths, areas for improvement, and actionable suggestions for each answer.
-Performance Reports: Generates an overall performance score, grade, and summary of your mock interview, including communication, relevance, and confidence scores.
-Interview History: Keeps a record of all your mock interview sessions, allowing you to track progress over time.
-Interview Tips & Guidance: Offers general and question-specific tips to help you prepare effectively.
+#### 😊 Sentiment Analysis
 
-📈 Analytics Dashboard
-Provides insights into system usage and data:
-System Status: Real-time overview of AI component availability (LLM, Voice, ML models, Data).
-Data Overview: Summaries of loaded courses, applications, and FAQs, including distributions by academic level, department, and application status.
-User Activity: Tracks your personal interaction count, profile completion, and favorite features.
-Research Evaluation Framework (A+ Grade Feature):
-Comprehensive Evaluation: Conducts academic-grade evaluation of recommendation and prediction systems using metrics like Precision@K, Recall@K, NDCG, MSE, MAE, and AUC-ROC.
-Baseline Comparison: Statistically compares the performance of advanced models against various baseline recommendation methods (random, popularity, content-based, collaborative).
-Bias Analysis: Analyzes potential biases in recommendations across different demographic groups (e.g., country, academic level) to ensure fairness.
-Statistical Significance: Calculates p-values and effect sizes to validate the significance of performance improvements.
-User Experience & System Performance Metrics: Tracks simulated UX metrics (e.g., session duration, adoption rate) and system performance (e.g., response times, memory usage).
-Research Report Generation: Compiles a detailed academic report summarizing all evaluation findings.
+* Transformer-based and classical NLP approaches
+* Applied to interview responses and textual inputs
 
-📚 Dataset Information
-The system utilizes a combination of real-world inspired and synthetic datasets to power its features:
-applications.csv: Contains dummy data representing student applications, including applicant details, courses applied for, status, GPA, IELTS scores, nationality, and work experience. This dataset is primarily used for training the Admission Probability Prediction model and populating the Applications Analytics.
-courses.csv: Features a mix of dummy data and information inspired by top 50 universities' course catalogs. This includes course names, codes, departments, academic levels, durations, domestic and international fees, descriptions, minimum GPA/IELTS requirements, trending scores, keywords, and career prospects. This dataset is crucial for Course Recommendations and general course information.
-faqs.csv: Comprises dummy data for frequently asked questions and their answers, used by the AI Chat Assistant for quick information retrieval.
-counseling_slots.csv: Contains dummy data for simulated counseling slot availability.
-Note on Data Origin: While some data points (especially for courses) are inspired by real university offerings to ensure realism in structure and content, the specific values and student records are largely dummy or synthetically generated. This approach allows for robust testing and demonstration of the AI's capabilities without using actual sensitive personal or institutional data.
+#### 📊 Predictive Analytics (Experimental)
 
-🛠️ Installation & Setup
-Prerequisites
+* Exploratory models for admission outcome analysis
+* Included to demonstrate analytics integration, not production decisions
 
-Python 3.8+
-Ollama (for advanced AI features, specifically the deepseek:latest model)
-Quick Start
+---
 
-Clone the Repository
+## 💡 Key Strengths of This Project
 
-bash
+* **All-in-One Integrated Prototype**: Multiple AI components operating within a shared workflow
+* **System-Level Thinking**: Focus on architecture and data flow, not just model accuracy
+* **Profile-Centric Design**: Persistent applicant context reused across modules
+* **Modular Architecture**: Each component can be extended, replaced, or evaluated independently
+* **Research-Oriented Implementation**: Suitable for MSc / PhD review and applied AI portfolios
 
-Run
-Copy code
-1git clone <repository-url>
-2cd uel-enhanced-ai-assistant
-Setup Enhanced System (Creates Data, DB, Config, Docs) This command will create the necessary data/ directory structure, initialize the SQLite database, generate sample CSV files, create configuration files, and update documentation.
+This system demonstrates how AI solutions evolve from isolated experiments into **cohesive, extensible platforms**.
 
-bash
+---
 
-Run
-Copy code
-1python main.py --setup-enhanced
-Install Python Dependencies The --setup-enhanced command generates a requirements.txt (or requirements_aplus.txt for advanced ML).
+## 🧠 Design Decisions & Trade-offs
 
-bash
+* SQLite was chosen over heavier databases to keep the system lightweight and reproducible.
+* Streamlit was selected for rapid prototyping and academic demonstrations rather than production UI.
+* Local LLM integration (Ollama) was kept optional to preserve privacy and offline execution.
+* Some models are intentionally experimental to prioritise architectural exploration over optimisation.
 
-Run
-Copy code
-1pip install -r requirements.txt
-2# OR if you want all advanced ML features (recommended for A+ grade evaluation)
-3# pip install -r requirements_aplus.txt
-Start Ollama (if not already running) Ensure the Ollama server is running in the background.
+---
 
-bash
+## 🛠️ Tech Stack (Complete & Accurate)
 
-Run
-Copy code
-1ollama serve
-Pull the Required LLM Model The system is configured to use deepseek:latest by default.
+### Core Technologies
 
-bash
+* **Language**: Python 3.10+
+* **Frontend / UI**: Streamlit
+* **Database**: SQLite
+* **Configuration Management**: INI-based configuration files (`config.ini`)
 
-Run
-Copy code
-1ollama pull deepseek:latest
-Run the Streamlit Application
+### Machine Learning & NLP
 
-bash
+* **Classical ML**: scikit-learn
+* **NLP**: transformers (BERT-style models)
+* **Deep Learning**: TensorFlow / Keras (experimental components)
 
-Run
-Copy code
-1python main.py --run
-Access the Application Open your web browser and navigate to: http://localhost:8501
+### Data Handling & Processing
 
-You will be guided through the mandatory profile setup on your first visit.
+* **Data Manipulation**: pandas
+* **Numerical Computing**: NumPy
 
-📋 Profile Setup Process
-The profile setup is a guided, multi-step process designed to be quick yet comprehensive, ensuring the AI has sufficient data to personalize your experience.
+### LLM Integration (Optional, Local)
 
-Step 1: Basic Information (1 min)
-Your name, email, phone, date of birth.
-Country of residence, nationality, city, and postal code.
+* **Local LLM Runtime**: Ollama
+* Used only for selected components
+* Not required for core system functionality
 
-Step 2: Academic Background (1 min)
-Current academic level (e.g., High School, Undergraduate, Master's).
-Current/previous institution, major, expected/actual graduation year.
-Your GPA/Grade Average, IELTS, TOEFL, or other English certification scores.
+### Evaluation & Experimentation
 
-Step 3: Interests & Goals (2 min)
-Your primary field of interest (e.g., Computer Science, Business).
-Additional areas of interest (multi-select).
-Detailed career goals and aspirations.
-Target industry and key professional skills.
+* Custom evaluation pipelines
+* sklearn-based metrics
+* Experimental validation scripts
 
-Step 4: Preferences (1 min)
-Preferred study mode (full-time, part-time, online).
-Budget range for tuition fees.
-Preferred start date for studies.
-Notification preferences (email, AI personalization, data analytics).
+---
 
-Step 5: Review & Complete (30 sec)
-Review all the information you've provided.
-Accept terms and complete your profile.
-Your profile completion percentage will be calculated and displayed.
+## 🚀 Running the System Locally
 
-🔗 Feature Integration Flow
+```bash
+# 1. Clone the repository
+git clone https://github.com/MuhammadAhmed-38/uel-enhanced-ai-assistant.git
+cd uel-enhanced-ai-assistant
 
-Run
-Copy code
-1Profile Creation
-2       ↓
-3┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-4│   AI Chat       │←→  │ Recommendations │←→  │  Predictions    │←→  │ Interview Prep  │
-5│                 │    │                 │    │                 │    │                 │
-6│ • Knows your    │    │ • Uses complete │    │ • Auto-fills    │    │ • Tailored      │
-7│   name & goals  │    │   profile data  │    │   your data     │    │   questions     │
-8│ • References    │    │ • Matches your  │    │ • Only asks for │    │ • Personalized  │
-9│   your interests│    │   interests     │    │   target course │    │   feedback      │
-10│ • Personalized  │    │ • Considers     │    │ • Tracks your   │    │ • Tracks        │
-11│   responses     │    │   your level    │    │   improvements  │    │   performance   │
-12└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
-13       ↑                                                                       ↑
-14       └────────────────────────── Profile Data Flows Automatically ────────────┘
-💡 User Experience Highlights
+# 2. Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # macOS/Linux
 
-Before (Version 2.0 - Generic AI)
+# 3. Install dependencies
+pip install -r requirements.txt
 
-❌ Fill out forms repeatedly across different features. ❌ Re-enter the same personal and academic information multiple times. ❌ Receive generic AI responses that lack personal context. ❌ Get basic course recommendations without deep personalization. ❌ Manual data entry required for every admission prediction.
-After (Version 3.0 - Profile-Driven AI)
+# 4. Launch the Streamlit interface
+streamlit run streamlit_interface.py
+```
 
-✅ One-time, guided profile setup that serves as your central data hub. ✅ Automatic data flow across all features, saving time and effort. ✅ Personalized AI that understands your unique background, interests, and goals. ✅ Smart, highly relevant recommendations based on your complete profile. ✅ Instant, accurate predictions leveraging your pre-filled academic data. ✅ AI-powered mock interviews with feedback tailored to your profile.
+---
 
-📊 Technical Architecture
+## ⚠️ Deployment & Environment Constraints
 
-Profile Management System
+* This project is **not fully compatible with Streamlit Cloud**
+* Reason: Certain components rely on **local resources**, including:
 
-UserProfile (Dataclass): A comprehensive data structure defining all aspects of a user's profile, including basic info, academic background, professional experience, interests, preferences, and system-tracked data.
-ProfileManager: Handles the lifecycle of user profiles, including creation, updates, retrieval, validation, completion tracking, and persistence to the database. It also manages an in-memory cache for quick access.
+  * Local LLM inference via Ollama
+  * File-based persistence and recordings
 
-# Core AI Services
+### Recommended Environments
 
-OllamaService: Manages interaction with the local Ollama LLM server, providing AI response generation with robust error handling and fallback mechanisms.
-SentimentAnalysisEngine: Analyzes the emotional tone and urgency of user messages.
-DocumentVerificationAI: Simulates AI-powered document verification based on predefined rules and provides feedback.
-VoiceService: Integrates speech-to-text and text-to-speech capabilities for voice interactions.
-Machine Learning Components
+* Local development machines
+* Academic or private servers
+* Controlled demonstration environments
 
-AdvancedCourseRecommendationSystem: Implements sophisticated recommendation logic using TF-IDF, BERT embeddings, and an ensemble approach for superior relevance and diversity. Includes XAI features.
-PredictiveAnalyticsEngine: Trains and utilizes RandomForestClassifier and GradientBoostingRegressor models for admission probability and success prediction, with robust data preparation and synthetic data generation for training.
+---
 
-Database Schema (SQLite)
-The system uses an SQLite database (data/uel_ai_system.db) for persistent storage:
+## 📊 Evaluation & Validation
 
-student_profiles: Stores complete user profiles (JSON data).
-profile_interactions: Logs user interactions with different features.
-ai_conversations: Stores profile-linked chat history.
-recommendation_cache: Caches profile-based course recommendations.
-prediction_cache: Caches profile-linked admission predictions.
-system_analytics: Records overall system events and metrics.
+* Evaluation logic implemented in: `performance_evaluator.py`
+* Metrics include:
 
-🔒 Privacy & Security Considerations
-Local Data Storage: All user profiles and interaction data are stored locally within your system's SQLite database.
-No External Profile Sharing: User data is designed to remain on your local machine and is not shared with external services or third parties.
-User Control: You have complete control over your profile data, with options to edit, export, or delete it.
-Password Hashing: Passwords for profile login are hashed using SHA256 before storage, ensuring they are not stored in plain text.
+  * Relevance scoring
+  * Sentiment polarity
+  * Basic accuracy measures where applicable
+* Data sources:
 
-🎯 Benefits for Different Users
-🎓 Prospective Students
+  * Synthetic applicant profiles
+  * Simulated interview responses
 
-Experience a truly personalized application journey.
-Receive highly accurate and relevant course recommendations.
-Get data-driven insights into your admission chances.
-Practice interviews with an AI coach tailored to your profile.
-Streamline document submission with AI verification.
+This project emphasises **evaluation transparency**, while keeping detailed experimental methodology outside the main README for clarity.
 
-👨‍🏫 Academic Advisors & Counselors
-Gain a deeper understanding of student profiles and needs.
-Provide more targeted and effective guidance.
-Track student engagement and progress across the platform.
+---
 
-🏫 University Administrators
-Analyze aggregated student interests and application trends (if analytics are enabled).
-Understand feature usage patterns to improve service delivery.
-Generate insights for strategic planning and course development.
+## 📂 Project Structure (High-Level)
 
-📈 Performance & Scalability
-Profile Caching: Frequently accessed profiles are cached in memory for faster retrieval.
-Optimized Database Queries: Indexes are applied to database tables for efficient data access.
-Modular Design: Components are designed to be independent, allowing for easier scaling and maintenance.
-Asynchronous Operations: Where applicable, operations are designed to be non-blocking for a smoother user experience.
->>>>>>> e05216a18943ac4bd0d261325d27a8e42dce6469
+```
+uel-enhanced-ai-assistant/
+│
+├── streamlit_interface.py     # Main UI entry point
+├── main.py                    # System orchestration
+├── unified_uel_ai_system.py   # Integrated system logic
+├── course_recommendation.py
+├── interview_preparation.py
+├── document_verification.py
+├── sentiment_analysis.py
+├── performance_evaluator.py
+├── profile_manager.py
+├── database_manager.py
+├── utils.py
+├── data/
+├── tests/
+├── recordings/
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 📸 Result's Screenshots
+
+### Admission Prediction Flowchart
+![Admission Prediction Flowchart](screenshots/Addmission_Prediction_Flowchart.jpg)
+
+### Admission Prediction Accuracy
+![Admission Prediction Accuracy](screenshots/Admission_Prediction_Accuracy.jpg)
+
+### AI Chat Bot Accuracy and Feature Importance
+![AI Chat Bot Accuracy and Feature Importance](screenshots/AI_Chat_Bot_Accuracy_and_Feature_Importance.jpg)
+
+### AI Chat Bot Accuracy
+![AI Chat Bot Accuracy](screenshots/AI_Chat_Bot_Accuracy.jpg)
+
+### AI Chat Bot Personalised Answers
+![AI Chat Bot Personalised Answers](screenshots/AI_Chat_Bot_Personalised_Answers.jpg)
+
+### Basic Tier AI Chat Bot Interface
+![Basic Tier AI Chat Bot Interface](screenshots/Basic_Tier_AI_Chat_Bot_Interface.jpg)
+
+### Basic Tier AI Chat Bot Response
+![AI Chat Bot Accuracy and Feature Importance](screenshots/Basic_Tier_AI_Chat_Bot_Response.jpg)
+
+### Basic Tier Dashboard
+![AI Chat Bot Accuracy](screenshots/Basic_Tier_Dashboard.jpg)
+
+### Course Prediction Accuracy
+![AI Chat Bot Accuracy](screenshots/Course_Prediction_Accuracy.jpg)
+
+### Course Recommendation Accuracy
+![AI Chat Bot Accuracy](screenshots/Course_Recommendation_Accuracy.jpg)
+
+### Course Recommendation Confusion Matrix
+![AI Chat Bot Accuracy](screenshots/Course_Recommendation_Confusion_Matrix.jpg)
+
+### Course Recommendation Flowchart
+![AI Chat Bot Accuracy](screenshots/Course_Recommendation_Flowchart.jpg)
+
+### Document Verificatio Accuracy0
+![AI Chat Bot Accuracy](screenshots/Document_Verificatio_Accuracy0.jpg)
+
+### Document Verificatio Accuracy1
+![AI Chat Bot Accuracy](screenshots/Document_Verification_Accuracy.jpg)
+
+### Document Verificatio Flowchart
+![AI Chat Bot Accuracy](screenshots/Document_Verification_Flowchart.jpg)
+
+### Feature Importance Across ML Models
+![AI Chat Bot Accuracy](screenshots/Feature_Importance_Across_ML_Models.jpg)
+
+### Interview And Cheating Detection Accuracies And Confusion Matrix
+![AI Chat Bot Accuracy](screenshots/Interview_And_Cheating_Detection_Accuracies_And_Confusion_Matrix.jpg)
+
+### Interview Prep Flowchart
+![AI Chat Bot Accuracy](screenshots/Interview_Preperation_Flowchart.jpg)
+
+### Large Language Model Flowchart
+![AI Chat Bot Accuracy](screenshots/LLM_Flowchart.jpg)
+
+### ML Models Accuracies
+![AI Chat Bot Accuracy](screenshots/ML_Models_Accuracies.jpg)
+
+### Personalised Tier Dashboard0
+![AI Chat Bot Accuracy](screenshots/Personalised_Tier_Dashboard0.jpg)
+
+### Personalised Tier Dashboard1
+![AI Chat Bot Accuracy](screenshots/Personalised_Tier_Dashboard1.jpg)
+
+### Personalised Tier Dashboard2
+![AI Chat Bot Accuracy](screenshots/Personalised_Tier_Dashboard2.jpg)
+
+### Personalised Tier Dashboard3
+![AI Chat Bot Accuracy](screenshots/Personalised_Tier_Dashboard3.jpg)
+
+### Personalised Tier Dashboard4
+![AI Chat Bot Accuracy](screenshots/Personalised_Tier_Dashboard4.jpg)
+
+### Personalised Tier Dashboard Profile Complete
+![AI Chat Bot Accuracy](screenshots/Personalised_Tier_Dashboard_Profile_Complete.jpg)
+
+### Project Architecture
+![AI Chat Bot Accuracy](screenshots/Project_Architecture.jpg)
+
+### RAG Flowchart
+![AI Chat Bot Accuracy](screenshots/RAG_Flowchart.jpg)
+
+### Results
+![AI Chat Bot Accuracy](screenshots/Results.jpg)
+
+### System Architecture
+![AI Chat Bot Accuracy](screenshots/System_Architecture.jpg)
+
+### System Initialisation Flowchart
+![AI Chat Bot Accuracy](screenshots/System_Initialisation_Flowchart.jpg)
+
+### System Performance Accuracy Among ML Models
+![AI Chat Bot Accuracy](screenshots/System_Performance_Accuracy_Among_ML_Models.jpg)
+
+### Working Flowchart
+![AI Chat Bot Accuracy](screenshots/Working_Flowchart.jpg)
+
+---
+
+## 🔭 Current Limitations & Future Work
+
+**Current limitations:**
+
+* Limited scale of data from faqs of 20 univeristies and admission staff feedback about 1GB size
+* Local-only execution for LLM-based components
+* Simplified evaluation metrics for certain modules
+
+**Planned future work:**
+
+* Larger and more diverse datasets
+* Stronger quantitative benchmarking
+* API layer for external system integration
+* Optional cloud-compatible inference pathways
+
+---
+
+## 🎓 Intended Audience
+
+* MSc / PhD evaluators
+* AI researchers and applied ML engineers
+* Recruiters assessing system-level AI skills
+* Developers exploring integrated AI decision-support systems
+
+---
+
+## 📚 Citation & Usage
+
+If you use this project for academic reference or inspiration, please cite or acknowledge the repository.
+
+This project is available for freely used for educational and research purposes.
+
+---
+
+## 👤 Author
+
+**Muhammad Ahmed**
+MSc Artificial Intelligence (Distinction)
+
+GitHub: [https://github.com/MuhammadAhmed-38](https://github.com/MuhammadAhmed-38)
+
+---
+
+## ⭐ Feedback & Contributions
+
+Suggestions, issues, and academic discussions are welcome via GitHub Issues.
